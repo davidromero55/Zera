@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="/templates/blog/css/template.css" />
+    <title><% page.title %></title>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">David Romero's Blog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="/projects">Projects</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav justify-content-end nav-small">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://www.facebook.com/DavidRomero55"><i class="fab fa-facebook-f"></i></a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link active" href="https://twitter.com/DavidRomero55"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://plus.google.com/u/0/+DavidRomero55"><i class="fab fa-google-plus-g"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://www.linkedin.com/in/davidromero55/"><i class="fab fa-linkedin-in"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://github.com/davidromero55"><i class="fab fa-github-alt"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br /><br /><br /><br /><br /><br />
+    <div class="container">
+        <% content %>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h6>About me</h6>
+                    <img src="/templates/blog/img/perfil.jpg" class="img-fluid img-thumbnail rounded" />
+                    <p>
+                        <h5>David Romero</h5>
+                        A life as a developer.
+                    </p>
+                </div>
+                <div class="col-5">
+                    <h6>Twitter</h6>
+                    <a class="twitter-timeline"  data-height="350" href="https://twitter.com/DavidRomero55?ref_src=twsrc%5Etfw">Tweets by DavidRomero55</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="col-4">
+                    <h6>My projects</h6>
+                    <ul>
+                        <li><a href="http://www.marketero.io">Marketero</a></li>
+                        <li><a href="http://www.segurifact.com">Segurifact</a></li>
+                        <li><a href="http://www.pointscard.win">Pointscard</a></li>
+                        <li><a href="http://zera.tech">Zera</a></li>
+                        <li><a href="http://xaandia.com">Xaandia</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

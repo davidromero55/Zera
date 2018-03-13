@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/templates/zera/css/zera.css" />
+
+    <title><% page.title %></title>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/AdminDashboard">Zera</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <% FOREACH menu = menus %>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<% menu.url %>"><% menu.name %><span class="sr-only">(current)</span></a>
+                </li><% END %>
+            </ul>
+            <ul class="nav justify-content-end">
+                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Admin?_Action=logout" title="Logout"><i class="material-icons">exit_to_app</i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <br /><br /><br />
+    <div class="container">
+        <h3><% page.title %></h3>
+        <div class="row justify-content-end">
+            <div class="col col-xs-12 col-sm-10 col-md-8 col-lg-5 text-right">
+                <% IF page.search_url %>
+                <form method="get" action="<% page.search_action %>" class="form-horizontal needs-validation" novalidate>
+                    <div class="input-group input-group-sm  my-1">
+                        <% page.search_box %>
+                        <div class="input-group-append">
+                            <% page.buttons %>
+                        </div>
+                    </div>
+                </form>
+                <% ELSE %>
+                    <% IF page.buttons %>
+                    <div class="btn-group btn-group-sm my-1" role="group">
+                        <% page.buttons %>
+                    </div>
+                    <% END %>
+                <% END %>
+            </div>
+        </div>
+        <% content %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="/js/zera-admin.js"></script>
+    <% page.js_files %>
+  </body>
+</html>
