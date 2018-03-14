@@ -34,16 +34,17 @@ sub _init {
 
 sub run {
     my $self = shift;
-    
+
     if($self->{_REQUEST}->param('Controller')){
         my $module = $self->{_REQUEST}->param('Controller');
         $module =~s/\W//g;
         $self->{ControllerName} = $module;
+
         
         require "Zera/".$module ."/Controller.pm";
         my $controller_name ='Zera::'.$module.'::Controller';
         my $Controller = $controller_name->new($self);
-        
+      
         
         # Load module
         my $Module;
@@ -119,14 +120,18 @@ sub clear {
     my $self = shift;
     $self->{_SESS}->close();
     $self->{_DBH}->disconnect();
+    exit;
 }
 
 sub process_results {
     my $self = shift;
     my $results = shift;
+    
     if($results->{redirect}){
+        $self->{_SESS}->close();
+        $self->{_DBH}->disconnect();
         $self->http_redirect($results->{redirect});
-        $self->clear();
+        exit;
     }
 }
 
@@ -134,7 +139,7 @@ sub http_redirect {
     my $self = shift;
     my $dest = shift;
     # untie %sess;
-    $self->{_DBH}->disconnect();    
+    #$self->{_DBH}->disconnect();    
     print $self->redirect($dest);
 }
 

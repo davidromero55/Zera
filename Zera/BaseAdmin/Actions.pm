@@ -17,7 +17,6 @@ sub new {
     $self->{Zera} = shift;
 
     $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
-    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
     
     # Init app ENV
     $self->_init();
@@ -37,6 +36,17 @@ sub param {
         $self->{Zera}->{_REQUEST}->param($var,$val);
     }else{
         return $self->{Zera}->{_REQUEST}->param($var);
+    }
+}
+
+sub sess {
+    my $self = shift;
+    my $var = shift;
+    my $val = shift;
+    if(defined $val){
+        $self->{Zera}->{_SESS}->{_sess}{$var} = "$val";
+    }else{
+        return $self->{Zera}->{_SESS}->{_sess}{$var};
     }
 }
 

@@ -50,7 +50,10 @@ sub _init {
 
     # Default Action
     if(!$self->{params}->{action}){
-        $self->{params}->{action} = $ENV{SCRIPT_URL};
+        $self->{params}->{action} = $ENV{SCRIPT_URL} || $ENV{REQUEST_URI};
+        if($self->{params}->{action} =~ /\?/){
+            $self->{params}->{action} =~ s/(\?.*)//;
+        }
     }
 
     # Default class
@@ -337,6 +340,8 @@ sub _get_form_start {
         next if($key eq 'name');
         next if($key eq 'fields');
         next if($key eq 'submits');
+        next if($key eq 'submit');
+        next if($key eq 'template');
         next if($key eq 'values');
         next if($key eq 'help');
         next if($key eq 'override');

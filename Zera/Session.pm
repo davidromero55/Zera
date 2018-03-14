@@ -29,7 +29,6 @@ sub _init {
             TableName  => 'sessions',
         };
     };
-
     if ($@) {
         eval {
             $session_id = '';
@@ -42,10 +41,16 @@ sub _init {
         die "Can't create session data $@" if($@);
     }
 
-    defined $self->{_sess}{account_id}    or $self->{_sess}{account_id} = '';
-    defined $self->{_sess}{account_name}  or $self->{_sess}{account_name} = '';
-    defined $self->{_sess}{account_email} or $self->{_sess}{saccount_email} = '';
+    defined $self->{_sess}{user_id}    or $self->{_sess}{user_id} = '';
+    defined $self->{_sess}{user_name}  or $self->{_sess}{user_name} = '';
+    defined $self->{_sess}{user_email} or $self->{_sess}{user_email} = '';
 
+        #foreach my $key (keys %{$self->{_sess}}){
+        #    print "--22-- $key = $self->{_sess}{$key} ------<br>";
+        #}
+        #print "-- Prueba4 - $self->{_SESS}->{_sess} --<br>";
+
+    
     $self->{cookie} = $self->_get_cookie_str();
 }
 

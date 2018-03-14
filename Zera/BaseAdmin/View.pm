@@ -101,10 +101,10 @@ sub render_template {
     my $template = shift || $self->{Zera}->{sub_name};
     my $HTML = '';
     
-    if(-e ('Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html')){
-        $template = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html';
-    }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
-        $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
+    if(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
+        $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
+    }elsif(-e ('templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html')){
+        $template = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html';
     }
     
     $vars->{conf} = $conf;

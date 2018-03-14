@@ -21,10 +21,10 @@ sub do_login {
         
     if($user->{user_id}){
         # Write session data and redirect to dashboard
-        $self->{sess}{user_id}    = "$user->{user_id}";
-        $self->{sess}{user_name}  = "$user->{name}";
-        $self->{sess}{user_email} = "$user->{email}";
-        $self->{sess}{user_keep_me_in} = "".$self->param('keep_me_in');
+        $self->sess('user_id',"$user->{user_id}");
+        $self->sess('user_name',"$user->{name}");
+        $self->sess('user_email',"$user->{email}");
+        $self->sess('user_keep_me_in',"".$self->param('keep_me_in'));
         
         $self->{dbh}->do("UPDATE users SET last_login_on=NOW() WHERE user_id=?",{},$user->{user_id});
 
@@ -43,10 +43,10 @@ sub do_logout {
     my $self = shift;
     my $results = {};
 
-    $self->{sess}{user_id}         = "";
-    $self->{sess}{user_name}       = "";
-    $self->{sess}{user_email}      = "";
-    $self->{sess}{user_keep_me_in} = "";
+    $self->sess('user_id','');
+    $self->sess('user_name','');
+    $self->sess('user_email','');
+    $self->sess('user_keep_me_in','');
 
     $self->add_msg('success','Your sessión is now closed');
     

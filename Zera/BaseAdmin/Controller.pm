@@ -33,7 +33,7 @@ sub _init {
     my $is_public_view = 0;
     
     # no user_id in session.
-    if(!$self->{Zera}->{_SESS}->{_sess}{user_id}){
+    if(!($self->{Zera}->{_SESS}->{_sess}{user_id})){
         # Check public Views
         foreach my $view (@{$self->{public_views}}) {
             if($self->{Zera}->{_REQUEST}->param('View') eq $view){

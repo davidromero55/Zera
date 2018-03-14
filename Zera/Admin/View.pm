@@ -12,7 +12,7 @@ sub display_login {
         method   => 'POST',
         fields   => [qw/email password keep_me_in/],
         submit   => \@submit,
-        template => 'templates/' . $conf->{Template}->{TemplateID} . '/zera-login-form.html',
+        template => 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera-login-form.html',
     });
     
     $form->field('email',{placeholder=> 'Correo Electrónico', type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Introduce un correo válido', validate=>'EMAIL'});
