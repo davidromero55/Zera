@@ -38,7 +38,7 @@ $conf->{Cookie} = {
 };
 
 $conf->{Template} = {
-    TemplateID => 'blog',
+    TemplateID => 'zera-website',
     AdminTemplateID => 'zera',
 };
 
