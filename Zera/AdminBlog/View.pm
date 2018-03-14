@@ -64,13 +64,14 @@ sub display_edit {
     $self->add_jsfile('admin-blog');
 
     # Values
-    if($self->param('entry_id')){
+    if(int($self->param('entry_id'))){
         $values = $self->{dbh}->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Blog'",{},$self->param('entry_id'));
         $values->{display_options} = decode_json($values->{display_options});
         push(@submit, 'Delete');
     }else{
         $values = {
             date => $self->{dbh}->selectrow_array('SELECT DATE(NOW())'),
+            active => 1,
         };
     }
     
