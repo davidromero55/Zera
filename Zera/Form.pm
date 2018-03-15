@@ -84,7 +84,13 @@ sub render {
         if(-e ("$dir/$self->{Zera}->{sub_name}.html")){
             $template_file = "$dir/$self->{Zera}->{sub_name}.html";
         }else{
-            $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera-form.html';
+            if($self->{Zera}->{_Layout} eq 'Public'){
+                $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/zera-form.html';
+            }elsif($self->{Zera}->{_Layout} eq 'User'){
+                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera-form.html';
+            }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera-form.html';
+            }
         }
     }
     

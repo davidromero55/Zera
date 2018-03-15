@@ -1,0 +1,36 @@
+.navbar {
+    background: #009efb;
+    background: -moz-linear-gradient(left, #0178bc 0%, #00bdda 100%);
+    background: -webkit-linear-gradient(left, #0178bc 0%, #00bdda 100%);
+    background: linear-gradient(to right, #0178bc 0%, #00bdda 100%);
+}
+
+.navbar a {
+    color: #FFF;
+}
+
+.navbar-toggler {
+    color: #FFF;
+}
+
+.md-18 {
+    font-size: .875rem;
+    line-height: 1.5;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.form-group .btn {
+    margin-right: 5px;
+}
+
+.table-sm td, .table-sm th {
+    padding: .15rem;
+}

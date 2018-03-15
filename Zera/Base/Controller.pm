@@ -22,6 +22,8 @@ sub new {
 sub _init {
     my $self = shift;
     
+    # Define layout mode
+    $self->{Zera}->{_Layout} = 'Public';
 }
 
 sub before_actions {

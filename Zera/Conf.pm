@@ -22,7 +22,7 @@ $conf->{DBI} = {
 $conf->{App} = {
     Name      => 'Zera CMS',
     Version   => '0.1',
-    URL       => '127.0.0.1',
+    URL       => '192.168.2.6',
     Copyright => 'Xaandia Tecnologías Digitales SA de CV',
     Language  => 'en_US',
     TimeZone  => 'US/Central',
@@ -39,7 +39,8 @@ $conf->{Cookie} = {
 
 $conf->{Template} = {
     TemplateID => 'zera-website',
-    AdminTemplateID => 'zera',
+    UserTemplateID => 'zera-user',
+    AdminTemplateID => 'zera-admin',
 };
 
 $conf->{Security} = {

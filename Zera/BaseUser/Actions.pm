@@ -1,4 +1,4 @@
-package Zera::BaseAdmin::Actions;
+package Zera::BaseUser::Actions;
 
 use strict;
 use JSON;

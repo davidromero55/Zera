@@ -1,11 +1,9 @@
-package Zera::Admin::Actions;
+package Zera::User::Actions;
 
 use strict;
 use Zera::Conf;
 
-use base 'Zera::BaseAdmin::Actions';
-
-#use Digest::SHA qw(sha384_hex);
+use base 'Zera::BaseUser::Actions';
 
 sub do_login {
     my $self = shift;
@@ -22,18 +20,18 @@ sub do_login {
         $self->sess('user_id',"$user->{user_id}");
         $self->sess('user_name',"$user->{name}");
         $self->sess('user_email',"$user->{email}");
-        $self->sess('is_admin',"1");
+        $self->sess('is_admin',"0");
         $self->sess('user_keep_me_in',"".$self->param('keep_me_in'));
         
         $self->dbh_do("UPDATE users SET last_login_on=NOW() WHERE user_id=?",{},$user->{user_id});
 
-        $results->{redirect} = '/AdminDashboard';
+        $results->{redirect} = '/UserDashboard';
         $results->{success} = 1;
         return $results;
     }else{
         $self->add_msg('warning','Username or password incorrect.');
     	$results->{error} = 1;
-    	$results->{redirect} = '/Admin/Login?email='.$self->param('email');
+    	$results->{redirect} = '/User/Login?email='.$self->param('email');
         return $results;
     }
 }
@@ -50,7 +48,7 @@ sub do_logout {
     $self->add_msg('success','Your session is now closed');
     
     $results->{error} = 1;
-    $results->{redirect} = '/Admin/Msg';
+    $results->{redirect} = '/User/Msg';
     return $results;
 }
 
@@ -66,7 +64,7 @@ sub do_edit {
         $results->{error} = 1;
         return $results;
     }else{
-        $results->{redirect} = '/Admin';
+        $results->{redirect} = '/User';
         $results->{success} = 1;
         return $results;
     }
@@ -126,7 +124,7 @@ sub do_password_update {
         $results->{error} = 1;
         return $results;
     }else{
-        $results->{redirect} = '/Admin';
+        $results->{redirect} = '/User';
         $results->{success} = 1;
         $self->add_msg('success','Your new password is ready.');
         return $results;

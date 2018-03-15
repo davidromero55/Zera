@@ -1,4 +1,4 @@
-package Zera::Base::View;
+package Zera::BaseUser::View;
 
 use JSON;
 
@@ -90,7 +90,7 @@ sub display_msg {
 
     my $vars = {
     };
-    return $self->render_template($vars,'msg-admin');
+    return $self->render_template($vars,'msg-user');
 }
 
 # Database functions
@@ -114,20 +114,23 @@ sub dbh_do {
     return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
+sub form {
+    my $self = shift;
+    my $params = shift;
+    return Zera::Form->new($self->{Zera}, $params);
+}
+
 # Template functions
 sub render_template {
     my $self = shift;
     my $vars = shift;
     my $template = shift || $self->{Zera}->{sub_name};
     my $HTML = '';
-
+    
     if(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
         $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
-    }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
-        $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
-    }else{
-        $self->add_msg('danger','Template ' . $template . ' not found.');
-        return $self->{Zera}->get_msg();
+    }elsif(-e ('templates/' . $conf->{Template}->{UserTemplateID} . '/' . $template . '.html')){
+        $template = 'templates/' . $conf->{Template}->{UserTemplateID} . '/' . $template . '.html';
     }
     
     $vars->{conf} = $conf;
@@ -135,20 +138,47 @@ sub render_template {
     $vars->{page} = $self->{Zera}->{_PAGE};
     
     my $tt = Zera::Com::template();
-    $tt->process($template, $vars, \$HTML) || die "$Template::ERROR \n";
+    $tt->process($template, $vars, \$HTML) || die "$Template::ERROR\n";
     return $HTML;
-}
-
-sub form {
-    my $self = shift;
-    my $params = shift;
-    return Zera::Form->new($self->{Zera}, $params);
 }
 
 sub set_title {
     my $self = shift;
     my $title = shift;
     $self->{Zera}->{_PAGE}->{title} = $title;
+}
+
+sub set_add_btn {
+    my $self = shift;
+    my $url   = shift;
+    my $label = shift || 'Add';
+    $self->add_btn($url, $label,'btn btn-primary text-white','add_circle');    
+}
+
+sub add_search_box {
+    my $self = shift;
+    my $placeholder = shift || 'Search';
+    my $url = shift || $ENV{SCRIPT_URL}  || $ENV{REQUEST_URI};
+    if($url =~ /\?/){
+        $url =~ s/(\?.*)//;
+    }
+
+    my $value = $self->param('zl_q');
+    $value = '' if(!(defined $self->param('zl_q')));
+    $self->{Zera}->{_PAGE}->{search_url} = $url;
+    $self->{Zera}->{_PAGE}->{search_box} = $self->_tag('input', {type=>"text", class=>"form-control", value=>$value, name=>"zl_q", id=>"zl_q", placeholder=>$placeholder});
+    $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('button',{type=>"submit", class=>"btn btn-secondary"},'<i class="material-icons md-18">search</i>');
+}
+
+sub add_btn {
+    my $self  = shift;
+    my $url   = shift;
+    my $label = shift || 'Add';
+    my $class = shift || 'btn btn-secondary text-white';
+    my $icon  = shift || '';
+
+    $label = '<i class="material-icons md-18">' . $icon . '</i> ' . $label if($icon);
+    $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('a',{class=>$class, href=>$url},$label);
 }
 
 sub add_jsfile {
@@ -177,6 +207,14 @@ sub _tag {
     }else{
         return '<' . $tag_type . $tag . ' />';
     }
+}
+
+sub get_image_options {
+    my $self = shift;
+    my $file = shift;
+    
+    my $image_html =  $self->_tag('img',{src=>$file, class=>'img-thumbnail mx-auto d-block img-fluid', style=>'max-height: 150px;'});    
+    return $image_html;
 }
 
 1;

@@ -1,0 +1,27 @@
+        <div class="row  justify-content-center">
+            <div id="loginbox" style="margin-top:100px;" class="col-12 col-sm-8 col-md-6">
+                <div class="card">
+                    <div class="card-header text-center"><img src="/templates/zera-user/img/zera.png" class="img-fluid" /></div>
+                    <div style="padding-top:30px" class="card-body">
+                        <% msg %>
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                        <% vars.form_start %>
+                            <% FOREACH field IN vars.fields %>
+                            <div class="row form-group form-row">
+                                <div class="col-md-12">
+                                    <% field.field %>
+                                    <% IF field.invalid_msg %><div class="invalid-feedback"><% field.invalid_msg %></div><% END %>
+                                    <% IF field.help %><small class="form-text text-muted"><% field.help %></small><% END %>
+                                </div>
+                            </div>
+                            <% END %>
+                            <div style="margin-top:10px" class="form-group">
+                                <div class="col-sm-12 controls">
+                                    <input type="submit" id="btn-login" href="#" class="btn btn-primary col" value="Login" />
+                                </div>
+                            </div>
+                        <% vars.form_end  %>
+                    </div>
+                </div>
+            </div>
+        </div>

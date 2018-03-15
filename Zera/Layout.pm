@@ -37,12 +37,27 @@ sub print {
     my $menus;
     
     my $Controller = $self->{Zera}->{_REQUEST}->param('Controller');
-    if($Controller =~ /^Admin/){
+    if($self->{Zera}->{_Layout} eq 'Public'){
+        if (!$template_file) {
+            $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/layout.html'
+        }
+    }elsif($self->{Zera}->{_Layout} eq 'User'){
         if (!$template_file) {
             if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout-admin.html'
+                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/layout.html'
             }else{
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout-admin-out.html'
+                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/layout-out.html'
+            }
+        }
+        if($self->{Zera}->{_SESS}->{_sess}{user_id}){
+            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref("SELECT SQL_CACHE url, name, icon FROM menus m WHERE m.group='User' ORDER BY m.sort_order, m.name",{Slice=>{}});
+        }        
+    }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+        if (!$template_file) {
+            if($self->{Zera}->{_SESS}->{_sess}{user_id}){
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout.html'
+            }else{
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout-out.html'
             }
         }
         if($self->{Zera}->{_SESS}->{_sess}{user_id}){

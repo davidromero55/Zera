@@ -1,4 +1,4 @@
-package Zera::BaseAdmin::Controller;
+package Zera::BaseUser::Controller;
 
 use Zera::Conf;
 
@@ -27,10 +27,10 @@ sub _init {
     my $is_public_view = 0;
     
     # Define layout mode
-    $self->{Zera}->{_Layout} = 'Admin';
-    
+    $self->{Zera}->{_Layout} = 'User';
+
     # no user_id in session.
-    if(!($self->{Zera}->{_SESS}->{_sess}{user_id}) or (!($self->{Zera}->{_SESS}->{_sess}{is_admin}))){
+    if(!($self->{Zera}->{_SESS}->{_sess}{user_id})){
         # Check public Views
         foreach my $view (@{$self->{public_views}}) {
             if($self->{Zera}->{_REQUEST}->param('View') eq $view){
@@ -42,7 +42,7 @@ sub _init {
         if(!$is_public_view){
             $self->{Zera}->add_msg('warning','Log into your account.');
             $results->{error} = 1;
-            $results->{redirect} = '/Admin/Login?_next=';
+            $results->{redirect} = '/User/Login?_next=';
             $self->{Zera}->process_results($results);
         }
     }
