@@ -92,7 +92,8 @@ sub render {
     my $vars = {
         vars    => $self->{vars},
         conf    => $conf,
-        msg     => $self->{Zera}->get_msg()
+        msg     => $self->{Zera}->get_msg(),
+        page    => $self->{Zera}->{_PAGE}
     };
     my $HTML = '';
     $tt->process($template_file, $vars, \$HTML) || die $tt->error(), "\n";

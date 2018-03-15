@@ -16,8 +16,6 @@ sub new {
     # Main Zera object
     $self->{Zera} = shift;
 
-    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
-    
     # Init app ENV
     $self->_init();
 
@@ -50,15 +48,38 @@ sub sess {
     }
 }
 
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+}
+
 sub process_action {
     my $self = shift;
     my $arg = $self->param('View');
+    $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
     if(!($arg)){
         $arg = $self->param('_Action');
+        $arg =~ s/([A-Z])/_$1/g;
         $arg =~ s/\W//g;
+        $arg = '_' . $arg;
     }
-    my $sub_name = "do_" . lc($arg);
+    my $sub_name = "do" . lc($arg);
     if ($self->can($sub_name) ) {
         return $self->$sub_name();
     } else {

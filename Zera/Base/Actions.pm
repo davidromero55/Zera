@@ -34,8 +34,15 @@ sub param {
 sub process_action {
     my $self = shift;
     my $arg = shift;
+    $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
-    my $sub_name = "do_" . lc($arg);
+    if(!($arg)){
+        $arg = $self->param('_Action');
+        $arg =~ s/([A-Z])/_$1/g;
+        $arg =~ s/\W//g;
+        $arg = '_' . $arg;
+    }
+    my $sub_name = "do" . lc($arg);
     if ($self->can($sub_name) ) {
         $self->$sub_name();
     } else {
@@ -46,6 +53,26 @@ sub process_action {
 sub add_msg {
     my $self = shift;
     $self->{Zera}->add_msg(shift, shift);
+}
+
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 1;

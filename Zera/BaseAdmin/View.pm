@@ -18,8 +18,6 @@ sub new {
     
     # Main Zera object
     $self->{Zera} = shift;
-    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
-    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
     
     # Init app ENV
     $self->_init();
@@ -28,6 +26,26 @@ sub new {
 
 sub _init {
     my $self = shift;
+}
+
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 sub set_title {
@@ -55,7 +73,9 @@ sub param {
 sub get_view {
     my $self = shift;
     my $sub_name = $self->param('View');
-    $sub_name = "display_" . lc($sub_name);
+    $sub_name =~ s/([A-Z])/_$1/g;
+    $sub_name =~ s/\W//g;
+    $sub_name = "display" . lc($sub_name);
     if ($self->can($sub_name) ) {
         $self->{Zera}->{sub_name} = $sub_name;
         return $self->$sub_name();
@@ -151,7 +171,11 @@ sub set_add_btn {
 sub add_search_box {
     my $self = shift;
     my $placeholder = shift || 'Search';
-    my $url   = shift || $ENV{SCRIPT_URL};
+    my $url = shift || $ENV{SCRIPT_URL}  || $ENV{REQUEST_URI};
+    if($url =~ /\?/){
+        $url =~ s/(\?.*)//;
+    }
+
     my $value = $self->param('zl_q');
     $value = '' if(!(defined $self->param('zl_q')));
     $self->{Zera}->{_PAGE}->{search_url} = $url;

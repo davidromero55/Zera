@@ -64,11 +64,11 @@ sub display_edit {
 
     # Values
     if($self->param('entry_id')){
-        $values = $self->{dbh}->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Pages'",{},$self->param('entry_id'));
+        $values = $self->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Pages'",{},$self->param('entry_id'));
         push(@submit, 'Delete');
     }else{
         $values = {
-            date => $self->{dbh}->selectrow_array('SELECT DATE(NOW())'),
+            date => $self->selectrow_array('SELECT DATE(NOW())'),
         };
     }
     

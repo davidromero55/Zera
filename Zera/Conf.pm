@@ -43,7 +43,7 @@ $conf->{Template} = {
 };
 
 $conf->{Security} = {
-    Key => 'siudfaskdjfnaksdffsOIUYTFYGUHJMKLGH456',
+    Key => 'sdsd',
 };
 
 1;

@@ -11,7 +11,6 @@ sub display_home {
     $self->add_search_box();
     $self->set_add_btn('/AdminBlog/Edit/New');
     
-    
     my $where = "e.module='Blog'";
     my @params;
     if($self->param('zl_q')){
@@ -65,12 +64,12 @@ sub display_edit {
 
     # Values
     if(int($self->param('entry_id'))){
-        $values = $self->{dbh}->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Blog'",{},$self->param('entry_id'));
+        $values = $self->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Blog'",{},$self->param('entry_id'));
         $values->{display_options} = decode_json($values->{display_options});
         push(@submit, 'Delete');
     }else{
         $values = {
-            date => $self->{dbh}->selectrow_array('SELECT DATE(NOW())'),
+            date => $self->selectrow_array('SELECT DATE(NOW())'),
             active => 1,
         };
     }

@@ -18,8 +18,6 @@ sub new {
     
     # Main Zera object
     $self->{Zera} = shift;
-    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
-    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
     
     # Init app ENV
     $self->_init();
@@ -55,7 +53,9 @@ sub param {
 sub get_view {
     my $self = shift;
     my $sub_name = $self->param('View');
-    $sub_name = "display_" . lc($sub_name);
+    $sub_name =~ s/([A-Z])/_$1/g;
+    $sub_name =~ s/\W//g;
+    $sub_name = "display" . lc($sub_name);
     if ($self->can($sub_name) ) {
         $self->{Zera}->{sub_name} = $sub_name;
         return $self->$sub_name();
@@ -153,6 +153,26 @@ sub add_jsfile {
     }else{
         $self->add_msg('danger',"JS file $js_file does not exist.");
     }
+}
+
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 1;
