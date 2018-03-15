@@ -26,17 +26,7 @@ sub _init {
     my $self = shift;
 }
 
-sub param {
-    my $self = shift;
-    my $var = shift;
-    my $val = shift;
-    if(defined $val){
-        $self->{Zera}->{_REQUEST}->param($var,$val);
-    }else{
-        return $self->{Zera}->{_REQUEST}->param($var);
-    }
-}
-
+# Session functions
 sub sess {
     my $self = shift;
     my $var = shift;
@@ -48,24 +38,16 @@ sub sess {
     }
 }
 
-sub selectrow_hashref {
+# Request Functions
+sub param {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
-}
-
-sub selectrow_array {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
-}
-
-sub selectall_arrayref {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
-}
-
-sub dbh_do {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+    my $var = shift;
+    my $val = shift;
+    if(defined $val){
+        $self->{Zera}->{_REQUEST}->param($var,$val);
+    }else{
+        return $self->{Zera}->{_REQUEST}->param($var);
+    }
 }
 
 sub process_action {
@@ -86,11 +68,6 @@ sub process_action {
         $self->add_msg('danger','Action ' . $sub_name . ' not implemented.');
         return {error => 1};
     }
-}
-
-sub add_msg {
-    my $self = shift;
-    $self->{Zera}->add_msg(shift, shift);
 }
 
 sub upload_file {
@@ -169,6 +146,33 @@ sub upload_file {
         return $file;
     }
     return "";
+}
+
+# User messages
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+# Database functions
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 1;

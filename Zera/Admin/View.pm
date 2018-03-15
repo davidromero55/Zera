@@ -45,7 +45,7 @@ sub display_edit {
     $self->add_btn('/Admin','Back');
 
     # Values
-    $values = $self->{dbh}->selectrow_hashref("SELECT name, email FROM users WHERE user_id=?",{},$self->sess('user_id'));
+    $values = $self->selectrow_hashref("SELECT name, email FROM users WHERE user_id=?",{},$self->sess('user_id'));
     
     # Form
     my $form = $self->form({

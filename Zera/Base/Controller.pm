@@ -18,12 +18,6 @@ sub new {
     return $self;
 }
 
-sub param {
-    my $self = shift;
-    my $var = shift;
-    return $self->{Zera}->{_VARS}->{$var};
-}
-
 # Initialize ENV
 sub _init {
     my $self = shift;
@@ -59,5 +53,11 @@ sub after_api {
     
 }
 
+# Request functions
+sub param {
+    my $self = shift;
+    my $var = shift;
+    return $self->{Zera}->{_VARS}->{$var};
+}
 
 1;

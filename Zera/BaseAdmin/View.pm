@@ -28,37 +28,20 @@ sub _init {
     my $self = shift;
 }
 
-sub selectrow_hashref {
+# Session functions
+sub sess {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+    my $name = shift;
+    my $value = shift;
+    
+    if(defined $value){
+        $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
+    }else{
+        return $self->{Zera}->{_SESS}->{_sess}{$name};
+    }
 }
 
-sub selectrow_array {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
-}
-
-sub selectall_arrayref {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
-}
-
-sub dbh_do {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
-}
-
-sub set_title {
-    my $self = shift;
-    my $title = shift;
-    $self->{Zera}->{_PAGE}->{title} = $title;
-}
-
-sub add_msg {
-    my $self = shift;
-    $self->{Zera}->add_msg(shift, shift);
-}
-
+# Request functions
 sub param {
     my $self = shift;
     my $var = shift;
@@ -97,24 +80,48 @@ sub get_default_view {
     }
 }
 
+# User messages
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+sub display_msg {
+    my $self = shift;
+
+    my $vars = {
+    };
+    return $self->render_template($vars,'msg-admin');
+}
+
+# Database functions
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+}
+
 sub form {
     my $self = shift;
     my $params = shift;
     return Zera::Form->new($self->{Zera}, $params);
 }
 
-sub sess {
-    my $self = shift;
-    my $name = shift;
-    my $value = shift;
-    
-    if(defined $value){
-        $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
-    }else{
-        return $self->{Zera}->{_SESS}->{_sess}{$name};
-    }
-}
-
+# Template functions
 sub render_template {
     my $self = shift;
     my $vars = shift;
@@ -136,29 +143,10 @@ sub render_template {
     return $HTML;
 }
 
-sub _tag {
-    my $self     = shift;
-    my $tag_type = shift;
-    my $attrs    = shift;
-    my $content  = shift;
-
-    my $tag = '';
-    foreach my $key (keys %{$attrs}){
-        $tag .= ' ' . $key .'="'. $attrs->{$key}.'"';
-    }
-    if($content){
-        return '<' . $tag_type . $tag . '>' . $content . '</' . $tag_type . '>';
-    }else{
-        return '<' . $tag_type . $tag . ' />';
-    }
-}
-
-sub display_msg {
+sub set_title {
     my $self = shift;
-
-    my $vars = {
-    };
-    return $self->render_template($vars,'msg-admin');
+    my $title = shift;
+    $self->{Zera}->{_PAGE}->{title} = $title;
 }
 
 sub set_add_btn {
@@ -201,6 +189,24 @@ sub add_jsfile {
         $self->{Zera}->{_PAGE}->{js_files} .= '<script src="' . '/Zera/' . $self->{Zera}->{ControllerName} . '/js/' . $js_file . '.js' . '"></script>';
     }else{
         $self->add_msg('danger',"JS file $js_file does not exist.");
+    }
+}
+
+# HTML functions
+sub _tag {
+    my $self     = shift;
+    my $tag_type = shift;
+    my $attrs    = shift;
+    my $content  = shift;
+
+    my $tag = '';
+    foreach my $key (keys %{$attrs}){
+        $tag .= ' ' . $key .'="'. $attrs->{$key}.'"';
+    }
+    if($content){
+        return '<' . $tag_type . $tag . '>' . $content . '</' . $tag_type . '>';
+    }else{
+        return '<' . $tag_type . $tag . ' />';
     }
 }
 

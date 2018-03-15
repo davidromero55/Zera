@@ -25,6 +25,7 @@ sub _init {
     my $self = shift;
 }
 
+# Request functions
 sub param {
     my $self = shift;
     my $var = shift;
@@ -50,11 +51,13 @@ sub process_action {
     }
 }
 
+# User messages
 sub add_msg {
     my $self = shift;
     $self->{Zera}->add_msg(shift, shift);
 }
 
+# Database functions
 sub selectrow_hashref {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
