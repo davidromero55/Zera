@@ -61,6 +61,7 @@ sub process_action {
         $arg = '_' . $arg;
     }
     my $sub_name = "do" . lc($arg);
+    $self->{Zera}->{sub_name} = $sub_name;
     if ($self->can($sub_name) ) {
         return $self->$sub_name();
     } else {
@@ -172,6 +173,14 @@ sub selectall_arrayref {
 sub dbh_do {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+}
+
+# Email Functions
+sub send_html_email {
+    my $self = shift;
+    my $vars = shift;
+    
+    $self->{Zera}->{_EMAIL}->send_html_email($vars);
 }
 
 1;

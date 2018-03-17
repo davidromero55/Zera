@@ -23,7 +23,7 @@ sub _init {
     my $self = shift;
     
     # Views where authentication is nos required
-    $self->{public_views} = ['Login','Msg'];
+    $self->{public_views} = ['Login','Msg','ForgotPassword'];
     my $is_public_view = 0;
     
     # Define layout mode

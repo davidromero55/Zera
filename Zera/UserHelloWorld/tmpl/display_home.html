@@ -1,0 +1,22 @@
+<h2><% page.title %></h2>
+<code>
+    package Zera::UserHelloWorld::View;
+
+use Zera::Conf;
+use base 'Zera::BaseUser::View';
+
+# Module Functions
+sub display_home {
+    my $self = shift;
+    
+    $self->set_title('Hello World');
+    my $user = $self->selectrow_hashref("SELECT user_id, name, email FROM users WHERE user_id=?",{},$self->sess('user_id'));
+
+    my $vars = {
+        user => $user,
+    };
+    return $self->render_template($vars);
+}
+
+    
+</code>

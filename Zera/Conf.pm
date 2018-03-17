@@ -22,7 +22,7 @@ $conf->{DBI} = {
 $conf->{App} = {
     Name      => 'Zera CMS',
     Version   => '0.1',
-    URL       => '192.168.2.6',
+    URL       => '127.0.0.1',
     Copyright => 'Xaandia Tecnologías Digitales SA de CV',
     Language  => 'en_US',
     TimeZone  => 'US/Central',
@@ -38,13 +38,24 @@ $conf->{Cookie} = {
 };
 
 $conf->{Template} = {
-    TemplateID => 'zera-website',
-    UserTemplateID => 'zera-user',
-    AdminTemplateID => 'zera-admin',
+    TemplateID => 'ZeraWebsite',
+    UserTemplateID => 'ZeraUser',
+    AdminTemplateID => 'ZeraAdmin',
 };
 
 $conf->{Security} = {
     Key => 'sdsd',
+};
+
+$conf->{Email} = {
+    Server => 'zera.tech',
+    Port   => '587',
+    Auth   => 'LOGIN',
+    User   => 'notifications@zera.tech',
+    Password   => 'Edg0_h42',
+    From => 'notifications@zera.tech',
+    SSL  => 'starttls',
+    Debug => '0',
 };
 
 1;

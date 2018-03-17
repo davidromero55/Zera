@@ -1,4 +1,4 @@
-package Zera::UserDashboard::Controller;
+package Zera::UserHelloWorld::Controller;
 
 use base 'Zera::BaseUser::Controller';
 

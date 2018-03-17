@@ -1,11 +1,13 @@
 package Zera;
 
 use CGI::Minimal;
+
+use Zera::Conf;
+use Zera::Com;
+use Zera::Layout;
 use Zera::DBI;
 use Zera::Session;
-use Zera::Com;
-use Zera::Conf;
-use Zera::Layout;
+# use Zera::Email;
 $CGI::Minimal::_allow_hybrid_post_get = 1;
 
 sub new {
@@ -15,13 +17,13 @@ sub new {
     $self->{mode} = 'CGI';
 
     if('FCGI' eq  'ON'){
-            
+
     }else{
         $self->{_REQUEST} = CGI::Minimal->new();
     }
-    
+
     $self->_init();
-    
+
     return $self;
 }
 
@@ -29,6 +31,7 @@ sub _init {
     my $self = shift;
     $self->{_DBH}  = Zera::DBI->new();
     $self->{_SESS} = Zera::Session->new($self->{_DBH});
+    #$self->{_EMAIL} = Zera::Email->new($self);
     $self->{_PAGE} = {title => $conf->{App}->{Name}, buttons=>''};
 }
 
@@ -40,12 +43,12 @@ sub run {
         $module =~s/\W//g;
         $self->{ControllerName} = $module;
 
-        
+
         require "Zera/".$module ."/Controller.pm";
         my $controller_name ='Zera::'.$module.'::Controller';
         my $Controller = $controller_name->new($self);
-      
-        
+
+
         # Load module
         my $Module;
         if( $self->{_REQUEST}->param('View') eq 'API'){
@@ -70,7 +73,7 @@ sub run {
     ##                return '';
                 }
             }
-    
+
             eval {
                 if( $self->{ControllerName} eq 'Url'){
                     my ($url_module, $view, $sub_view) = $Controller->rewrite_request();
@@ -87,7 +90,7 @@ sub run {
                         exit 0;
                     }
                 }
-                
+
                 require "Zera/".$module ."/View.pm";
                 my $module_name ='Zera::'.$module.'::View';
                 my $View = $module_name->new($self);
@@ -101,7 +104,7 @@ sub run {
                 }
                 #$self->msg_add('warning', 'Inicia sesión en tu cuenta.');
                 #Zera::Com::http_redirect('/MK/MK/Login');
-    
+
             };
             if($@){
                 print Zera::Com::header($self);
@@ -126,7 +129,7 @@ sub clear {
 sub process_results {
     my $self = shift;
     my $results = shift;
-    
+
     if($results->{redirect}){
         $self->{_SESS}->close();
         $self->{_DBH}->disconnect();
@@ -139,7 +142,7 @@ sub http_redirect {
     my $self = shift;
     my $dest = shift;
     # untie %sess;
-    #$self->{_DBH}->disconnect();    
+    #$self->{_DBH}->disconnect();
     print $self->redirect($dest);
 }
 
