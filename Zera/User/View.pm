@@ -44,7 +44,7 @@ sub display_forgot_password {
         method   => 'POST',
         fields   => [qw/email/],
         submits  => \@submit,
-        template => 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera-form-out.html',
+        template => 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera_form_out.html',
     });
 
     $form->field('email',{placeholder=> 'Email', type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Enter a valid email address.', validate=>'EMAIL'});

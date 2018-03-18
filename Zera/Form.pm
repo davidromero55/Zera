@@ -14,11 +14,11 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
     $self->{params} = shift;
-    
+
     # Init app ENV
     $self->_init();
 
@@ -31,16 +31,16 @@ sub _init {
     # Default ID
     $self->{id} = $self->{Zera}->{sub_name}.'_form';
     $self->{id} =~s/^display_//;
-    
+
     # Default name
     $self->{params}->{name} = $self->{id} if(!$self->{params}->{name});
-    
+
     # Fields
     $self->{fields} = {};
     foreach my $field_name (@{$self->{params}->{fields}}){
         $self->{fields}->{$field_name} = {name=>$field_name, class=>'form-control form-control-sm'};
     }
-    
+
     # Submits
     $self->{submits} = {};
     my @btn_class = ('btn-primary','btn-secondary','btn-danger','btn-secondary','btn-secondary','btn-secondary');
@@ -58,7 +58,7 @@ sub _init {
 
     # Default class
     $self->{params}->{class} .= 'form-horizontal needs-validation' if(!$self->{params}->{class});
-    
+
     # Control fields
     $self->field('_submit',{type=>'hidden', value=>''});
     $self->field('_submitted',{type=>'hidden', value=>$self->{id}});
@@ -85,15 +85,15 @@ sub render {
             $template_file = "$dir/$self->{Zera}->{sub_name}.html";
         }else{
             if($self->{Zera}->{_Layout} eq 'Public'){
-                $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/zera-form.html';
+                $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/zera_form.html';
             }elsif($self->{Zera}->{_Layout} eq 'User'){
-                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera-form.html';
+                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera_form.html';
             }elsif($self->{Zera}->{_Layout} eq 'Admin'){
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera-form.html';
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_form.html';
             }
         }
     }
-    
+
     my $tt = Zera::Com::template();
     my $vars = {
         vars    => $self->{vars},
@@ -110,12 +110,12 @@ sub field {
     my $self = shift;
     my $field_name = shift;
     my $attrs = shift;
- 
+
     # Prevent null
     if(!(defined $self->{fields}->{$field_name} )){
         $self->{fields}->{$field_name} = {name => $field_name, class=>'form-control'};
     }
-    
+
     # Fill attributes
     foreach my $key (keys %$attrs){
         $self->{fields}->{$field_name}->{$key} = $attrs->{$key};
@@ -129,28 +129,28 @@ sub submit {
     my $self = shift;
     my $name = shift;
     my $attrs = shift;
- 
+
     # Prevent null
     if(!(defined $self->{submits}->{$name} )){
         $self->{submits}->{$name} = {name => $name};
     }
-    
+
     # Fill attributes
     foreach my $key (keys %$attrs){
         $self->{submits}->{$name}->{$key} = $attrs->{$key};
     }
-    
+
 }
 
 sub _prepare_fields {
     my $self = shift;
-    
+
     # Fields
     $self->{vars}->{fields} = [];
     foreach my $field_name (@{$self->{params}->{fields}}){
         push (@{$self->{vars}->{fields}},$self->_prepare_field($field_name));
     }
-    
+
     # Submits
     $self->{vars}->{submits} = [];
     foreach my $submit_name (@{$self->{params}->{submits}}){
@@ -166,28 +166,28 @@ sub _prepare_fields {
 sub _prepare_field {
     my $self = shift;
     my $field_name = shift;
-    
+
     # Process the attributes
     $self->{fields}->{$field_name}->{label} = $self->_create_label($field_name) if(!$self->{fields}->{$field_name}->{label});
     $self->{fields}->{$field_name}->{placeholder} = $self->_create_label($field_name) if(!$self->{fields}->{$field_name}->{label});
-    
+
     if((defined $self->param($field_name))){
         $self->{fields}->{$field_name}->{value} = $self->param($field_name);
     }
 
     # create te html
-    $self->{fields}->{$field_name}->{field} = $self->_get_field($field_name);    
+    $self->{fields}->{$field_name}->{field} = $self->_get_field($field_name);
     return $self->{fields}->{$field_name};
 }
 
 sub _prepare_submit {
     my $self = shift;
     my $name = shift;
-    
+
     $self->{submits}->{$name}->{label} = $self->_create_label($name) if(!$self->{submits}->{$name}->{label});
 
     # create te html
-    $self->{submits}->{$name}->{submit} = $self->_get_submit($name);    
+    $self->{submits}->{$name}->{submit} = $self->_get_submit($name);
     return $self->{submits}->{$name};
 }
 
@@ -195,15 +195,15 @@ sub _get_submit {
     my $self = shift;
     my $submit_name = shift;
     my $submit_html = '';
-    
+
     if(!($self->{submits}->{$submit_name}->{type})){
         $self->{submits}->{$submit_name}->{type} = 'submit';
     }
-    
+
     # Control action
     $self->{submits}->{$submit_name}->{onclick} = 'this.form._submit.value = this.name;';
 #    $self->{submits}->{$submit_name}->{onclick} = 'alert(this.name);';
-    
+
     switch ($self->{submits}->{$submit_name}->{type}) {
         case 'submit' {
             $self->{submits}->{$submit_name}->{class} = 'btn btn-secondary' if(!($self->{submits}->{$submit_name}->{class}));
@@ -240,15 +240,15 @@ sub _get_field {
     my $self = shift;
     my $field_name = shift;
     my $field_html = '';
-    
+
     if(!($self->{fields}->{$field_name}->{type})){
         $self->{fields}->{$field_name}->{type} = 'text';
     }
-    
+
     if(defined $self->{params}->{values}->{$field_name}){
         $self->{fields}->{$field_name}->{value} = $self->{params}->{values}->{$field_name};
     }
-    
+
     switch ($self->{fields}->{$field_name}->{type}) {
         case 'checkbox' {
             $self->{fields}->{$field_name}->{class} = 'form-check-input' if(!($self->{fields}->{$field_name}->{class}));
@@ -318,7 +318,7 @@ sub _get_field {
             }
             $field_html = '<input name="' . $field_name . '" id="' . $field_name . '" type="' . $self->{fields}->{$field_name}->{type} . '" ' . $field_html .'/>' .
                 '<label class="custom-file-label" for="' . $field_name . '"></label>';
-            
+
             $self->{params}->{enctype} ="multipart/form-data";
         }
         else {
@@ -341,7 +341,7 @@ sub _get_field {
 sub _get_form_start {
     my $self = shift;
     my $form_start_html = '';
-    
+
     foreach my $key (keys %{$self->{params}}) {
         next if($key eq 'id');
         next if($key eq 'name');

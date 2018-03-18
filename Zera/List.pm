@@ -94,7 +94,7 @@ sub new {
     }
 
     $self->{name} =~ s/\W/_/g;
-    
+
     #Order params and Query
     if ($self->{auto_order} and $self->param('zl_order') and $self->param('zl_list') eq $self->{name}){
 		if($self->param("zl_order") =~ /\w+/){
@@ -119,9 +119,9 @@ sub param {
     my $self  = shift;
     my $name  = shift;
     my $value = shift;
-    
+
     if(defined $value){
-        $self->{Zera}->{_REQUEST}->param($name, $value);    
+        $self->{Zera}->{_REQUEST}->param($name, $value);
     }else{
         return $self->{Zera}->{_REQUEST}->param($name);
     }
@@ -132,15 +132,15 @@ sub render_template {
     my $vars = shift;
     my $template = shift || $self->{Zera}->{sub_name};
     my $HTML = '';
-    
+
     if(-e ('Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html')){
         $template = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html';
     }elsif(-e ('templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html';
     }
-    
+
     $vars->{conf} = $conf;
-    
+
     my $tt = Zera::Com::template();
     $tt->process($template, $vars, \$HTML) || die "$Template::ERROR\n";
     return $HTML;
@@ -149,7 +149,7 @@ sub render_template {
 sub print {
     my $self = shift;
     my $vars = {};
-    
+
     $self->transit_params();
     if(!defined $self->{rs}){
 #		$grid .= $self->get_data();
@@ -184,7 +184,7 @@ sub print {
     }else{
         $vars->{columns} = $self->print_columns();
     	$vars->{details} = $self->print_detail();
-    
+
     	if(!$self->{rows}){
     	    $self->{no_data}{params}{colspan} = $self->{colspan};
     	    $vars->{details} = $self->_tag('tr',{},$self->_tag('td',$self->{no_data}{params},$self->{labels}{no_data}));
@@ -193,10 +193,10 @@ sub print {
     	    $vars->{pagination} = $self->print_pagination();
     	}
     }
-    
+
     $self->{total_records} = $self->{rows} if(!$self->{total_records} and $self->{rows});
-    
-    return $self->render_template($vars, 'zera-list-render');
+
+    return $self->render_template($vars, 'zera_list_render');
 }
 
 sub get_data {
@@ -1201,7 +1201,7 @@ sub a {
     my $self = shift;
     my $attrs = shift;
     my $content = shift;
-    return $self->_tag('a',$attrs, $content);    
+    return $self->_tag('a',$attrs, $content);
 }
 
 sub _tag {
