@@ -1,3 +1,4 @@
 data/*
 Zera/Conf.pm
 *.DS_Store
+templates/My*
