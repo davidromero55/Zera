@@ -35,6 +35,8 @@ sub display_item {
     $entry->{display_options} = decode_json($entry->{display_options});
 
     $self->set_title($entry->{title});
+    $self->set_keywords($entry->{keywords});
+    $self->set_description($entry->{description});
 
     my $vars = {
         entry => $entry,

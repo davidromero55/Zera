@@ -1,22 +1,22 @@
 <h2><% page.title %></h2>
-<code>
-    package Zera::UserHelloWorld::View;
+<p>This is the hello world user example, the user modules has the followinf caracteristics.</p>
+<ul>
+  <li>All the user views and actions are password protected.</li>
+  <li>If the user is not logued on it will be redirected to /Admin/Login</li>
+  <li>The database functions are always available.</li>
+  <li>The session functions are always available.</li>
+  <li>The request params are always available.</li>
+</ul>
 
-use Zera::Conf;
-use base 'Zera::BaseUser::View';
+<div class="row justify-content-center">
+  <div class="col-4">
+    Template.
 
-# Module Functions
-sub display_home {
-    my $self = shift;
-    
-    $self->set_title('Hello World');
-    my $user = $self->selectrow_hashref("SELECT user_id, name, email FROM users WHERE user_id=?",{},$self->sess('user_id'));
-
-    my $vars = {
-        user => $user,
-    };
-    return $self->render_template($vars);
-}
-
-    
-</code>
+  </div>
+  <div class="col-4">
+    List.
+  </div>
+  <div class="col-4">
+    Form.
+  </div>
+</div>

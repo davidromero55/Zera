@@ -1,0 +1,42 @@
+TODO
+
+BEFORE BETA
+------------------------
+
+Hello User Module
+  - Template example.
+  - List example.
+  - Form example
+
+Main Modules
+  - List
+    - Pagination
+  - Form
+    - Select field
+
+Install scripts
+
+Hello Module
+
+Hello Admin Module
+
+Website
+
+Docs Module
+
+Blog
+  - Tags or categories.
+  - Basic SEO
+  - Basic Open Graph support.
+
+
+
+
+
+
+AFTER BETA
+---------
+Module creator wizard.
+Form creator wizard.
+list creator wizard.
+template creator wizard.

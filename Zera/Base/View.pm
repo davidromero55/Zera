@@ -14,10 +14,10 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
-    
+
     # Init app ENV
     $self->_init();
     return $self;
@@ -32,7 +32,7 @@ sub sess {
     my $self = shift;
     my $name = shift;
     my $value = shift;
-    
+
     if(defined $value){
         $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
     }else{
@@ -101,7 +101,7 @@ sub selectrow_hashref {
 
 sub selectrow_array {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
 }
 
 sub selectall_arrayref {
@@ -129,11 +129,11 @@ sub render_template {
         $self->add_msg('danger','Template ' . $template . ' not found.');
         return $self->{Zera}->get_msg();
     }
-    
+
     $vars->{conf} = $conf;
     $vars->{msg}  = $self->{Zera}->get_msg();
     $vars->{page} = $self->{Zera}->{_PAGE};
-    
+
     my $tt = Zera::Com::template();
     $tt->process($template, $vars, \$HTML) || die "$Template::ERROR \n";
     return $HTML;
@@ -149,6 +149,18 @@ sub set_title {
     my $self = shift;
     my $title = shift;
     $self->{Zera}->{_PAGE}->{title} = $title;
+}
+
+sub set_keywords {
+    my $self = shift;
+    my $keywords = shift;
+    $self->{Zera}->{_PAGE}->{keywords} = $keywords;
+}
+
+sub set_description {
+    my $self = shift;
+    my $description = shift;
+    $self->{Zera}->{_PAGE}->{description} = $description;
 }
 
 sub add_jsfile {
