@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="/templates/blog/css/template.css" />
     <title><% page.title %></title>
+    <% IF page.keywords %><meta name="keywords" content="<% page.keywords %>"><% END %>
+    <% IF page.description %><meta name="description" content="<% page.description %>"><% END %>
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">

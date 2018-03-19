@@ -14,10 +14,10 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
-    
+
     # Init app ENV
     $self->_init();
     return $self;
@@ -32,7 +32,7 @@ sub sess {
     my $self = shift;
     my $name = shift;
     my $value = shift;
-    
+
     if(defined $value){
         $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
     }else{
@@ -101,7 +101,7 @@ sub selectrow_hashref {
 
 sub selectrow_array {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
 }
 
 sub selectall_arrayref {
@@ -126,17 +126,17 @@ sub render_template {
     my $vars = shift;
     my $template = shift || $self->{Zera}->{sub_name};
     my $HTML = '';
-    
+
     if(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
         $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
     }elsif(-e ('templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html';
     }
-    
+
     $vars->{conf} = $conf;
     $vars->{msg}  = $self->{Zera}->get_msg();
     $vars->{page} = $self->{Zera}->{_PAGE};
-    
+
     my $tt = Zera::Com::template();
     $tt->process($template, $vars, \$HTML) || die "$Template::ERROR\n";
     return $HTML;
@@ -148,11 +148,23 @@ sub set_title {
     $self->{Zera}->{_PAGE}->{title} = $title;
 }
 
+sub set_keywords {
+    my $self = shift;
+    my $keywords = shift;
+    $self->{Zera}->{_PAGE}->{keywords} = $keywords;
+}
+
+sub set_description {
+    my $self = shift;
+    my $description = shift;
+    $self->{Zera}->{_PAGE}->{description} = $description;
+}
+
 sub set_add_btn {
     my $self = shift;
     my $url   = shift;
     my $label = shift || 'Add';
-    $self->add_btn($url, $label,'btn btn-primary text-white','add_circle');    
+    $self->add_btn($url, $label,'btn btn-primary text-white','add_circle');
 }
 
 sub add_search_box {
@@ -212,8 +224,8 @@ sub _tag {
 sub get_image_options {
     my $self = shift;
     my $file = shift;
-    
-    my $image_html =  $self->_tag('img',{src=>$file, class=>'img-thumbnail mx-auto d-block img-fluid', style=>'max-height: 150px;'});    
+
+    my $image_html =  $self->_tag('img',{src=>$file, class=>'img-thumbnail mx-auto d-block img-fluid', style=>'max-height: 150px;'});
     return $image_html;
 }
 

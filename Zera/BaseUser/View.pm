@@ -151,6 +151,18 @@ sub set_title {
     $self->{Zera}->{_PAGE}->{title} = $title;
 }
 
+sub set_keywords {
+    my $self = shift;
+    my $keywords = shift;
+    $self->{Zera}->{_PAGE}->{keywords} = $keywords;
+}
+
+sub set_description {
+    my $self = shift;
+    my $description = shift;
+    $self->{Zera}->{_PAGE}->{description} = $description;
+}
+
 sub set_add_btn {
     my $self = shift;
     my $url   = shift;
