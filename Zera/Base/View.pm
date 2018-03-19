@@ -157,6 +157,13 @@ sub set_keywords {
     $self->{Zera}->{_PAGE}->{keywords} = $keywords;
 }
 
+sub set_page_attr {
+    my $self = shift;
+    my $attr = shift;
+    my $val  = shift;
+    $self->{Zera}->{_PAGE}->{$attr} = $val;
+}
+
 sub set_description {
     my $self = shift;
     my $description = shift;

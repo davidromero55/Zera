@@ -32,7 +32,7 @@ sub _init {
     $self->{_DBH}  = Zera::DBI->new();
     $self->{_SESS} = Zera::Session->new($self->{_DBH});
     #$self->{_EMAIL} = Zera::Email->new($self);
-    $self->{_PAGE} = {title => $conf->{App}->{Name}, buttons=>''};
+    $self->{_PAGE} = {title => $conf->{App}->{Name}, buttons=>'', type=>'website'};
 }
 
 sub run {

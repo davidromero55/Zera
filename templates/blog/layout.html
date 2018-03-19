@@ -12,6 +12,12 @@
     <title><% page.title %></title>
     <% IF page.keywords %><meta name="keywords" content="<% page.keywords %>"><% END %>
     <% IF page.description %><meta name="description" content="<% page.description %>"><% END %>
+
+    <meta property="og:title" content="<% page.title %>" />
+    <% IF page.url %><meta property="og:url" content="<% page.url %>" /><% END %>
+    <% IF page.type %><meta property="og:type" content="<% page.type %>" /><% END %>
+    <% IF page.description %><meta property="og:description" content="<% page.description %>" /><% END %>
+    <% IF page.image %><meta property="og:image" content="<% page.image %>" /><% END %>
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">

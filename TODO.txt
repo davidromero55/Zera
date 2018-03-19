@@ -14,8 +14,6 @@ Main Modules
   - Form
     - Select field
 
-Install scripts
-
 Hello Module
 
 Hello Admin Module
@@ -26,13 +24,9 @@ Docs Module
 
 Blog
   - Tags or categories.
-  - Basic SEO
   - Basic Open Graph support.
 
-
-
-
-
+Install scripts
 
 AFTER BETA
 ---------

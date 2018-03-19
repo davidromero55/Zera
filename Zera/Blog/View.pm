@@ -37,6 +37,11 @@ sub display_item {
     $self->set_title($entry->{title});
     $self->set_keywords($entry->{keywords});
     $self->set_description($entry->{description});
+    $self->set_page_attr('type','article');
+    $self->set_page_attr('url','http://'.$conf->{App}->{URL} . '/' . $self->param('SubView'));
+    if($entry->{display_options}->{image}){
+        $self->set_page_attr('image','http://'.$conf->{App}->{URL} . $entry->{display_options}->{image});
+    }
 
     my $vars = {
         entry => $entry,

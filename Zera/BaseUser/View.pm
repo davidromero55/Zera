@@ -163,6 +163,13 @@ sub set_description {
     $self->{Zera}->{_PAGE}->{description} = $description;
 }
 
+sub set_page_attr {
+    my $self = shift;
+    my $attr = shift;
+    my $val  = shift;
+    $self->{Zera}->{_PAGE}->{$attr} = $val;
+}
+
 sub set_add_btn {
     my $self = shift;
     my $url   = shift;
