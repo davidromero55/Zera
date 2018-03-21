@@ -54,7 +54,7 @@ sub print {
         }
     }elsif($self->{Zera}->{_Layout} eq 'Admin'){
         if (!$template_file) {
-            if($self->{Zera}->{_SESS}->{_sess}{user_id}){
+            if($self->{Zera}->{_SESS}->{_sess}{user_id} and $self->{Zera}->{_SESS}->{_sess}{is_admin}){
                 $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout.html'
             }else{
                 $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout_out.html'

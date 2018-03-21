@@ -5,8 +5,6 @@ use Zera::Conf;
 
 use base 'Zera::BaseAdmin::Actions';
 
-#use Digest::SHA qw(sha384_hex);
-
 sub do_login {
     my $self = shift;
     my $results = {};
@@ -16,7 +14,7 @@ sub do_login {
         "FROM users u " .
         "WHERE u.email=? AND password=SHA2(?,256) AND is_admin=1",{},
         $self->param('email'), $conf->{Security}->{Key} . $self->param('password'));
-        
+
     if($user->{user_id}){
         # Write session data and redirect to dashboard
         $self->sess('user_id',"$user->{user_id}");
@@ -24,7 +22,7 @@ sub do_login {
         $self->sess('user_email',"$user->{email}");
         $self->sess('is_admin',"1");
         $self->sess('user_keep_me_in',"".$self->param('keep_me_in'));
-        
+
         $self->dbh_do("UPDATE users SET last_login_on=NOW() WHERE user_id=?",{},$user->{user_id});
 
         $results->{redirect} = '/AdminDashboard';
@@ -48,7 +46,7 @@ sub do_logout {
     $self->sess('user_keep_me_in','');
 
     $self->add_msg('success','Your session is now closed');
-    
+
     $results->{error} = 1;
     $results->{redirect} = '/Admin/Msg';
     return $results;
@@ -85,7 +83,7 @@ sub do_password_update {
         $results->{error} = 1;
         return $results;
     }
-    
+
     # Validate new password complexity
     my $new_password = $self->param('new_password');
     if(length($new_password) < 8){
@@ -113,11 +111,11 @@ sub do_password_update {
         $self->add_msg('warning','Your new passsword and the confirmation are not equal.');
         $results->{error} = 1;
     }
-    
+
     if($results->{error}){
         return $results;
     }
-    
+
     eval {
         $self->dbh_do("UPDATE users SET password=SHA2(?,256) WHERE user_id=?",{}, $conf->{Security}->{Key} . $new_password, $self->sess('user_id'));
     };

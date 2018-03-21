@@ -1,12 +1,8 @@
 TODO
 
-BEFORE BETA
+####################################
+  PRE Alpha
 ------------------------
-
-Hello User Module
-  - Template example.
-  - List example.
-  - Form example
 
 Main Modules
   - List
@@ -14,23 +10,47 @@ Main Modules
   - Form
     - Select field
 
-Hello Module
+Install scripts
+  -1- Welcome.
+  -2- Module dependences check.
+  -3- Database connection.
+  -4- General Settings.
+  -5- Admin email and password.
+  -6- Finish screen.
+    -- Setup database structure.
+    -- Add admin user.
+    -- Create Conf.pm file.
+    -- Clear install scripts and secure installation.
 
-Hello Admin Module
+####################################
+  Alpha
+---------
 
-Website
+Hello User Module
+  - Template example.
+  - List example.
+  - Form example
+
+
+####################################
+  BETA
+---------
 
 Docs Module
+  - Guides.
+  - Reference.
+
+Hello Module
+Hello Admin Module
+
+Module creator wizard !!!.
+Form creator wizard !!!.
+List creator wizard !!!.
+Template creator wizard !!!.
+Report creator wizard !!!
 
 Blog
   - Tags or categories.
-  - Basic Open Graph support.
-
-Install scripts
-
-AFTER BETA
----------
-Module creator wizard.
-Form creator wizard.
-list creator wizard.
-template creator wizard.
+  - Next and previous article navigation.
+  - Search.
+  - Display category.

@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="stylesheet" href="/templates/blog/css/template.css" />
+    <link rel="stylesheet" href="/templates/ZeraWebsite/css/template.css" />
     <title><% page.title %></title>
     <% IF page.keywords %><meta name="keywords" content="<% page.keywords %>"><% END %>
     <% IF page.description %><meta name="description" content="<% page.description %>"><% END %>
@@ -22,14 +22,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="/projects">Wiki</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/projects">Docs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/projects">Contribute</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/projects">Newsletter</a></li>
+                    <!-- li class="nav-item"><a class="nav-link" href="/wiki">Wiki</a></li -->
+                    <!-- li class="nav-item"><a class="nav-link" href="/Docs">Docs</a></li -->
+                    <!-- li class="nav-item"><a class="nav-link" href="/contribute">Contribute</a></li -->
+                    <!-- li class="nav-item"><a class="nav-link" href="/newsletter">Newsletter</a></li -->
+                    <li class="nav-item"><a class="nav-link" href="/Blog">Blog</a></li>
                 </ul>
                 <ul class="navbar-nav justify-content-end nav-small">
                     <li class="nav-item">
-                        <a class="nav-link active" href="https://github.com/davidromero55/Zera"><i class="fab fa-github-alt"></i></a>
+                        <a target="_blank" class="nav-link active" href="https://github.com/davidromero55/Zera"><i class="fab fa-github-alt"></i></a>
                     </li>
                 </ul>
             </div>
@@ -42,27 +43,18 @@
     <div class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-3">
-                    <h6>About me</h6>
-                    <img src="/templates/blog/img/perfil.png" class="img-fluid img-thumbnail rounded" />
-                    <p>
-                        <h5>David Romero</h5>
-                        A life as a developer.
+                <div class="col-4 text-center">
+                    <h6>Fork me on github</h6>
+                    <p class="text-center">
+                      <h4><a target="_blank" class="nav-link active" href="https://github.com/davidromero55/Zera"><i class="fab fa-github-alt"></i></a></h4>
                     </p>
                 </div>
-                <div class="col-5">
-                    <h6>Twitter</h6>
-                    <a class="twitter-timeline"  data-height="350" href="https://twitter.com/DavidRomero55?ref_src=twsrc%5Etfw">Tweets by DavidRomero55</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <div class="col-4">
+                    <h6></h6>
                 </div>
                 <div class="col-4">
-                    <h6>My projects</h6>
-                    <ul>
-                        <li><a href="http://www.marketero.io">Marketero</a></li>
-                        <li><a href="http://www.segurifact.com">Segurifact</a></li>
-                        <li><a href="http://www.pointscard.win">Pointscard</a></li>
-                        <li><a href="http://zera.tech">Zera</a></li>
-                        <li><a href="http://xaandia.com">Xaandia</a></li>
-                    </ul>
+                    <h6>Join our mailing list</h6>
+                    <iframe src="https://marketero.io/zera/Public/Landing?lpkey=2991d649619cfb9" height="300" width="100%" frameborder="0"></iframe>
                 </div>
             </div>
         </div>

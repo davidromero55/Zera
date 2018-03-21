@@ -10,7 +10,7 @@ $(document).ready(function(){
         form.classList.add('was-validated');
       }, false);
     });
-    
+
     if ( $( ".wysiwyg" ).length ) {
         tinymce.init({
             selector:'.wysiwyg',

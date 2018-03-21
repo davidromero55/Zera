@@ -4,7 +4,6 @@ use strict;
 use JSON;
 
 use Zera::Conf;
-use Zera::LayoutAdmin;
 
 sub new {
     my $class = shift;
@@ -12,13 +11,13 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
 
     $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
     $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
-    
+
     # Init app ENV
     $self->_init();
 
@@ -69,19 +68,19 @@ sub upload_file {
     my $save_as = shift || "";
     my $filename = $self->{Zera}->{_REQUEST}->param_filename($cgi_param);
     my $mime = '';
-    
+
     if(!(-e "data")){
         mkdir ("data") or die $!;
-    }    
-    
+    }
+
     if(!(-e "data/img")){
         mkdir ("data/img") or die $!
     }
-    
+
     if(!(-e "data/$dir")){
         mkdir ("data/$dir") or die $!
     }
-    
+
     if($filename){
         my $type = $self->{Zera}->{_REQUEST}->param_mime($cgi_param);
         my ($name, $extension) = split(/\./, $filename);
@@ -130,7 +129,7 @@ sub upload_file {
                  }
              }
          }
-        
+
         open (OUTFILE,">data/$dir/" . $file) or die "$!";
         binmode(OUTFILE);
         print OUTFILE $self->param($cgi_param);

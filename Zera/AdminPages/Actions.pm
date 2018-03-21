@@ -6,8 +6,8 @@ use base 'Zera::BaseAdmin::Actions';
 
 sub do_edit {
     my $self = shift;
-    my $results = {};    
-    
+    my $results = {};
+
     if($self->param('_submit') eq 'Save'){
         # Prevent URL duplicates
         my $exist = $self->selectrow_array(
@@ -21,9 +21,9 @@ sub do_edit {
                 last if ($exist == 0);
             }
         }
-            
+
         eval {
-            if($self->param('entry_id')){
+            if(int($self->param('entry_id'))){
                 # Update
                 $self->dbh_do("UPDATE entries SET title=?, keywords=?, date=?, updated_by=?, updated_on=NOW(), active=?, description=?, content=?, display_options=? " .
                                  "WHERE entry_id=? AND module='Pages'",{},
