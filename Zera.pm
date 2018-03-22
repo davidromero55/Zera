@@ -7,7 +7,7 @@ use Zera::Com;
 use Zera::Layout;
 use Zera::DBI;
 use Zera::Session;
-# use Zera::Email;
+use Zera::Email;
 $CGI::Minimal::_allow_hybrid_post_get = 1;
 
 sub new {
@@ -31,7 +31,7 @@ sub _init {
     my $self = shift;
     $self->{_DBH}  = Zera::DBI->new();
     $self->{_SESS} = Zera::Session->new($self->{_DBH});
-    #$self->{_EMAIL} = Zera::Email->new($self);
+    $self->{_EMAIL} = Zera::Email->new($self);
     $self->{_PAGE} = {title => $conf->{App}->{Name}, buttons=>'', type=>'website'};
 }
 
