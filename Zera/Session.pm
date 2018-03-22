@@ -7,10 +7,10 @@ sub new {
     my $class    = shift;
     my $self     = {};
     bless $self,$class;
-    
+
     $self->{_DBH} = shift;
     $self->_init();
-    
+
     return $self;
 }
 
@@ -22,6 +22,10 @@ sub _init {
         $session_id = $cookies{$conf->{Cookie}->{Name}};
     }
 
+    #Disable warnings
+    $main::SIG{__WARN__} = sub {};
+    $main::SIG{__DIE__}  = sub {};
+
     eval {
         tie %{$self->{_sess}}, 'Apache::Session::MySQL', $session_id, {
             Handle     => $self->{_DBH}->get_dbh(),
@@ -29,9 +33,13 @@ sub _init {
             TableName  => 'sessions',
         };
     };
+    # Enable warnings
+    $main::SIG{__WARN__} = \&Zera::Carp::die;
+    $main::SIG{__DIE__}  = \&Zera::Carp::die;
+
     if ($@) {
+        $session_id = '';
         eval {
-            $session_id = '';
             tie %{$self->{_sess}}, 'Apache::Session::MySQL' , $session_id,{
                 Handle     => $self->{_DBH}->get_dbh(),
                 LockHandle => $self->{_DBH}->get_dbh(),
@@ -50,7 +58,7 @@ sub _init {
         #}
         #print "-- Prueba4 - $self->{_SESS}->{_sess} --<br>";
 
-    
+
     $self->{cookie} = $self->_get_cookie_str();
 }
 
