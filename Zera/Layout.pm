@@ -50,7 +50,8 @@ sub print {
             }
         }
         if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref("SELECT SQL_CACHE url, name, icon FROM menus m WHERE m.group='User' ORDER BY m.sort_order, m.name",{Slice=>{}});
+            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(
+                "SELECT SQL_CACHE url, name, icon FROM $conf->{DBI}->{Database}.menus m WHERE m.group='User' ORDER BY m.sort_order, m.name",{Slice=>{}});
         }
     }elsif($self->{Zera}->{_Layout} eq 'Admin'){
         if (!$template_file) {
@@ -61,7 +62,8 @@ sub print {
             }
         }
         if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref("SELECT SQL_CACHE url, name, icon FROM menus m WHERE m.group='Admin' ORDER BY m.sort_order, m.name",{Slice=>{}});
+            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(
+                "SELECT SQL_CACHE url, name, icon FROM $conf->{DBI}->{Database}.menus m WHERE m.group='Admin' ORDER BY m.sort_order, m.name",{Slice=>{}});
         }
     }else{
         if (!$template_file) {

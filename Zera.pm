@@ -48,6 +48,8 @@ sub run {
         my $controller_name ='Zera::'.$module.'::Controller';
         my $Controller = $controller_name->new($self);
 
+        my $controller_results = $Controller->after_init();
+        $self->process_results($controller_results);
 
         # Load module
         my $Module;
@@ -141,8 +143,6 @@ sub process_results {
 sub http_redirect {
     my $self = shift;
     my $dest = shift;
-    # untie %sess;
-    #$self->{_DBH}->disconnect();
     print $self->redirect($dest);
 }
 
@@ -163,18 +163,18 @@ sub add_msg {
     my $self = shift;
     my $type = shift;
     my $msg = shift;
-    $self->{_DBH}->{_dbh}->do("INSERT IGNORE INTO sessions_msg (session_id, type, msg) values(?,?,?)",{},$self->{_SESS}->{_sess}{_session_id},$type, $msg);
+    $self->{_DBH}->{_dbh}->do("INSERT IGNORE INTO $conf->{DBI}->{Database}.sessions_msg (session_id, type, msg) values(?,?,?)",{},$self->{_SESS}->{_sess}{_session_id},$type, $msg);
 }
 
 sub get_msg {
     my $self = shift;
     my $HTML = "";
-    my $msgs = $self->{_DBH}->{_dbh}->selectall_arrayref("SELECT m.type, m.msg FROM sessions_msg m WHERE m.session_id=?",{},$self->{_SESS}->{_sess}{_session_id});
+    my $msgs = $self->{_DBH}->{_dbh}->selectall_arrayref("SELECT m.type, m.msg FROM $conf->{DBI}->{Database}.sessions_msg m WHERE m.session_id=?",{},$self->{_SESS}->{_sess}{_session_id});
     foreach my $msg (@$msgs){
     	my $class = '';
     	$HTML .= '<div class="alert alert-'.$msg->[0].'" role="alert">' . $msg->[1] . '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     }
-    $self->{_DBH}->{_dbh}->do("DELETE FROM sessions_msg WHERE session_id=?",{},$self->{_SESS}->{_sess}{_session_id}) if($msgs->[0]);
+    $self->{_DBH}->{_dbh}->do("DELETE FROM $conf->{DBI}->{Database}.sessions_msg WHERE session_id=?",{},$self->{_SESS}->{_sess}{_session_id}) if($msgs->[0]);
     return $HTML;
 }
 

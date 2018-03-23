@@ -30,7 +30,7 @@ sub _init {
         tie %{$self->{_sess}}, 'Apache::Session::MySQL', $session_id, {
             Handle     => $self->{_DBH}->get_dbh(),
             LockHandle => $self->{_DBH}->get_dbh(),
-            TableName  => 'sessions',
+            TableName  => $conf->{DBI}->{Database} . '.sessions',
         };
     };
     # Enable warnings
@@ -43,7 +43,7 @@ sub _init {
             tie %{$self->{_sess}}, 'Apache::Session::MySQL' , $session_id,{
                 Handle     => $self->{_DBH}->get_dbh(),
                 LockHandle => $self->{_DBH}->get_dbh(),
-                TableName  => 'sessions',
+                TableName  => $conf->{DBI}->{Database} . '.sessions',
             };
         };
         die "Can't create session data $@" if($@);
