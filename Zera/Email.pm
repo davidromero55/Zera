@@ -72,7 +72,7 @@ sub send_html_email {
         }
     }
 
-    $data->{msg} = $self->_render_template($template_file,$data->{template}->{vars});
+    $data->{msg} = $self->_render_template($template_file,$data->{vars});
     return $self->_send_full_html_message($data);
 }
 
