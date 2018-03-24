@@ -1,0 +1,44 @@
+<% INCLUDE 'templates/ZeraInstall/header.html' %>
+<div class="row  justify-content-center">
+    <div id="loginbox" class="col-12 col-sm-8 col-md-7">
+        <div class="card">
+            <div class="card-header text-center"><small class="float-right">(2/5)</small><h2>Database Setup</h2></div>
+            <div style="padding-top:30px" class="card-body">
+
+                <% msg %>
+                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                <form class="" action="index.pl" method="post">
+                    <input type="hidden" name="step" value="2">
+                    <div class="alert alert-primary" role="alert">
+                      Enter your database connection settings.
+                    </div>
+                    <div class="row form-group form-row">
+                        <div class="col-md-12">
+                            <input name="DB_name" type="text" placeholder="Database name" maxlength="15" class="form-control form-control-sm" required="1" />
+                        </div>
+                    </div>
+                    <div class="row form-group form-row">
+                        <div class="col-md-6">
+                            <input name="DB_user_name" type="text" placeholder="Database user name" maxlength="15" class="form-control form-control-sm" required="1" />
+                        </div>
+                        <div class="col-md-6">
+                            <input name="DB_user_password" type="password" placeholder="Database user password" maxlength="15" class="form-control form-control-sm" required="1" />
+                        </div>
+                    </div>
+                    <div class="row form-group form-row">
+                        <div class="col-md-12">
+                            <input name="DB_host" type="text" placeholder="Database server (localhost)." maxlength="150" class="form-control form-control-sm" />
+                            <small class="form-text text-muted">Enter your database server host name. Or leave blank for localhost.</small>
+                        </div>
+                    </div>
+                    <div style="margin-top:40px" class="form-group">
+                        <div class="col-sm-12 controls">
+                            <input type="submit" id="btn-login" href="#" class="btn btn-primary col" value="Continue" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% INCLUDE 'templates/ZeraInstall/footer.html' %>

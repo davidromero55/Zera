@@ -11,8 +11,6 @@ Main Modules
     - Select field
 
 Install scripts
-  -1- Welcome.
-  -2- Module dependences check.
   -3- Database connection.
   -4- General Settings.
   -5- Admin email and password.

@@ -11,7 +11,7 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
 
@@ -34,7 +34,7 @@ sub param {
 
 sub process_action {
     my $self = shift;
-    my $arg = shift;
+    my $arg = shift || $self->param('View');
     $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
     if(!($arg)){
@@ -47,7 +47,7 @@ sub process_action {
     if ($self->can($sub_name) ) {
         $self->$sub_name();
     } else {
-        return "sub '$sub_name' not defined.\n";
+        $self->add_msg('danger',"sub '$sub_name' not defined.\n");
     }
 }
 
@@ -65,7 +65,7 @@ sub selectrow_hashref {
 
 sub selectrow_array {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
 }
 
 sub selectall_arrayref {

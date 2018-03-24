@@ -8,7 +8,7 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
 
@@ -21,9 +21,13 @@ sub new {
 # Initialize ENV
 sub _init {
     my $self = shift;
-    
+
     # Define layout mode
     $self->{Zera}->{_Layout} = 'Public';
+}
+
+sub after_init {
+    my $self = shift;
 }
 
 sub before_actions {
@@ -32,27 +36,27 @@ sub before_actions {
 
 sub after_actions {
     my $self = shift;
-    
+
 }
 
 sub before_views {
     my $self = shift;
-    
+
 }
 
 sub after_views {
     my $self = shift;
-    
+
 }
 
 sub before_api {
     my $self = shift;
-    
+
 }
 
 sub after_api {
     my $self = shift;
-    
+
 }
 
 # Request functions

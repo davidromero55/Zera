@@ -8,7 +8,7 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
 
@@ -21,11 +21,11 @@ sub new {
 # Initialize ENV
 sub _init {
     my $self = shift;
-    
+
     # Views where authentication is nos required
     $self->{public_views} = ['Login','Msg','ForgotPassword'];
     my $is_public_view = 0;
-    
+
     # Define layout mode
     $self->{Zera}->{_Layout} = 'User';
 
@@ -38,7 +38,7 @@ sub _init {
                 last;
             }
         }
-        
+
         if(!$is_public_view){
             $self->{Zera}->add_msg('warning','Log into your account.');
             $results->{error} = 1;
@@ -48,33 +48,37 @@ sub _init {
     }
 }
 
+sub after_init {
+    my $self = shift;
+}
+
 sub before_actions {
     my $self = shift;
 }
 
 sub after_actions {
     my $self = shift;
-    
+
 }
 
 sub before_views {
     my $self = shift;
-    
+
 }
 
 sub after_views {
     my $self = shift;
-    
+
 }
 
 sub before_api {
     my $self = shift;
-    
+
 }
 
 sub after_api {
     my $self = shift;
-    
+
 }
 
 # Request functions
