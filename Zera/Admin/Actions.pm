@@ -12,7 +12,7 @@ sub do_login {
     my $user = $self->selectrow_hashref(
         "SELECT u.user_id, u.email, u.name " .
         "FROM users u " .
-        "WHERE u.email=? AND password=SHA2(?,256) AND is_admin=1",{},
+        "WHERE u.email=? AND password=SHA2(?,384) AND is_admin=1",{},
         $self->param('email'), $conf->{Security}->{Key} . $self->param('password'));
 
     if($user->{user_id}){
@@ -76,7 +76,7 @@ sub do_password_update {
 
     # Validate current password
     my $is_current_password_ok = $self->selectrow_array(
-        "SELECT user_id FROM users WHERE user_id=? AND password=SHA2(?,256)",{},
+        "SELECT user_id FROM users WHERE user_id=? AND password=SHA2(?,384)",{},
         $self->sess('user_id'), $conf->{Security}->{Key} . $self->param('current_password'));
     if(!$is_current_password_ok){
         $self->add_msg('warning','Please enter your correct current password and try again.');
@@ -117,7 +117,7 @@ sub do_password_update {
     }
 
     eval {
-        $self->dbh_do("UPDATE users SET password=SHA2(?,256) WHERE user_id=?",{}, $conf->{Security}->{Key} . $new_password, $self->sess('user_id'));
+        $self->dbh_do("UPDATE users SET password=SHA2(?,384) WHERE user_id=?",{}, $conf->{Security}->{Key} . $new_password, $self->sess('user_id'));
     };
     if($@){
         $self->add_msg('warning','Error '.$@);
