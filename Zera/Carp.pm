@@ -3,7 +3,7 @@ package Zera::Carp;
 require 5.000;
 use Exporter;
 #use Carp;
-BEGIN { 
+BEGIN {
     *CORE::GLOBAL::die   = \&Zera::Carp::die;
     $main::SIG{__WARN__} = \&Zera::Carp::die;
     $main::SIG{__DIE__}  = \&Zera::Carp::die;
@@ -11,10 +11,10 @@ BEGIN {
 
 sub die {
     my $mess = shift;
-    
+
     my $bytes_written = eval{tell STDOUT};
     if (defined $bytes_written && $bytes_written > 0) {
-    $mess = error_template($mess);
+        $mess = error_template($mess);
         print STDOUT $mess;
     }
     else {
