@@ -12,11 +12,12 @@ BEGIN {
 use vars @EXPORT;
 
 $conf->{DBI} = {
-    conection     => "dbi:mysql:zera_dev",
-    user_name     => "zera_dev",
-    password      => "Zng4k4*4",
+    conection     => "dbi:mysql:my_database",
+    user_name     => "my_user",
+    password      => "my_pass",
     charset       => 'utf8',
-    time_zone     => '-6:00'
+    time_zone     => '-6:00',
+    Database      => 'my_database'
 };
 
 $conf->{App} = {
@@ -26,7 +27,7 @@ $conf->{App} = {
     Copyright => 'Xaandia Tecnologías Digitales SA de CV',
     Language  => 'en_US',
     TimeZone  => 'US/Central',
-    Resources => '/var/www/vhosts/zera.tech/httpdocs/',
+    Resources => '/var/www/vhosts/my.page.com/httpdocs/',
 };
 
 $conf->{Cookie} = {

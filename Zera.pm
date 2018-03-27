@@ -169,7 +169,7 @@ sub add_msg {
 sub get_msg {
     my $self = shift;
     my $HTML = "";
-    my $msgs = $self->{_DBH}->{_dbh}->selectall_arrayref("SELECT m.type, m.msg FROM $conf->{DBI}->{Database}.sessions_msg m WHERE m.session_id=?",{},$self->{_SESS}->{_sess}{_session_id});
+    my $msgs = $self->{_DBH}->{_dbh}->selectall_arrayref("SELECT m.type, m.msg FROM $conf->{DBI}->{Database}.sessions_msg m WHERE m.session_id=?",{},($self->{_SESS}->{_sess}{_session_id} || ""));
     foreach my $msg (@$msgs){
     	my $class = '';
     	$HTML .= '<div class="alert alert-'.$msg->[0].'" role="alert">' . $msg->[1] . '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
