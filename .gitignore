@@ -2,3 +2,5 @@ data/*
 Zera/Conf.pm
 *.DS_Store
 templates/My*
+zera_db.sql
+sftp-config.json

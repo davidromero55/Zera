@@ -25,6 +25,7 @@ sub _init {
     # Views where authentication is nos required
     $self->{public_views} = ['Login','Msg'];
     my $is_public_view = 0;
+    my $current_view = $self->{Zera}->{_REQUEST}->param('View') || ""; 
 
     # Define layout mode
     $self->{Zera}->{_Layout} = 'Admin';
@@ -33,7 +34,7 @@ sub _init {
     if(!($self->{Zera}->{_SESS}->{_sess}{user_id}) or (!($self->{Zera}->{_SESS}->{_sess}{is_admin}))){
         # Check public Views
         foreach my $view (@{$self->{public_views}}) {
-            if($self->{Zera}->{_REQUEST}->param('View') eq $view){
+            if($current_view eq $view){
                 $is_public_view = 1;
                 last;
             }
