@@ -95,7 +95,7 @@ sub render {
     }
 
     my $tt = Zera::Com::template();
-    my $vars = {
+    $vars = {
         vars    => $self->{vars},
         conf    => $conf,
         msg     => $self->{Zera}->get_msg(),
