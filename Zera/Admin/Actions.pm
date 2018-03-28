@@ -9,7 +9,6 @@ use base 'Zera::BaseAdmin::Actions';
 sub do_login {
     my $self = shift;
     my $results = {};
-    #sha384_hex($conf->{Security}->{key} . $_REQUEST->{password})
     my $user = $self->selectrow_hashref(
         "SELECT u.user_id, u.email, u.name " .
         "FROM users u " .
