@@ -51,7 +51,7 @@ sub param {
 
 sub process_action {
     my $self = shift;
-    my $arg = $self->param('View');
+    my $arg = $self->param('View') || "";
     $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
     if(!($arg)){
@@ -61,6 +61,7 @@ sub process_action {
         $arg = '_' . $arg;
     }
     my $sub_name = "do" . lc($arg);
+    $self->{Zera}->{sub_name} = $sub_name;
     if ($self->can($sub_name) ) {
         return $self->$sub_name();
     } else {
@@ -174,4 +175,11 @@ sub dbh_do {
     return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
+# Email Functions
+sub send_html_email {
+    my $self = shift;
+    my $vars = shift;
+    
+    $self->{Zera}->{_EMAIL}->send_html_email($vars);
+}
 1;

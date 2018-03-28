@@ -62,6 +62,7 @@ sub send_html_email {
     $self->{from} = $data->{from} if($data->{from});
 
     my $template_file = $data->{template}->{file};
+    
     if (!$template_file) {
         my $dir = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/';
         if(-e ($dir . $self->{Zera}->{sub_name} .'_email.html')){
@@ -72,7 +73,10 @@ sub send_html_email {
         }
     }
 
+
     $data->{msg} = $self->_render_template($template_file,$data->{vars});
+   
+   
     return $self->_send_full_html_message($data);
 }
 
@@ -91,6 +95,8 @@ sub _render_template {
 sub _send_full_html_message {
     my $self = shift;
     my $data = shift;
+
+
     $self->{from} = $data->{from} if($data->{from});
 
     $self->_transport();
@@ -104,8 +110,10 @@ sub _send_full_html_message {
         $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout_email.html';
     }
 
-    if(-e ($template_file)){
 
+
+    if(-e ($template_file)){
+  
     }else{
         $self->{Zera}->add_msg('danger', 'Email template ' . $template_file .' not found.');
         die;
@@ -116,7 +124,7 @@ sub _send_full_html_message {
 
     my $MIMEMsg = MIME::Entity->build(
         From        => Encode::encode( 'MIME-Header', $conf->{Email}->{From} ),
-        To          => Encode::encode( 'MIME-Header', 'romdav@xaandia.com'),#$data->{to} ),
+        To          => Encode::encode( 'MIME-Header', $data->{to}),#$data->{to} ),
         Subject     => Encode::encode( 'MIME-Header', $data->{subject}),
         Type        => 'multipart/alternative',
       );
