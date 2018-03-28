@@ -90,7 +90,7 @@ sub display_msg {
 
     my $vars = {
     };
-    return $self->render_template($vars,'msg-admin');
+    return $self->render_template($vars,'msg_admin');
 }
 
 # Database functions

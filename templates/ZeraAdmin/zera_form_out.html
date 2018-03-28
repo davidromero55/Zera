@@ -1,8 +1,9 @@
-        <div class="row  justify-content-center">
+     <div class="row  justify-content-center">
             <div id="loginbox" style="margin-top:100px;" class="col-12 col-sm-8 col-md-5">
                 <div class="card">
-                    <div class="card-header text-center"><h2><% conf.App.Name %></h2></div>
+                    <div class="card-header text-center"><img src="/templates/ZeraUser/img/zera.png" class="img-fluid" /></div>
                     <div style="padding-top:30px" class="card-body">
+                        <h4><% page.title %></h4>
                         <% msg %>
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
                         <% vars.form_start %>
@@ -17,10 +18,7 @@
                             <% END %>
                             <div style="margin-top:10px" class="form-group">
                                 <div class="col-sm-12 controls">
-                                    <input type="submit" id="btn-login" href="#" class="btn btn-primary col" value="Login" />
-                                </div>
-                                <div class="col-sm-12 controls text-right mt-3">
-                                    <p><a href="/Admin/ForgotPassword">Forgot password?</a></p>
+                                    <% FOREACH submit IN vars.submits %><% submit.submit %><% END %>
                                 </div>
                             </div>
                         <% vars.form_end  %>

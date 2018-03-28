@@ -40,6 +40,7 @@ sub run {
 
     if($self->{_REQUEST}->param('Controller')){
         my $module = $self->{_REQUEST}->param('Controller');
+        my $view = $self->{_REQUEST}->param('View') || "";
         $module =~s/\W//g;
         $self->{ControllerName} = $module;
 
@@ -53,7 +54,7 @@ sub run {
 
         # Load module
         my $Module;
-        if( $self->{_REQUEST}->param('View') eq 'API'){
+        if( $view eq 'API'){
             print Zera::Com::header($self, 'application/json');
             require "Zera/".$module ."/API.pm";
             my $module_name ='Zera::'.$module.'::API';
@@ -97,7 +98,7 @@ sub run {
                 my $module_name ='Zera::'.$module.'::View';
                 my $View = $module_name->new($self);
                 print Zera::Com::header($self);
-                if($self->{_REQUEST}->param('View') =~ /^\w+$/){
+                if($view =~ /^\w+$/){
                     my $Layout = Zera::Layout->new($self);
                     print $Layout->print( $View->get_view() );
                 }else{
