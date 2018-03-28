@@ -52,3 +52,7 @@ Blog
   - Next and previous article navigation.
   - Search.
   - Display category.
+
+Verify for module installation
+  - IO::Socket::SSL Version 2.007
+  - Net::SMTP Version 3
