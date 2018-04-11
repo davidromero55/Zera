@@ -29,4 +29,4 @@ Read the mac_vhosts.conf to see an example
 
 Start the apache and mysql servers
 	sudo apachectl -k start
-  sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+    sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist

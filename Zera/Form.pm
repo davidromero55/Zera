@@ -301,6 +301,7 @@ sub _get_field {
                 next if($key eq 'value');
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
+            $self->{fields}->{$field_name}->{value} = '' if(!$self->{fields}->{$field_name}->{value});
             $field_html = '<textarea name="' . $field_name . '" id="' . $field_name . '" ' . $field_html .'>'.$self->{fields}->{$field_name}->{value}.'</textarea>';
         }
         case 'file' {

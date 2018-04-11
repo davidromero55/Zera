@@ -1,6 +1,5 @@
 package Zera::Url::View;
 
-use JSON;
-use base 'Zera::Admin::View';
+use base 'Zera::Base::View';
 
 1;

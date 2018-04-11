@@ -1212,7 +1212,7 @@ sub _tag {
 
     my $tag = '';
     foreach my $key (keys %{$attrs}){
-        $tag .= ' ' . $key .'="'. $attrs->{$key}.'"';
+        $tag .= ' ' . $key .'="'. $attrs->{$key}.'"' if(defined $attrs->{$key});
     }
     if($content){
         return '<' . $tag_type . $tag . '>' . $content . '</' . $tag_type . '>';
