@@ -14,7 +14,7 @@ $(document).ready(function(){
     if ( $( ".wysiwyg" ).length ) {
         tinymce.init({
             selector:'.wysiwyg',
-            plugins : 'advlist link image lists charmap',
+            plugins : 'advlist link image lists charmap code table',
             images_upload_url: '/Admin/API/ImageUpload',
             images_upload_base_path: '/data/img',
             relative_urls : false,
@@ -23,8 +23,9 @@ $(document).ready(function(){
                                {title: 'Responsive', value: 'img-fluid'},
                                {title: 'None', value: ''}
                                ],
-            image_prepend_url: "/"
-            });
+            image_prepend_url: "/",
+            valid_elements: '+*[*]',
+        });
     }
     if ( $( ".datepicker" ).length ) {
         $('.datepicker').datepicker({

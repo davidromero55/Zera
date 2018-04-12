@@ -63,7 +63,7 @@ sub display_edit {
     $self->add_jsfile('admin-pages');
 
     # Values
-    if($self->param('entry_id')){
+    if($self->param('entry_id') ne 'New'){
         $values = $self->selectrow_hashref("SELECT * FROM entries WHERE entry_id=? AND module='Pages'",{},$self->param('entry_id'));
         push(@submit, 'Delete');
     }else{

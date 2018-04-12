@@ -98,7 +98,7 @@ sub run {
                 my $module_name ='Zera::'.$module.'::View';
                 my $View = $module_name->new($self);
                 print Zera::Com::header($self);
-                if($view =~ /^\w+$/){
+                if($view =~ /^[\w|-]+$/){
                     my $Layout = Zera::Layout->new($self);
                     print $Layout->print( $View->get_view() );
                 }else{

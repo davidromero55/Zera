@@ -6,7 +6,9 @@ use base 'Zera::BaseAdmin::Actions';
 
 sub do_edit {
     my $self = shift;
-    my $results = {};    
+    my $results = {};
+
+    $self->param('entry_id',0) if($self->param('entry_id') eq 'New');    
     
     if($self->param('_submit') eq 'Save'){
         # Prevent URL duplicates
