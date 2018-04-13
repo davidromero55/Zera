@@ -52,7 +52,6 @@ sub param {
 sub process_action {
     my $self = shift;
     my $arg = $self->param('View') || "";
-    
     $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
     if(!($arg)){

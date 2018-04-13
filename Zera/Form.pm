@@ -250,29 +250,6 @@ sub _get_field {
     }
 
     switch ($self->{fields}->{$field_name}->{type}) {
-        case 'select' {
-            my $field_options = '';
-            
-            foreach my $key(keys %{$self->{fields}->{$field_name}}){
-                next if($key eq 'id');
-                next if($key eq 'name');
-                next if($key eq 'type');
-                next if($key eq 'invalid_msg');
-                next if($key eq 'help');
-                next if($key eq 'override');
-                next if($key eq 'label');
-                if($key eq 'options'){
-                    foreach my $option(@{$self->{fields}->{$field_name}->{$key}}){
-                        $field_options .= '<option>'.$option.'</option>';
-                    }
-                }else{
-                    $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
-                }    
-                
-            }
-
-            $field_html = '<select name='.$field_name.'  '.$field_html.'><option disabled>Select an option</options>'.$field_options.'</select>';
-        }
         case 'checkbox' {
             $self->{fields}->{$field_name}->{class} = 'form-check-input' if(!($self->{fields}->{$field_name}->{class}));
             foreach my $key (keys %{$self->{fields}->{$field_name}}) {

@@ -64,14 +64,6 @@ sub print {
         if($self->{Zera}->{_SESS}->{_sess}{user_id}){
             $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(
                 "SELECT SQL_CACHE url, name, icon FROM $conf->{DBI}->{Database}.menus m WHERE m.group='Admin' ORDER BY m.sort_order, m.name",{Slice=>{}});
-
-            my $index = 0;
-            for my $value (@{$menus}) {
-                 if ( $value->{name} eq 'Developer' && $conf->{App}->{DeveloperMode} == 0 ) {
-                    splice @{$menus}, $index, 1;
-                 }
-                 $index++;
-            }
         }
     }else{
         if (!$template_file) {

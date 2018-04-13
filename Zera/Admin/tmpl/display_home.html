@@ -1,21 +1,14 @@
-<h2><% page.title %></h2>
-<p>This is the hello world user example, the user modules has the following characteristics.</p>
-<ul>
-    <li>All the user views and actions are password protected.</li>
-    <li>If the user is not logged on it will be redirected to /Admin/Login</li>
-    <li>The database functions are always available.</li>
-    <li>The session functions are always available.</li>
-    <li>The request params are always available.</li>
-</ul>
-
-<div class='row justify-content-center'>
-    <div class='col-4'>
-        Template.
-    </div>
-    <div class='col-4'>
-        List.
-    </div>
-    <div class='col-4'>
-        Form.
+<div class="row justify-content-md-center">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header text-center"><h2>Mi account</h2></div>
+            <div style="padding-top:30px" class="card-body">
+                <% msg %>
+                <h5 class="card-title"><% user.name %></h5>
+                <p class="card-text"><% user.email %></p>
+                <a href="/Admin/Edit" class="card-link">Edit</a>
+                <a href="/Admin/PasswordUpdate" class="card-link">Change password</a>
+            </div>
+        </div>
     </div>
 </div>

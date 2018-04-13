@@ -1,3 +1,5 @@
-package Zera::
+package Zera::Admin::Controller;
 
-use base 'Zera::Base'1
+use base 'Zera::BaseAdmin::Controller';
+
+1;
