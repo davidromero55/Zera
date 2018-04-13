@@ -1,4 +1,4 @@
-package Zera::BaseAdmin::Actions;
+package Zera::AdminDeveloper::API;
 
 use strict;
 use JSON;
@@ -11,9 +11,12 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
+
+    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
+    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
 
     # Init app ENV
     $self->_init();
@@ -25,19 +28,6 @@ sub _init {
     my $self = shift;
 }
 
-# Session functions
-sub sess {
-    my $self = shift;
-    my $var = shift;
-    my $val = shift;
-    if(defined $val){
-        $self->{Zera}->{_SESS}->{_sess}{$var} = "$val";
-    }else{
-        return $self->{Zera}->{_SESS}->{_sess}{$var};
-    }
-}
-
-# Request Functions
 sub param {
     my $self = shift;
     my $var = shift;
@@ -49,26 +39,26 @@ sub param {
     }
 }
 
-sub process_action {
+sub process_api {
     my $self = shift;
-    my $arg = $self->param('View') || "";
-    
-    $arg =~ s/([A-Z])/_$1/g;
+    my $arg = $self->param('SubView');
     $arg =~ s/\W//g;
     if(!($arg)){
         $arg = $self->param('_Action');
-        $arg =~ s/([A-Z])/_$1/g;
         $arg =~ s/\W//g;
-        $arg = '_' . $arg;
     }
-    my $sub_name = "do" . lc($arg);
-    $self->{Zera}->{sub_name} = $sub_name;
+    my $sub_name = "do_" . lc($arg);
     if ($self->can($sub_name) ) {
-        return $self->$sub_name();
+        return encode_json( $self->$sub_name() );
     } else {
         $self->add_msg('danger','Action ' . $sub_name . ' not implemented.');
-        return {error => 1};
+        return encode_json( {error => 1, error_msg => $self->{Zera}->get_api_msg()} );
     }
+}
+
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
 }
 
 sub upload_file {
@@ -78,19 +68,19 @@ sub upload_file {
     my $save_as = shift || "";
     my $filename = $self->{Zera}->{_REQUEST}->param_filename($cgi_param);
     my $mime = '';
-    
+
     if(!(-e "data")){
         mkdir ("data") or die $!;
-    }    
-    
+    }
+
     if(!(-e "data/img")){
         mkdir ("data/img") or die $!
     }
-    
+
     if(!(-e "data/$dir")){
         mkdir ("data/$dir") or die $!
     }
-    
+
     if($filename){
         my $type = $self->{Zera}->{_REQUEST}->param_mime($cgi_param);
         my ($name, $extension) = split(/\./, $filename);
@@ -139,7 +129,7 @@ sub upload_file {
                  }
              }
          }
-        
+
         open (OUTFILE,">data/$dir/" . $file) or die "$!";
         binmode(OUTFILE);
         print OUTFILE $self->param($cgi_param);
@@ -149,38 +139,17 @@ sub upload_file {
     return "";
 }
 
-# User messages
-sub add_msg {
+
+# Module Functions
+
+sub do_imageupload {
     my $self = shift;
-    $self->{Zera}->add_msg(shift, shift);
+    my $response = {};
+    my $file = $self->upload_file('file', 'img');
+    if($file){
+        $response->{location} = $file;
+    }
+    return $response;
 }
 
-# Database functions
-sub selectrow_hashref {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
-}
-
-sub selectrow_array {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
-}
-
-sub selectall_arrayref {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
-}
-
-sub dbh_do {
-    my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
-}
-
-# Email Functions
-sub send_html_email {
-    my $self = shift;
-    my $vars = shift;
-    
-    $self->{Zera}->{_EMAIL}->send_html_email($vars);
-}
 1;
