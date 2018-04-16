@@ -50,7 +50,7 @@ sub do_home{
             _create_controller_content($module_folder_prefix.$self->param('name'),$module_type);
             _create_actions_content($module_folder_prefix.$self->param('name'),$module_type);
             _create_view_content($module_folder_prefix.$self->param('name'),$module_type);
-            _create_home_content($module_folder_prefix.$self->param('name'));
+            _create_home_content($module_folder_prefix.$self->param('name'),$module_type);
 
             if($on_menu){
                 my $sort_order = $self->selectrow_array("(SELECT MAX(sort_order) + 1 FROM menus)",{});
@@ -77,19 +77,35 @@ sub _create_controller_content{
     my $module_type = shift || '';
 
     my $base = $module_type eq 'Public' ? '' : $module_type;
+    my $src = 'Zera/'.$module_type.'HelloWorld/Controller.pm';
     my $path = 'Zera/'.$module_name.'/Controller.pm';
 
-    unless(open FILE, '>'.$path) {
-                    # Die with error message 
-                    # if we can't open it.
-                    die "\nUnable to create $path\n";
+    unless(open SRC, '<'.$src){
+
+        die "\nUnable to open example $src\n";
     }
 
-    print FILE "package Zera::".$module_name."::Controller;\n\n";
-    print FILE "use base 'Zera::Base".$base."::Controller';\n";
-    print FILE "1;";
+    unless(open FILE, '>'.$path) {
+        # Die with error message 
+        # if we can't open it.
+        die "\nUnable to create $path\n";
+    }
+
+    my $replace_module = $module_name;
+    my $replace_base = "Base".$module_type;
+    while(my $line = <SRC>){
+        if($line =~ /(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/){
+            $line =~ s/(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/$replace_module/g;    
+        }
+        if($line =~ /(BaseAdmin)|(BaseUser)|(Base)/){
+            $line =~ s/(BaseAdmin)|(BaseUser)|(Base)/$replace_base/g;    
+        }
+        
+        print FILE $line;
+    }
 
     # close the file.
+    close SRC;
     close FILE;
 } 
 
@@ -99,6 +115,11 @@ sub _create_actions_content{
 
     my $base = $module_type eq 'Public' ? '' : $module_type;
     my $path = 'Zera/'.$module_name.'/Actions.pm';
+    my $src = 'Zera/'.$module_type.'HelloWorld/Actions.pm';
+
+    unless(open SRC, '<'.$src){
+        die "\nUnable to open example $src\n";
+    }
 
     unless(open FILE, '>'.$path) {
                     # Die with error message 
@@ -106,14 +127,21 @@ sub _create_actions_content{
                     die "\nUnable to create $path\n";
     }
 
-    print FILE "package Zera::".$module_name."::Actions;\n\n";
-    print FILE "use strict;\n"; 
-    print FILE "use JSON;\n\n";
-    print FILE "use Zera::Conf;\n\n";
-    print FILE "use base 'Zera::Base".$base."::Actions';\n";
-    print FILE "1;";
+    my $replace_module = $module_name;
+    my $replace_base = "Base".$module_type;
+    while(my $line = <SRC>){
+        if($line =~ /(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/){
+            $line =~ s/(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/$replace_module/g;    
+        }
+        if($line =~ /(BaseAdmin)|(BaseUser)|(Base)/){
+            $line =~ s/(BaseAdmin)|(BaseUser)|(Base)/$replace_base/g;    
+        }
+        
+        print FILE $line;
+    }
 
     # close the file.
+    close SRC;
     close FILE;
 }
 
@@ -123,7 +151,11 @@ sub _create_view_content{
 
     my $base = $module_type eq 'Public' ? '' : $module_type;
     my $path = 'Zera/'.$module_name.'/View.pm';
+    my $src = 'Zera/'.$module_type.'HelloWorld/View.pm';
 
+    unless(open SRC, '<'.$src){
+        die "\nUnable to open  $src\n";
+    }
 
     unless(open FILE, '>'.$path) {
         # Die with error message 
@@ -131,26 +163,33 @@ sub _create_view_content{
         die "\nUnable to create $path\n";
     }
 
-    print FILE "package Zera::".$module_name."::View;\n\n";
-    print FILE "use Zera::Conf;\n";
-    print FILE "use base 'Zera::Base".$base."::View';\n\n";
-    print FILE "# Module Functions\n";
-    print FILE "sub display_home {\n";
-    print FILE '   my $self = shift;'."\n";        
-    print FILE '   $self->set_title("Hello World");'."\n\n";     
-    print FILE '   my $vars = {'."\n";
-    print FILE "   };\n";
-    print FILE '   return $self->render_template($vars);'."\n";
-    print FILE "}\n\n";
-    print FILE "1;";
+    my $replace_module = $module_name;
+    my $replace_base = "Base".$module_type;
+    while(my $line = <SRC>){
+        if($line =~ /(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/){
+            $line =~ s/(AdminHelloWorld)|(UserHelloWorld)|(HelloWorld)/$replace_module/g;    
+        }
+        if($line =~ /(BaseAdmin)|(BaseUser)|(Base)/){
+            $line =~ s/(BaseAdmin)|(BaseUser)|(Base)/$replace_base/g;    
+        }
+        
+        print FILE $line;
+    }
 
     # close the file.
+    close SRC;
     close FILE;
 }
 
 sub _create_home_content{
     my $module_name = shift || '';
+    my $module_type = shift || '';
     my $path = 'Zera/'.$module_name.'/tmpl/display_home.html';
+    my $src = 'Zera/'.$module_type.'HelloWorld/tmpl/display_home.html';
+
+    unless(open SRC, '<'.$src){
+        die "\nUnable to read $src\n";
+    }
 
     unless(open FILE, '>'.$path) {
         # Die with error message 
@@ -158,24 +197,13 @@ sub _create_home_content{
         die "\nUnable to create $path\n";
     }
 
-    print FILE "<h2><% page.title %></h2>\n";
-    print FILE "<p>This is the module created by the developer tools.</p>\n";
 
-    print FILE "<div class='row justify-content-center'>\n";
-    print FILE "    <div class='col-4'>\n";
-    print FILE "        Template.\n";
-
-    print FILE "    </div>\n";
-    print FILE "    <div class='col-4'>\n";
-    print FILE "        List.\n";
-    print FILE "    </div>\n";
-    print FILE "    <div class='col-4'>\n";
-    print FILE "        Form.\n";
-    print FILE "    </div>\n";
-    print FILE "</div>\n";
-
+    while(my $line = <SRC>){
+        print FILE $line;
+    }
 
     # close the file.
+    close SRC;
     close FILE;
 }
 
