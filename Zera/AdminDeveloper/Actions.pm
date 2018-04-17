@@ -82,7 +82,7 @@ sub _create_controller_content{
 
     unless(open SRC, '<'.$src){
 
-        die "\nUnable to open example $src\n";
+        die "\nUnable to open source files $src\n";
     }
 
     unless(open FILE, '>'.$path) {
@@ -118,7 +118,7 @@ sub _create_actions_content{
     my $src = 'Zera/'.$module_type.'HelloWorld/Actions.pm';
 
     unless(open SRC, '<'.$src){
-        die "\nUnable to open example $src\n";
+        die "\nUnable to open source files $src\n";
     }
 
     unless(open FILE, '>'.$path) {
@@ -154,7 +154,7 @@ sub _create_view_content{
     my $src = 'Zera/'.$module_type.'HelloWorld/View.pm';
 
     unless(open SRC, '<'.$src){
-        die "\nUnable to open  $src\n";
+        die "\nUnable to open source files $src\n";
     }
 
     unless(open FILE, '>'.$path) {
@@ -188,7 +188,7 @@ sub _create_home_content{
     my $src = 'Zera/'.$module_type.'HelloWorld/tmpl/display_home.html';
 
     unless(open SRC, '<'.$src){
-        die "\nUnable to read $src\n";
+        die "\nUnable to open source files $src\n";
     }
 
     unless(open FILE, '>'.$path) {
