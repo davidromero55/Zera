@@ -14,7 +14,20 @@ $(document).ready(function(){
     if ( $( ".wysiwyg" ).length ) {
         tinymce.init({
             selector:'.wysiwyg',
-            plugins : 'advlist link image lists charmap code table',
+            plugins : 'advlist link image lists charmap code table codesample',
+            codesample_languages: [
+              {text: 'HTML/XML', value: 'markup'},
+              {text: 'JavaScript', value: 'javascript'},
+              {text: 'CSS', value: 'css'},
+              {text: 'PHP', value: 'php'},
+              {text: 'Ruby', value: 'ruby'},
+              {text: 'Python', value: 'python'},
+              {text: 'Java', value: 'java'},
+              {text: 'C', value: 'c'},
+              {text: 'C#', value: 'csharp'},
+              {text: 'C++', value: 'cpp'},
+              {text: 'Perl', value: 'perl'}
+            ],
             images_upload_url: '/Admin/API/ImageUpload',
             images_upload_base_path: '/data/img',
             relative_urls : false,
@@ -25,6 +38,13 @@ $(document).ready(function(){
                                ],
             image_prepend_url: "/",
             valid_elements: '+*[*]',
+            link_class_list: [
+              {title: 'Highlight', value: 'c-link'}
+            ],
+            style_formats : [
+              {title : 'Bold', styles : {'font-weight': '700'}},
+              {title : 'Secondary Text', styles : {color: '#6c757d'}},
+            ]
         });
     }
     if ( $( ".datepicker" ).length ) {
