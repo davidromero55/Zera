@@ -76,15 +76,15 @@ sub new {
     $self->{orders} = {};
 
     $self->{labels} = {
-        page_of => '',
-        no_data   => 'No hay datos',
+        page_of => 'Page _PAGE_ of _OF_',
+        no_data   => 'No records found',
         link_up   => '&uarr;',
         link_down => '&darr;',
         next_page => '&raquo;',
         previous_page => '&laquo;',
-        number_of_rows => "_NUMBER_ registros",
+        number_of_rows => "_NUMBER_ records",
     };
-    $self->{display_rows_total} = 0;
+    $self->{display_rows_total} = 1;
 
     $self->{Number_Format}={THOUSANDS_SEP=>",",DECIMAL_POINT=>".",MON_THOUSANDS_SEP=>",","MON_DECIMAL_POINT"=>".","INT_CURR_SYMBOL"=>''};
 
@@ -152,7 +152,7 @@ sub print {
 
     $self->transit_params();
     if(!defined $self->{rs}){
-#		$grid .= $self->get_data();
+		$self->get_data();
     }
     if(defined $self->{sn}){
         my $sn_counter = $self->{sn}->{start_on} || 0;
@@ -201,7 +201,6 @@ sub print {
 
 sub get_data {
     my $self = shift;
-
     $self->build_query();
 
     $self->{sth} = $self->{Zera}->{_DBH}->{_dbh}->prepare($self->{sql}{query});
@@ -214,85 +213,45 @@ sub get_data {
     };
     #if sql errors
     if($@){
-    	if($self->{on_errors} eq "die"){
-    	    if($self->{debug}){
-    			die "Chapix::List Error code: ".$self->{Zera}->{_DBH}->{_dbh}->err.". Error message: ".$self->{Zera}->{_DBH}->{_dbh}->errstr . " SQL: " . $self->{sql}{query};
-    	    }else{
-    			die "Chapix::List Error code: " . $self->{Zera}->{_DBH}->{_dbh}->err . ". Error message: " . $self->{Zera}->{_DBH}->{_dbh}->errstr;
-    	    }
-    	    return "";
-    	}elsif($self->{on_errors} eq "warn"){
-    	    if($self->{debug}){
-    			die "Chapix::List Error code: ".$self->{Zera}->{_DBH}->{_dbh}->err.". Error message: ".$self->{Zera}->{_DBH}->{_dbh}->errstr . " SQL: " . $self->{sql}{query};
-    	    }else{
-    			die "Chapix::List Error code: " . $self->{Zera}->{_DBH}->{_dbh}->err . ". Error message: " . $self->{Zera}->{_DBH}->{_dbh}->errstr;
-    	    }
-    	    return "";
-    	}elsif($self->{on_errors} eq "print"){
-    	    if($self->{debug}){
-    			return "Chapix::List Error code: " . $self->{Zera}->{_DBH}->{_dbh}->err .". Error message: ".$self->{Zera}->{_DBH}->{_dbh}->errstr." SQL: ".$self->{sql}{query};
-    	    }else{
-    			return "Chapix::List Error code: " . $self->{Zera}->{_DBH}->{_dbh}->err .". Error message: ".$self->{Zera}->{_DBH}->{_dbh}->errstr;
-    	    }
-    	}
-#    }
-#
-#    if ( defined $self->{Zera}->{_DBH}->{_dbh}->errstr ) {
-#
+        if($self->{debug}){
+            $self->{Zera}->add_msg('danger','Zera::List '.$self->{Zera}->{_DBH}->{_dbh}->err.". Error message: ".$self->{Zera}->{_DBH}->{_dbh}->errstr . " SQL: " . $self->{sql}{query});
+        }else{
+            $self->{Zera}->add_msg('danger','Zera::List ' . $self->{Zera}->{_DBH}->{_dbh}->err . ". Error message: " . $self->{Zera}->{_DBH}->{_dbh}->errstr);
+        }
     }else{
-	while ( my $rec = $self->{sth}->fetchrow_hashref() ) {
-	    push (@{$self->{rs}},$rec);
-	}
+        while ( my $rec = $self->{sth}->fetchrow_hashref() ) {
+            push (@{$self->{rs}},$rec);
+        }
     }
-    return "";
 }
 
 sub build_query {
     my $self = shift;
     if (ref \$self->{sql} eq "SCALAR"){
-		my $query = $self->{sql};
-		$self->{sql} = {
-			query => $query,
-		};
-		$self->{auto_order} = 0;
-		$self->{pagination} = 0;
+        my $query = $self->{sql};
+        $self->{sql} = {
+            query => $query,
+        };
+        $self->{auto_order} = 0;
+        $self->{pagination} = 0;
     }else{
-    	defined $self->{sql}{select}   or $self->{sql}{select}   = "";
-    	defined $self->{sql}{from}     or $self->{sql}{from}     = "";
-    	defined $self->{sql}{where}    or $self->{sql}{where}    = "";
-    	defined $self->{sql}{order_by} or $self->{sql}{order_by} = "";
-    	defined $self->{sql}{limit}    or $self->{sql}{limit}    = "";
-    	defined $self->{sql}{offset}   or $self->{sql}{offset}   = "";
-	if($self->{Zera}->{_DBH}->{_dbh}->{Driver}->{Name} eq 'Sybase'){
-	    if ($self->{sql}{limit}){
-		$self->{sql}{query}  = " SELECT TOP ".$self->{sql}{limit}."  " . $self->{sql}{select};
-	    }else{
-		$self->{sql}{query}  = " SELECT   " . $self->{sql}{select};
-	    }
-	    $self->{sql}{query} .= " FROM     " . $self->{sql}{from}     if $self->{sql}{from};
-	    $self->{sql}{query} .= " WHERE    " . $self->{sql}{where}    if $self->{sql}{where};
-	    $self->{sql}{query} .= " GROUP BY " . $self->{sql}{group_by} if $self->{sql}{group_by};
-	    $self->{sql}{query} .= " ORDER BY " . $self->{sql}{order_by} if $self->{sql}{order_by};
-	    #$self->{sql}{query} .= " LIMIT    " . $self->{sql}{limit}    if $self->{sql}{limit};
-	    #if($self->{pagination}){
-	    #$self->{sql}{query} .= " OFFSET   " . ($self->{sql}{limit} * ($self->param("zl_page") - 1) );
-	    #}else{
-	    #$self->{sql}{query} .= " OFFSET   " .  $self->{sql}{offset}   if $self->{sql}{offset};
-	    #}
-
-	}else{
-	    $self->{sql}{query}  = " SELECT   " . $self->{sql}{select};
-	    $self->{sql}{query} .= " FROM     " . $self->{sql}{from}     if $self->{sql}{from};
-	    $self->{sql}{query} .= " WHERE    " . $self->{sql}{where}    if $self->{sql}{where};
-	    $self->{sql}{query} .= " GROUP BY " . $self->{sql}{group_by} if $self->{sql}{group_by};
-	    $self->{sql}{query} .= " ORDER BY " . $self->{sql}{order_by} if $self->{sql}{order_by};
-	    $self->{sql}{query} .= " LIMIT    " . $self->{sql}{limit}    if $self->{sql}{limit};
-	    if($self->{pagination}){
-		$self->{sql}{query} .= " OFFSET   " . ($self->{sql}{limit} * ($self->param("zl_page") - 1) );
-	    }else{
-		$self->{sql}{query} .= " OFFSET   " .  $self->{sql}{offset}   if $self->{sql}{offset};
-	    }
-	}
+        defined $self->{sql}{select}   or $self->{sql}{select}   = "";
+        defined $self->{sql}{from}     or $self->{sql}{from}     = "";
+        defined $self->{sql}{where}    or $self->{sql}{where}    = "";
+        defined $self->{sql}{order_by} or $self->{sql}{order_by} = "";
+        defined $self->{sql}{limit}    or $self->{sql}{limit}    = "";
+        defined $self->{sql}{offset}   or $self->{sql}{offset}   = "";
+        $self->{sql}{query}  = " SELECT   " . $self->{sql}{select};
+        $self->{sql}{query} .= " FROM     " . $self->{sql}{from}     if $self->{sql}{from};
+        $self->{sql}{query} .= " WHERE    " . $self->{sql}{where}    if $self->{sql}{where};
+        $self->{sql}{query} .= " GROUP BY " . $self->{sql}{group_by} if $self->{sql}{group_by};
+        $self->{sql}{query} .= " ORDER BY " . $self->{sql}{order_by} if $self->{sql}{order_by};
+        $self->{sql}{query} .= " LIMIT    " . $self->{sql}{limit}    if $self->{sql}{limit};
+        if($self->{pagination}){
+            $self->{sql}{query} .= " OFFSET   " . ($self->{sql}{limit} * ($self->param("zl_page") - 1) );
+        }else{
+            $self->{sql}{query} .= " OFFSET   " .  $self->{sql}{offset}   if $self->{sql}{offset};
+        }
     }
 }
 
@@ -638,56 +597,71 @@ sub print_pagination {
     my $HTML = "";
     $self->{foother}{params}{colspan} = $self->{colspan}+1;
     if($self->{pagination}){
-	#Get total rows
-	my $sSQL = "SELECT count(*) AS total FROM " . $self->{sql}{from};
-	$sSQL .= " WHERE    " . $self->{sql}{where}    if $self->{sql}{where};
-	my $total = $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref($sSQL,{},@{$self->{sql}{params}});
-	$self->{total_records} = $total->{total} || 0;
-	my $pages = ($total->{total} / $self->{sql}{limit});
-	my $pages_int = int($pages);
-	$pages = $pages_int + 1 if($pages > $pages_int);
-	my $pagination = $self->{labels}{page_of};
-	my $page = $self->param("zl_page") || 1;
-	$pagination =~ s/_PAGE_/$page/;
-	$pagination =~ s/_OF_/$pages/;
-	$pagination .= "";
-	if($self->param("zl_page") > 1){
-	    $pagination .= "<li>" .$self->a({-href => $self->{script} . "?zl_page=" . ($self->param("zl_page")-1) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}, -alt=>'Previous'},
-				     $self->{labels}{previous_page}) . "</li>";
-	    foreach(my $ii = $self->{nav_pages} -1;$ii > 0;$ii--){
-		$pagination .= "<li>" .$self->a({-href => $self->{script} . "?zl_page=" . ($self->param("zl_page") - $ii) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}},
-					 ($self->param("zl_page") - $ii)).'</li>' if(($self->param("zl_page") - $ii) > 0);
-	    }
-	}
-	$pagination .= '<li class="active"><a href="#">'.$self->param('zl_page').'</a></li>' if($pages > 1);
-	if($self->param("zl_page") < $pages){
-	    foreach(my $ii = 1;$ii < $self->{nav_pages};$ii++){
-		last if($ii >= $pages);
-		$pagination .= "<li>" .$self->a({-href => $self->{script} . "?zl_page=" . ($self->param("zl_page") + $ii) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}},
-					 ($self->param("zl_page") + $ii)) if(($self->param("zl_page") + $ii) <= $pages).'</li>';
-	    }
-	    $pagination .= "<li>" .$self->a({-href => $self->{script} . "?zl_page=" . ($self->param("zl_page") +1) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params},-alt=>"Next"},$self->{labels}{next_page}).'</li>';
-	}
+        #Get total rows
+        my $sSQL = "SELECT count(*) AS total FROM " . $self->{sql}{from};
+        $sSQL .= " WHERE    " . $self->{sql}{where}    if $self->{sql}{where};
+        my $total = $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref($sSQL,{},@{$self->{sql}{params}});
+        $self->{total_records} = $total->{total} || 0;
 
-	if($self->{display_rows_total}){
-	    my $rows = $self->{labels}{number_of_rows};
-	    $rows =~ s/_NUMBER_/$self->{rows}/g;
+        my $pages = ($total->{total} / $self->{sql}{limit});
+        my $pages_int = int($pages);
+        $pages = $pages_int + 1 if($pages > $pages_int);
+        my $total_records = $self->{labels}{page_of};
 
-	    $HTML .= "    " . $self->_tag('tr',{},$self->_tag('td',$self->{foother}{params},
-					'<div class="badge pull-left">' . $rows . '</div>' .
-					'<div class="pagination pull-right"><ul>' . $pagination . '</ul></div>'
-					)) . "\n";
-	}
+
+
+        # <nav aria-label="Page navigation example">
+        #   <ul class="pagination justify-content-center">
+        #     <li class="page-item disabled">
+        #       <a class="page-link" href="#" tabindex="-1">Previous</a>
+        #     </li>
+        #     <li class="page-item"><a class="page-link" href="#">1</a></li>
+        #     <li class="page-item"><a class="page-link" href="#">2</a></li>
+        #     <li class="page-item"><a class="page-link" href="#">3</a></li>
+        #     <li class="page-item">
+        #       <a class="page-link" href="#">Next</a>
+        #     </li>
+        #   </ul>
+        # </nav>
+
+
+        my $page = $self->param("zl_page") || 1;
+        $total_records =~ s/_PAGE_/$page/;
+        $total_records =~ s/_OF_/$pages/;
+        my $pagination = "";
+        if($self->param("zl_page") > 1){
+            $pagination .= '<li class="page-item">' .$self->a({class=>'page-link',href => $self->{script} . "?zl_page=" . ($self->param("zl_page")-1) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}, -alt=>'Previous'},
+            $self->{labels}{previous_page}) . "</li>";
+            foreach(my $ii = $self->{nav_pages} -1;$ii > 0;$ii--){
+                $pagination .= '<li class="page-item">' .$self->a({class=>'page-link',href => $self->{script} . "?zl_page=" . ($self->param("zl_page") - $ii) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}},
+                ($self->param("zl_page") - $ii)).'</li>' if(($self->param("zl_page") - $ii) > 0);
+            }
+        }
+        $pagination .= '<li class="page-item disabled"><a class="page-link" href="#">'.$self->param('zl_page').'</a></li>' if($pages > 1);
+        if($self->param("zl_page") < $pages){
+            foreach(my $ii = 1;$ii < $self->{nav_pages};$ii++){
+                last if($ii >= $pages);
+                $pagination .= '<li class="page-item">' .$self->a({class=>'page-link',href => $self->{script} . "?zl_page=" . ($self->param("zl_page") + $ii) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params}},
+                ($self->param("zl_page") + $ii)) if(($self->param("zl_page") + $ii) <= $pages).'</li>';
+            }
+            $pagination .= '<li class="page-item">' .$self->a({class=>'page-link', href => $self->{script} . "?zl_page=" . ($self->param("zl_page") +1) . "&zl_order=" . $self->param("zl_order") . "&zl_side=" . $self->param("zl_side") . "&zl_list=" . $self->{name} . $self->{transit_params},-alt=>"Next"},$self->{labels}{next_page}).'</li>';
+        }
+
+        if($self->{display_rows_total}){
+            my $rows = $self->{labels}{number_of_rows};
+            $rows =~ s/_NUMBER_/$self->{rows}/g;
+
+            $HTML .= '<div class="row"><div class="col-md-6"><ul class="pagination justify-content-start"><li class="page-item disabled"><a class="page-link" href="#">' . $rows .'</a></li><li class="page-item disabled"><a class="page-link" href="#">'. $total_records . '</a></li></ul></div>' .
+                '<div class="col-md-6"><ul class="pagination justify-content-end">' . $pagination . '</ul></div></div>';
+        }
     }else{
-	$self->{total_records} = $self->{rows};
-		if($self->{display_rows_total}){
-			my $rows = $self->{labels}{number_of_rows};
-			$rows =~ s/_NUMBER_/$self->{rows}/g;
+        $self->{total_records} = $self->{rows};
+        if($self->{display_rows_total}){
+            my $rows = $self->{labels}{number_of_rows};
+            $rows =~ s/_NUMBER_/$self->{rows}/g;
 
-			$HTML .= "    " . $self->_tag('tr',{},$self->_tag('td',$self->{foother}{params},
-						    '<span class="zl_number_rows">' . $rows . '</span>'
-					      )) . "\n";
-		}
+            $HTML .= '<span class="zl_number_rows">' . $rows . '</span>' . "\n";
+        }
     }
     return $HTML;
 }
