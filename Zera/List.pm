@@ -28,6 +28,7 @@ sub new {
     defined $self->param("zl_order") or $self->param("zl_order", "");
     defined $self->param("zl_side")  or $self->param("zl_side", "");
     defined $self->param("zl_page")  or $self->param("zl_page", "1");
+    defined $self->param("zl_q")  or $self->param("q", "");
 
     #Prevent attacks
     $self->param("zl_order",int($self->param("zl_order") || 0));
@@ -46,7 +47,7 @@ sub new {
 
     $self->{table} = {
 		      width       => "100%",
-		      class       => "table table-hover table-striped table-bordered table-sm",
+		      class       => "table table-striped table-bordered table-sm",
 		      align       => "center",
 		      cellspacing => "0",
 		     };
@@ -105,10 +106,12 @@ sub new {
     }
 
     $self->{transit_params} = "";
-    $self->{cgi_zl_params} = "";
+    $self->{transit_params_nq} = "";
 
-    if($self->{link} and !$self->{link}{event}){
+    if($self->{link}->{location} and !$self->{link}{event}){
         $self->{link}{event} = "onClick";
+        $self->{table}->{class} .= " table-hover",
+
         $self->{detail}{Tr}{params_a} = {class=> "pointer zl_row_a"};
         $self->{detail}{Tr}{params_b} = {class=> "pointer zl_row_b"};
     }
@@ -501,13 +504,13 @@ sub print_detail {
 				$self->{detail}{td}{params}->{$self->{link}{event}} = '';
 			    }else{
 				if($self->{link}{target}){
-				    $self->{detail}{td}{params}->{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
+				    $self->{detail}{td}{params}->{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params_nq}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
 				}elsif($self->{opener}){
-				    my $opener_transit_params = $self->{transit_params};
+				    my $opener_transit_params = $self->{transit_params_nq};
 				    $opener_transit_params =~ s/opener=[\w]*//g;
 				    $self->{detail}{td}{params}->{$self->{link}{event}} = "opener.location.href='" . $self->{opener} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$opener_transit_params'; window.close();";
 				}elsif($self->{link}{location}){
-				    $self->{detail}{td}{params}->{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params}';";
+				    $self->{detail}{td}{params}->{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params_nq}';";
 				}
 			    }
 			}
@@ -539,13 +542,13 @@ sub print_detail {
 	    if($self->{link}){
 		if(!$self->{link}->{exclude_rows}){
 		    if($self->{link}{target}){
-			$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
+			$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params_nq}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
 		    }elsif($self->{opener}){
-			my $opener_transit_params = $self->{transit_params};
+			my $opener_transit_params = $self->{transit_params_nq};
 			$opener_transit_params =~ s/opener=[\w]*//g;
 			$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "opener.location.href='" . $self->{opener} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$opener_transit_params'; window.close();";
 		    }elsif($self->{link}{location}){
-			$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params}';";
+			$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params_nq}';";
 		    }
 		}
 	    }
@@ -577,14 +580,16 @@ sub print_detail {
 
 sub transit_params {
     my $self = shift;
-    #Transit Params
-    $self->{cgi_zl_params} =  "zl_order=" . $self->param("zl_order") .
-		"&zl_side=" . $self->param("zl_side") .
-			"&zl_page=" . $self->param("zl_page") .
-				"&zl_list=" . $self->{name};
+    # Transit Params
+
+    # Framework special Vars
+    defined $self->param('zl_q') or $self->param('zl_q','');
+    $self->{link}{transit_params}{zl_q} = $self->param('zl_q');
+
     if (defined $self->{link}{transit_params}){
 		foreach my $k (sort keys %{$self->{link}{transit_params}}){
-		    $self->{transit_params} .= "&" . $k . "=" . $self->{link}{transit_params}{$k};
+	        $self->{transit_params}    .= "&" . $k . "=" . $self->{link}{transit_params}{$k};
+            $self->{transit_params_nq} .= "&" . $k . "=" . $self->{link}{transit_params}{$k} if($k ne 'zl_q');
 		}
     }
     if($self->{opener}){
@@ -809,13 +814,13 @@ sub print_group_detail {
 		# #Links
 		if($self->{link}){
 			if($self->{link}{target}){
-				$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
+				$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "window.open('" . $self->{link}{location} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$self->{transit_params_nq}','" . $self->{key}{target} . "','" . $self->{nw_params} . "');";
 			}elsif($self->{opener}){
-				my $opener_transit_params = $self->{transit_params};
+				my $opener_transit_params = $self->{transit_params_nq};
 				$opener_transit_params =~ s/opener=[\w]*//g;
 				$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "opener.location.href='" . $self->{opener} . "?" . $self->{link}{key} . "=" . $rec->{$self->{link}{key}} . "$opener_transit_params'; window.close();";
 			}elsif($self->{link}{location}){
-				$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params}';";
+				$self->{detail}{Tr}{$row_params}{$self->{link}{event}} = "document.location.href='" . $self->{link}{location} . "/" . $rec->{$self->{link}{key}} . "?$self->{transit_params_nq}';";
 			}
 		}
 		$HTML .= "   " . $self->_tag('tr',$self->{detail}{Tr}{$row_params},$row_cells) . "\n";
