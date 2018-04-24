@@ -42,8 +42,17 @@ $(document).ready(function(){
               {title: 'Highlight', value: 'c-link'}
             ],
             style_formats : [
-              {title : 'Bold', styles : {'font-weight': '700'}},
-              {title : 'Secondary Text', styles : {color: '#6c757d'}},
+              {title: 'Headers', items: [
+                {title: 'h1', block: 'h1'},
+                {title: 'h2', block: 'h2'},
+                {title: 'h3', block: 'h3'},
+                {title: 'h4', block: 'h4'},
+                {title: 'h5', block: 'h5'},
+                {title: 'h6', block: 'h6'}
+              ]},
+              {title : 'Bold Header', block:'h1', styles : {'font-weight': '700'}},
+              {title : 'Secondary Text', block:'h5', styles : {color: '#6c757d'}},
+              
             ]
         });
     }
