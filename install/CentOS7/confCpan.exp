@@ -81,37 +81,6 @@ can enter them by hand.\r
 Would you like me to automatically choose some CPAN mirror\r
 sites for you? (This means connecting to the Internet) \[yes\] "
 send -- "\r"
-expect -exact "\r
-Trying to fetch a mirror list from the Internet\r
-Fetching with HTTP::Tiny:\r
-http://www.perl.org/CPAN/MIRRORED.BY\r
-HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support\r
-\r
-Fetching with HTTP::Tiny:\r
-http://www.perl.org/CPAN/MIRRORED.BY.gz\r
-HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support\r
-\r
-Fetching with Net::FTP:\r
-ftp://ftp.perl.org/pub/CPAN/MIRRORED.BY\r
-\r
-Looking for CPAN mirrors near you (please be patient)\r
-..................... done!\r
-\r
-New urllist\r
-  http://ftp.osuosl.org/pub/CPAN/\r
-  http://mirror.teklinks.com/CPAN/\r
-  http://cpan.pair.com/\r
-\r
-Autoconfiguration complete.\r
-\r
-commit: wrote '/root/.cpan/CPAN/MyConfig.pm'\r
-\r
-You can re-run configuration any time with 'o conf init' in the CPAN shell\r
-Terminal does not support AddHistory.\r
-\r
-cpan shell -- CPAN exploration and modules installation (v1.9800)\r
-Enter 'h' for help.\r
-\r
-\[4mcpan\[1\]> \[24m\[1m"
+expect eof
 send -- "exit\r"
 expect eof
