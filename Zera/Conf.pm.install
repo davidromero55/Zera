@@ -1,0 +1,60 @@
+package Zera::Conf;
+
+use strict;
+BEGIN {
+    use Exporter();
+    use vars qw( @ISA @EXPORT @EXPORT_OK );
+    @ISA = qw( Exporter );
+    @EXPORT = qw(
+                $conf
+                );
+}
+use vars @EXPORT;
+
+$conf->{DBI} = {
+    Conection => "dbi:mysql:[% DBI.Database %]",
+    Username  => "[% DBI.Username %]",
+    Password  => "[% DBI.Password %]",
+    Charset   => 'utf8',
+    Timezone  => '[% DBI.Timezone %]',
+    Database  => '[% DBI.Database %]'
+};
+
+$conf->{App} = {
+    Name      => '[% App.Name %]',
+    Version   => '0.1',
+    URL       => '[% App.URL %]',
+    Copyright => '[% App.Copyright %]',
+    Language  => 'en_US',
+};
+
+$conf->{Cookie} = {
+    Name      => "ZERA",
+    'Max-Age' => "31536000", # Cookie life time in secconds
+    Domain    => $conf->{App}->{URL},
+    SameSite  => 'Strict',
+    Path      => '/',
+};
+
+$conf->{Template} = {
+    TemplateID      => '[% Template.TemplateID %]',
+    UserTemplateID  => 'ZeraUser',
+    AdminTemplateID => 'ZeraAdmin',
+};
+
+$conf->{Security} = {
+    Key => '[% Security.Key %]',
+};
+
+$conf->{Email} = {
+    Server   => '[% Email.Server %]',
+    Port     => '[% Email.Port %]',
+    Auth     => '[% Email.Auth %]',
+    User     => '[% Email.User %]',
+    Password => '[% Email.Password %]',
+    From     => '[% Email.From %]',
+    SSL      => '[% Email.SSL %]',
+    Debug    => '0',
+};
+
+1;
