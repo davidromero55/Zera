@@ -1,4 +1,5 @@
 #dhclient
+cd ~
 yum update -y
 yum install httpd -y
 yum install mariadb-server mariadb -y
