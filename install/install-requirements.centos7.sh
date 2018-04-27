@@ -1,5 +1,9 @@
 #dhclient
-cd ~
+cd ..
+if [[ $PWD =~ /Zera/install$ ]]; then
+  echo "Please, install from Zera/install directory"
+  exit 1
+fi
 yum update -y
 yum install httpd -y
 yum install mariadb-server mariadb -y
@@ -10,16 +14,14 @@ yum groupinstall "Development tools" -y
 yum install 'perl(Template)' -y
 yum install 'perl(JSON)' -y
 yum install 'perl(Switch)' -y
-git clone https://github.com/Alt180/Zera.git
-cd Zera
+#git clone https://github.com/Alt180/Zera.git
+#cd Zera
 systemctl start httpd.service
 systemctl enable httpd.service
 systemctl start mariadb
 systemctl enable mariadb
-mv Zera/Conf.pm.sample Zera/Conf.pm
 install/CentOS7/confMySQL.exp
 yes | cp install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
-#yes | cp install/CentOS7selinux /etc/sysconfig/selinux
 sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
 systemctl restart httpd.service
 cp -r * /var/www/html
