@@ -52,7 +52,8 @@ sub welcome_template {
     }
 
     # Test write permissions
-    open(CONF,'>>Zera/Conf.pm') or $errors_html = '<div class="alert alert-danger" role="alert">Write permissions are required on home folder and Zera folder.</div>' .$!;
+    open(CONF,'>>install.pid') or $errors_html = '<div class="alert alert-danger" role="alert">Write permissions are required on home folder and Zera folder.</div>' .$!;
+    unlink 'install.pid';
 
     my $welcome .= get_html_file('welcome');
     if($errors or $errors_html){
@@ -88,14 +89,16 @@ sub get_html_file {
 
 sub create_conf_pm {
     # if not exist, create a new Conf.pm file
-    my $conf = '';
-    open SOURCE , 'Zera/Install/tmpl/Conf.pm.Base';
-    while (<SOURCE>){
-        $conf .= $_;
-    }
-    close SOURCE;
+    if(!(-e ('Zera/Conf.pm'))){
+        my $conf = '';
+        open SOURCE , 'Zera/Install/tmpl/Conf.pm.Base';
+        while (<SOURCE>){
+            $conf .= $_;
+        }
+        close SOURCE;
 
-    open (CONF, '>Zera/Conf.pm');
-    print CONF $conf;
-    close CONF;
+        open (CONF, '>Zera/Conf.pm');
+        print CONF $conf;
+        close CONF;
+    }
 }
