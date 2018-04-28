@@ -241,7 +241,8 @@ sub do_clean {
     if($self->param('_submit') eq 'Clean'){
         require File::Path;
 
-        my @files = ('install.pl','Zera/ZeraInstall.pm','INSTALL.json','LICENSE','README.md','TODO.txt');
+        # Delete Files
+        my @files = ('install.pl','ZeraInstall.pm','INSTALL.json','LICENSE','README.md','TODO.txt');
         my @dirs = ('install','testing','Zera/Install','templates/ZeraInstall');
 
         foreach my $file (@files){
@@ -256,6 +257,8 @@ sub do_clean {
         $results->{success} = 1;
         return $results;
 
+        # File permisions
+        chmod 0755, "index.pl";
     }
 }
 
