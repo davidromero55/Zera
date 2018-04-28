@@ -1,0 +1,48 @@
+package Zera::Conf;
+
+use strict;
+BEGIN {
+    use Exporter();
+    use vars qw( @ISA @EXPORT @EXPORT_OK );
+    @ISA = qw( Exporter );
+    @EXPORT = qw(
+                $conf
+                );
+}
+use vars @EXPORT;
+
+$conf->{DBI} = {
+    Conection => 'dbi:mysql:',
+    Username  => '',
+    Password  => '',
+    Charset   => 'utf8',
+    Timezone  => '-11:00',
+    Database  => ''
+};
+
+$conf->{App} = {
+    Name      => 'Zera',
+    Version   => '0.1',
+    URL       => '',
+    Language  => 'en_US',
+};
+
+$conf->{Cookie} = {
+    Name      => 'ZERA',
+    'Max-Age' => '31536000',
+    Domain    => $conf->{App}->{URL},
+    SameSite  => 'Strict',
+    Path      => '/',
+};
+
+$conf->{Template} = {
+    TemplateID      => 'ZeraInstall',
+    UserTemplateID  => 'ZeraUser',
+    AdminTemplateID => 'ZeraAdmin',
+};
+
+$conf->{Security} = {
+    Key => '',
+};
+
+1;

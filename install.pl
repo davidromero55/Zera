@@ -20,6 +20,9 @@ if(!$ENV{QUERY_STRING}){
     # If no query string is present check if the required modules are installed
     # and send a welcome page.
     print welcome_template();
+
+    create_conf_pm();
+
     exit 0;
 }else{
     # Load required modules
@@ -81,4 +84,18 @@ sub get_html_file {
     }
     close HEADER;
     return $HTML;
+}
+
+sub create_conf_pm {
+    # if not exist, create a new Conf.pm file
+    my $conf = '';
+    open SOURCE , 'Zera/Install/tmpl/Conf.pm.Base';
+    while (<SOURCE>){
+        $conf .= $_;
+    }
+    close SOURCE;
+
+    open (CONF, '>Zera/Conf.pm');
+    print CONF $conf;
+    close CONF;
 }
