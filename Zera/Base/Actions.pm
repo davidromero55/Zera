@@ -3,7 +3,6 @@ package Zera::Base::Actions;
 use strict;
 
 use Zera::Conf;
-use Zera::LayoutAdmin;
 
 sub new {
     my $class = shift;

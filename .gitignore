@@ -4,3 +4,4 @@ Zera/Conf.pm
 templates/My*
 zera_db.sql
 sftp-config.json
+INSTALL.json

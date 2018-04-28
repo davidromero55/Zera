@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/templates/ZeraWebsite/css/template.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
+    <title><% page.title %></title>
+    <% IF page.keywords %><meta name="keywords" content="<% page.keywords %>"><% END %>
+    <% IF page.description %><meta name="description" content="<% page.description %>"><% END %>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/"><img src="/templates/ZeraWebsite/img/zera.png" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            </div>
+        </div>
+    </nav>
+    <br /><br /><br /><br /><br /><br />
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col col-xs-12 col-sm-10 col-md-6 text-right">
+                <% IF page.search_url %>
+                <form method="get" action="<% page.search_action %>" class="form-horizontal needs-validation" novalidate>
+                    <div class="input-group input-group-sm  my-1">
+                        <% page.search_box %>
+                        <div class="input-group-append">
+                            <% page.buttons %>
+                        </div>
+                    </div>
+                </form>
+                <% ELSE %>
+                    <% IF page.buttons %>
+                    <div class="btn-group btn-group-sm my-1" role="group">
+                        <% page.buttons %>
+                    </div>
+                    <% END %>
+                <% END %>
+            </div>
+        </div>
+        <% content %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/js/prism.js"></script>
+  </body>
+</html>
