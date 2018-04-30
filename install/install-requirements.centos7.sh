@@ -1,7 +1,7 @@
 #dhclient
-if [[ $PWD =~ /Zera/install$ ]]; then
-  echo "Please, install from Zera/install directory"
-  exit 1
+if [[ $PWD != /Zera/install ]]; then
+    echo "Please, install from Zera/install directory"
+    exit 1
 fi
 cd ..
 yum update -y
