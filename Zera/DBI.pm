@@ -9,9 +9,9 @@ sub new {
     bless $self,$class;
 
     # DataBase
-    $self->{_dbh} = DBI->connect( $conf->{DBI}->{conection}, $conf->{DBI}->{user_name}, $conf->{DBI}->{password},{RaiseError => 1,AutoCommit=>1}) or die "Can't Connect to database.";
+    $self->{_dbh} = DBI->connect( $conf->{DBI}->{Conection}, $conf->{DBI}->{Username}, $conf->{DBI}->{Password},{RaiseError => 1,AutoCommit=>1}) or die "Can't Connect to database.";
     $self->{_dbh}->do("SET CHARACTER SET 'utf8'");
-    $self->{_dbh}->do("SET time_zone=?",{},$conf->{DBI}->{time_zone});
+    $self->{_dbh}->do("SET time_zone=?",{},$conf->{DBI}->{Timezone});
 
     return $self;
 }

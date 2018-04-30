@@ -62,7 +62,7 @@ sub get_view {
         $self->{Zera}->{sub_name} = $sub_name;
         return $self->$sub_name();
     } else {
-        $self->add_msg('danger',"sub '$sub_name' not defined.\n");
+        $self->add_msg('danger',"'sub $sub_name' not defined.\n");
         return $self->{Zera}->get_msg();
     }
 }
@@ -74,7 +74,7 @@ sub get_default_view {
         $self->{Zera}->{sub_name} = $sub_name;
         return $self->$sub_name();
     } else {
-        $self->add_msg('danger',"sub '$sub_name' not defined.\n");
+        $self->add_msg('danger',"'sub $sub_name' not defined.\n");
         return $self->{Zera}->get_msg();
     }
 }

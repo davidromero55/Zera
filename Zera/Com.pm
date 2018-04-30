@@ -30,7 +30,7 @@ sub header {
     my $charset = shift || 'utf-8';
     my @header;
     $type .= "; charset=$charset";
-    push(@header,"Set-Cookie: " . $Zera->{_SESS}->{cookie});
+    push(@header,"Set-Cookie: " . $Zera->{_SESS}->{cookie}) if($Zera->{_SESS});
     # push(@header,"Expires: " . expires($expires,'http')) if $expires;
     push(@header,"Pragma: no-cache");
     # push(@header,"Content-Disposition: attachment; filename=\"$attachment\"") if $attachment;
