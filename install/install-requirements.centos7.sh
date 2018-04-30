@@ -1,5 +1,5 @@
 #dhclient
-if [[ $PWD != /Zera/install ]]; then
+if [[ $PWD != */Zera/install ]]; then
     echo "Please, install from Zera/install directory"
     exit 1
 fi
