@@ -180,6 +180,17 @@ sub add_jsfile {
     }
 }
 
+sub add_btn {
+    my $self  = shift;
+    my $url   = shift;
+    my $label = shift || 'Add';
+    my $class = shift || 'btn btn-secondary text-white';
+    my $icon  = shift || '';
+
+    $label = '<i class="material-icons md-18">' . $icon . '</i> ' . $label if($icon);
+    $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('a',{class=>$class, href=>$url},$label);
+}
+
 # HTML functions
 sub _tag {
     my $self     = shift;

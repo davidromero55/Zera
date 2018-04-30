@@ -72,13 +72,15 @@ sub param {
 
 sub render {
     my $self = shift;
-    my $content = shift || "";
-    my $vars    = shift || {};
+    my $vars = shift || {};
 
     $self->_prepare_fields();
 
     my $template_file = $self->{params}->{template};
-    if (!$template_file) {
+    if ($template_file) {
+        my $dir = $self->{Zera}->{ControllerName};
+        $template_file = "Zera/$dir/tmpl/$template_file.html";
+    }else{
         my $dir = __PACKAGE__;
         $dir =~s/::/\//g;
         if(-e ("$dir/$self->{Zera}->{sub_name}.html")){
@@ -95,12 +97,11 @@ sub render {
     }
 
     my $tt = Zera::Com::template();
-    $vars = {
-        vars    => $self->{vars},
-        conf    => $conf,
-        msg     => $self->{Zera}->get_msg(),
-        page    => $self->{Zera}->{_PAGE}
-    };
+    $vars->{vars} = $self->{vars};
+    $vars->{conf} = $conf;
+    $vars->{msg}  = $self->{Zera}->get_msg();
+    $vars->{page} = $self->{Zera}->{_PAGE};
+
     my $HTML = '';
     $tt->process($template_file, $vars, \$HTML) || die $tt->error(), "\n";
     return $HTML;
@@ -252,7 +253,7 @@ sub _get_field {
     switch ($self->{fields}->{$field_name}->{type}) {
         case 'select' {
             my $field_options = '';
-            
+
             foreach my $key(keys %{$self->{fields}->{$field_name}}){
                 next if($key eq 'id');
                 next if($key eq 'name');
@@ -267,8 +268,8 @@ sub _get_field {
                     }
                 }else{
                     $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
-                }    
-                
+                }
+
             }
 
             $field_html = '<select name='.$field_name.'  '.$field_html.'><option disabled>Select an option</options>'.$field_options.'</select>';

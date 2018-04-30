@@ -1,0 +1,60 @@
+        <div class="row  justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6">
+                <h3><% page.title %></h3>
+                <div class="card">
+                    <div style="padding-top:30px" class="card-body">
+                        <% msg %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>User <i class="text-success fas fa-check"></i></h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Name: <% install.User.Name %></li>
+                                    <li class="list-group-item">Email: <% install.User.Email %></li>
+                                </ul>
+                                <br />
+                                <h4>Database <i class="text-success fas fa-check"></i></h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Database: <% install.Database.Database %></li>
+                                    <li class="list-group-item">User: <% install.Database.Username %></li>
+                                </ul>
+                                <br />
+                                <h4>Website <i class="text-success fas fa-check"></i></h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Name: <% install.Website.Name %></li>
+                                    <li class="list-group-item">Domain name: <% install.Website.URL %></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert alert-danger" role="alert">
+                            This action will:
+                            <ol>
+                                <li>Setup a database structure on your <% install.Database.Database %> database.</li>
+                                <li>Create a Zera/Conf.pm file to store your settings.</li>
+                                <li>Setup your Admin user for <% install.User.Email %>.</li>
+                            </ol>
+                        </div>
+                        <% vars.form_start %>
+                        <% FOREACH field IN vars.fields %><% IF field.type == 'hidden' %><% field.field %><% END %><% END %>
+                            <div class="form-row">
+                                <% FOREACH field IN vars.fields %><% IF field.type != 'hidden' %>
+                                <div class="form-group mb-2 <% IF field.span %><% field.span %><% ELSE %>col-md-6<% END %>">
+                                    <label class="mb-0 w-100" for="<% field.name %>"><% field.label %><% IF field.required %> *<% END %></label>
+                                    <div class="position-relative">
+                                        <% field.field %>
+                                        <% IF field.invalid_msg %><div class="invalid-feedback"><% field.invalid_msg %></div><% END %>
+                                        <% IF field.help %><small class="form-text text-muted"><% field.help %></small><% END %>
+                                    </div>
+                                </div>
+                                <% END %><% END %>
+                            </div>
+                            <div style="margin-top:10px" class="form-group">
+                                <div class="col-sm-12 controls">
+                                    <% FOREACH submit IN vars.submits %><% submit.submit %><% END %>
+                                </div>
+                            </div>
+                        <% vars.form_end  %>
+                    </div>
+                </div>
+            </div>
+        </div>
