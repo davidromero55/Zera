@@ -191,4 +191,37 @@ sub get_api_msg {
     return $str;
 }
 
+sub zera_include_block{
+    my $self = shift;
+    my $block_name = shift || 'not_found.html';
+    my $template = shift || '';
+    my $HTML = '';
+
+    if($self->{Zera}->{_Layout} eq 'Public'){
+        if (!$template) {
+            $template = 'templates/' . $conf->{Template}->{TemplateID} . '/block/'.$block_name.'.html';
+        }
+    }elsif($self->{Zera}->{_Layout} eq 'User'){
+        if (!$template) {
+                $template = 'templates/' . $conf->{Template}->{UserTemplateID} . '/block/'.$block_name.'.html';
+        }
+    }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+        if (!$template_file) {
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/block/'.$block_name.'.html';
+        }
+    }else{
+        if (!$template_file) {
+            $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/block/'.$block_name.'.html';
+        }
+    }
+
+    $vars->{conf} = $conf;
+    $vars->{msg}  = $self->get_msg();
+    $vars->{page} = $self->{_PAGE};
+
+    my $tt = Zera::Com::template();
+    $tt->process($template, $vars, \$HTML) || die "$Template::ERROR \n";
+    return $HTML;
+}
+
 1;

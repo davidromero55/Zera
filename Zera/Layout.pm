@@ -87,11 +87,9 @@ sub print {
         menus   => $menus,
         page    => $self->{Zera}->{_PAGE},
         msg     => $self->{Zera}->get_msg(),
-    	#sess    => \%sess,
     };
 
     $tt->process($template_file, $tt_vars, \$HTML) or $HTML = $tt->error();
     return $HTML;
 }
-
 1;
