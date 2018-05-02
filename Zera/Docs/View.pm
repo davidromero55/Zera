@@ -23,7 +23,7 @@ sub display_home {
     return $self->render_template($vars);
 }
 
-sub display_item {
+sub display_faq {
     my $self = shift;
 
     # Entry

@@ -128,3 +128,7 @@ pre[class*="language-"] {
 .c-link {
     color: #343a40 !important;
 }
+
+.font-weight-bold{
+	font-weight: bold !important;
+}

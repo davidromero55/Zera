@@ -2,6 +2,7 @@ package Zera::Com;
 
 use strict;
 use Zera::Conf;
+use Zera::Template::Plugin::ZeraInclude;
 
 BEGIN {
     use Exporter();
@@ -42,6 +43,7 @@ sub header {
 sub template {
     return Template->new({
         TAG_STYLE => 'asp',
+        PLUGINS => { 'ZeraInclude' => 'Zera::Template::Plugin::ZeraInclude' }
     }) || die "$Template::ERROR\n";
 }
 
