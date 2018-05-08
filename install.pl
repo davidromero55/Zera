@@ -52,7 +52,7 @@ sub welcome_template {
     }
 
     # Test write permissions
-    open(CONF,'>>install.pid') or $errors_html = '<div class="alert alert-danger" role="alert">Write permissions are required on home folder and Zera folder.</div>' .$!;
+    open(CONF,'>>Zera/install.pid') or $errors_html = '<div class="alert alert-danger" role="alert">Write permissions are required on home folder and Zera folder.</div>' .$!;
     unlink 'install.pid';
 
     my $welcome .= get_html_file('welcome');
