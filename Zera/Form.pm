@@ -76,10 +76,13 @@ sub render {
 
     $self->_prepare_fields();
 
+
     my $template_file = $self->{params}->{template};
     if ($template_file) {
-        my $dir = $self->{Zera}->{ControllerName};
-        $template_file = "Zera/$dir/tmpl/$template_file.html";
+        if(!(-e ($template_file))){
+            my $dir = $self->{Zera}->{ControllerName};
+            $template_file = "Zera/$dir/tmpl/$template_file.html";
+        }
     }else{
         my $dir = __PACKAGE__;
         $dir =~s/::/\//g;
