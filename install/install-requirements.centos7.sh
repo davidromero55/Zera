@@ -21,7 +21,7 @@ systemctl enable httpd.service
 systemctl start mariadb
 systemctl enable mariadb
 install/CentOS7/confMySQL.exp
-yes | cp install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
+#yes | cp install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
 sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
 systemctl restart httpd.service
 cp -r * /var/www/html
@@ -32,8 +32,8 @@ chmod 755 index.pl
 firewall-cmd --permanent --add-port=80/tcp
 firewall-cmd --reload
 #yum remove emacs -y
-#yum remove expect -y
+yum remove expect -y
 yum install perl-CPAN -y
 (echo y;echo sudo;echo y; echo exit)|cpan
-yes | cpan install CGI::Minimal Email::Sender:Simple MIME::Entity Apache::Session Number::Format JSON::XS
+yes | cpan install CGI::Minimal Email::Sender:Simple MIME::Entity Apache::Session Number::Format JSON::XS Math::Round
 reboot
