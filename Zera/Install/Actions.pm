@@ -59,7 +59,7 @@ sub do_database {
         }
 
 
-        if(length($database) < 4){
+        if(length($database) < 3){
             $self->add_msg('warning','Please enter your mysql database name.');
             $results->{errors} ++;
         }
@@ -67,7 +67,7 @@ sub do_database {
             $self->add_msg('warning','Please enter a valid database name.');
             $results->{errors} ++;
         }
-        if(length($username) < 4){
+        if(length($username) < 3){
             $self->add_msg('warning','Please enter your username.');
             $results->{errors} ++;
         }

@@ -2,7 +2,7 @@ package Zera::Com;
 
 use strict;
 use Zera::Conf;
-use Zera::Template::Plugin::ZeraInclude;
+# use Zera::Template::Plugin::ZeraInclude;
 
 BEGIN {
     use Exporter();
