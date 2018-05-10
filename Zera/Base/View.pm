@@ -125,6 +125,7 @@ sub render_template {
         $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
     }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
+    }elsif(-e ($template)){
     }else{
         $self->add_msg('danger','Template ' . $template . ' not found.');
         return $self->{Zera}->get_msg();

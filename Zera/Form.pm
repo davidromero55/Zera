@@ -80,8 +80,10 @@ sub render {
     my $template_file = $self->{params}->{template};
     if ($template_file) {
         if(!(-e ($template_file))){
-            my $dir = $self->{Zera}->{ControllerName};
-            $template_file = "Zera/$dir/tmpl/$template_file.html";
+            if($template_file =~ /^\w+$/ ){
+                my $dir = $self->{Zera}->{ControllerName};
+                $template_file = "Zera/$dir/tmpl/$template_file.html";
+            }
         }
     }else{
         my $dir = __PACKAGE__;

@@ -63,13 +63,13 @@ sub display_edit {
 
 sub display_forgot_password {
     my $self = shift;
-    my $sub_view = $self->param('SubView') || ""; 
+    my $sub_view = $self->param('SubView') || "";
 
     if(length($sub_view) > 10){
         # If there are a key check if is valid.
         my $key = substr($sub_view,0,64);
         my $user_id = substr($sub_view,64,65);
-       
+
         my $user = $self->selectrow_hashref(
             "SELECT user_id, name, email FROM users WHERE user_id=? AND password_recovery_key=? AND password_recovery_expires > NOW() AND is_admin = 1",
             {}, $user_id, $key);
@@ -107,7 +107,7 @@ sub _display_password_recovery {
         method   => 'POST',
         fields   => [qw/email new_password new_password_confirm/],
         submits  => \@submit,
-        template => 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera_form_out.html',
+        template => 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_form_out.html',
     });
 
     $form->field('email',{placeholder=> 'Email', readonly=>1, value=>$user->{email}, type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Enter a valid email address.', validate=>'EMAIL'});
