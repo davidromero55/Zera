@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+
     $('#title').keyup(function() {
         var title = $('#title').val();
         title = title.replace(/\W/gi, "-");
@@ -7,5 +7,5 @@ $(document).ready(function(){
         title = title.toLowerCase();
         $('#url').val(title);
     });
-    
+
 });

@@ -11,7 +11,7 @@ sub new {
         version  => '0.1',
     };
     bless $self, $class;
-    
+
     # Main Zera object
     $self->{Zera} = shift;
 
@@ -77,19 +77,19 @@ sub upload_file {
     my $save_as = shift || "";
     my $filename = $self->{Zera}->{_REQUEST}->param_filename($cgi_param);
     my $mime = '';
-    
+
     if(!(-e "data")){
         mkdir ("data") or die $!;
-    }    
-    
+    }
+
     if(!(-e "data/img")){
         mkdir ("data/img") or die $!
     }
-    
+
     if(!(-e "data/$dir")){
         mkdir ("data/$dir") or die $!
     }
-    
+
     if($filename){
         my $type = $self->{Zera}->{_REQUEST}->param_mime($cgi_param);
         my ($name, $extension) = split(/\./, $filename);
@@ -138,7 +138,7 @@ sub upload_file {
                  }
              }
          }
-        
+
         open (OUTFILE,">data/$dir/" . $file) or die "$!";
         binmode(OUTFILE);
         print OUTFILE $self->param($cgi_param);
@@ -160,9 +160,14 @@ sub selectrow_hashref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
 }
 
+sub last_insert_id {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->last_insert_id('','',shift,shift);
+}
+
 sub selectrow_array {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);    
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
 }
 
 sub selectall_arrayref {
@@ -179,7 +184,7 @@ sub dbh_do {
 sub send_html_email {
     my $self = shift;
     my $vars = shift;
-    
+
     $self->{Zera}->{_EMAIL}->send_html_email($vars);
 }
 1;

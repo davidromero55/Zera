@@ -23,3 +23,11 @@
 .table-sm td, .table-sm th {
     padding: .15rem;
 }
+
+i.active {
+    color: #155724;
+}
+
+i.inactive {
+    color: #e2e3e5;
+}
