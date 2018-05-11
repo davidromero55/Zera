@@ -4,31 +4,11 @@ TODO
   PRE Alpha
 ------------------------
 
-Main Modules
-  - List
-    - Pagination
-  - Form
-    - Select field
-
-Install scripts
-  -3- Database connection.
-  -4- General Settings.
-  -5- Admin email and password.
-  -6- Finish screen.
-    -- Setup database structure.
-    -- Add admin user.
-    -- Create Conf.pm file.
-    -- Clear install scripts and secure installation.
-
-####################################
-  Alpha
----------
-
-Hello User Module
-  - Template example.
-  - List example.
-  - Form example
-
+# Docs
+    Active/inactive flag by entry
+    Active/inactive flag by category
+    Check for childs on delete
+    Sort order
 
 ####################################
   BETA
@@ -37,9 +17,6 @@ Hello User Module
 Docs Module
   - Guides.
   - Reference.
-
-Hello Module
-Hello Admin Module
 
 Module creator wizard !!!.
 Form creator wizard !!!.
@@ -52,7 +29,3 @@ Blog
   - Next and previous article navigation.
   - Search.
   - Display category.
-
-Verify for module installation
-  - IO::Socket::SSL Version 2.007
-  - Net::SMTP Version 3

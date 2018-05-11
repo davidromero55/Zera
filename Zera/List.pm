@@ -372,10 +372,10 @@ sub get_columns {
             			if(($i+1) eq $self->param("zl_order")){
             			    if($self->param("zl_side") eq "0"){
                 				$col_label =       $self->a({href=>$self->{script} . "?zl_order=".($i+1)."&zl_side=1&zl_page=" . $self->param("zl_page") . "&zl_list=" . $self->{name} . $self->{transit_params}},
-                                                            $col_label . '<i class="material-icons md-18">arrow_downward</i>');
+                                                            $col_label . '<i class="fas fa-arrow-down"></i>');
             			    }elsif($self->param("zl_side") eq "1"){
                 				$col_label =  $self->a({href=>$self->{script} . "?zl_order=".($i+1)."&zl_side=0&zl_page=" . $self->param("zl_page") . "&zl_list=" . $self->{name} . $self->{transit_params}},
-                                                       $col_label . '<i class="material-icons md-18">arrow_upward</i>');
+                                                       $col_label . '<i class="fas fa-arrow-up"></i>');
             			    }
             			}else{
             			    $col_label = $self->a({href=>$self->{script} . "?zl_order=".($i+1)."&zl_side=0&zl_page=" . $self->param("zl_page") . "&zl_list=" . $self->{name} . $self->{transit_params}},$col_label);
@@ -464,14 +464,14 @@ sub print_detail {
                     }elsif($self->{on_off_column} and $self->{columns}{names}[$i] eq $self->{on_off_column}){
                         my $cell = '';
                         if($rec->{$self->{columns}{names}[$i]}){
-                            $cell .= '<i class="material-icons">check_box</i>';
+                            $cell .= '<i class="fas fa-check-circle active"></i>';
                             #$cell .= CGI::button(
                             #    -class=> 'cg-on',
                             #    -value=> ' ',
                             #    -onclick=>"document.location.href='" . $self->{link}{location} . "?_zl_action=off&" . $self->{link}{key} . "=" .
                             #        $rec->{$self->{link}{key}} . "$self->{transit_params}';");
                         }else{
-                            $cell .= '<i class="material-icons">check_box_outline_blank</i>';
+                            $cell .= '<i class="fas fa-circle inactive"></i>';
                             #$cell .= CGI::button(
                             #    -class=> 'cg-off',
                             #    -value=> '',

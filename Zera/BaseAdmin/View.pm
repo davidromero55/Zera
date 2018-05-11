@@ -99,6 +99,11 @@ sub selectrow_hashref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
 }
 
+sub last_insert_id {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->last_insert_id('','',shift,shift);
+}
+
 sub selectrow_array {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
@@ -171,7 +176,7 @@ sub set_add_btn {
     my $self = shift;
     my $url   = shift;
     my $label = shift || 'Add';
-    $self->add_btn($url, $label,'btn btn-primary text-white','add_circle');
+    $self->add_btn($url, $label,'btn btn-primary text-white','plus-circle');
 }
 
 sub add_search_box {
@@ -186,7 +191,7 @@ sub add_search_box {
     $value = '' if(!(defined $self->param('zl_q')));
     $self->{Zera}->{_PAGE}->{search_url} = $url;
     $self->{Zera}->{_PAGE}->{search_box} = $self->_tag('input', {type=>"text", class=>"form-control", value=>$value, name=>"zl_q", id=>"zl_q", placeholder=>$placeholder});
-    $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('button',{type=>"submit", class=>"btn btn-secondary"},'<i class="material-icons md-18">search</i>');
+    $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('button',{type=>"submit", class=>"btn btn-secondary"},'<i class="fas fa-search"></i>');
 }
 
 sub add_btn {
@@ -196,7 +201,7 @@ sub add_btn {
     my $class = shift || 'btn btn-secondary text-white';
     my $icon  = shift || '';
 
-    $label = '<i class="material-icons md-18">' . $icon . '</i> ' . $label if($icon);
+    $label = '<i class="fas fa-' . $icon . '"></i> ' . $label if($icon);
     $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('a',{class=>$class, href=>$url},$label);
 }
 

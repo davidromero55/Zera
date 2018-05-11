@@ -99,6 +99,11 @@ sub selectrow_hashref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
 }
 
+sub last_insert_id {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->last_insert_id('','',shift,shift);
+}
+
 sub selectrow_array {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
@@ -125,6 +130,7 @@ sub render_template {
         $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
     }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
+    }elsif(-e ($template)){
     }else{
         $self->add_msg('danger','Template ' . $template . ' not found.');
         return $self->{Zera}->get_msg();
