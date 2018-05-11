@@ -2,7 +2,7 @@ echo -n "Please, write your Database name: "
 read DBNAME
 echo -n "Please, write your DataBase Username: "
 read DBUSER
-echo -n "Please, write a password for your database user: "
+echo -n "Please, write a password for your database user (be sure to follow MySQL password requeriments): "
 read -s DBPASS
 # create random password
 
