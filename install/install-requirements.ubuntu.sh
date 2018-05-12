@@ -9,7 +9,6 @@ apt-get install build-essential -y
 apt-get install apache2 -y
 apt-get install mysql-server -y
 apt-get install libmysqlclient-dev -y
-#apt-get install expect -y
 #apt-get install git -y
 #git --version
 #git clone https://github.com/Alt180/Zera.git
@@ -30,9 +29,5 @@ yes | rm -r install
 yes | rm .gitignore
 chown -R www-data:www-data *
 chmod 755 index.pl
-#firewall-cmd --permanent --add-port=80/tcp
-#firewall-cmd --reload
-#(echo y;echo sudo;echo y; echo exit)|cpan
 (echo y; echo exit)|cpan
 yes | cpan install CGI::Minimal Template JSON Switch Email::Sender::Simple MIME::Entity Math::Round Apache::Session::MySQL DBI DBD::mysql Number::Format
-#reboot
