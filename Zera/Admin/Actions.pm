@@ -102,7 +102,7 @@ sub do_forgot_password {
 
             if(!$sent){
                 $results->{success} = 0;
-                $results->{redirect} = '/User/Msg';
+                $results->{redirect} = '/Admin/Msg';
                 return $results;
             }
         }
@@ -163,13 +163,13 @@ sub do_forgot_password {
                 sha384_hex($conf->{Security}->{Key} . $new_password), $user->{user_id});
                 $self->add_msg('success','Your new password is ready. now you can login into your account.');
                 $results->{success} = 0;
-                $results->{redirect} = '/User/Msg';
+                $results->{redirect} = '/Admin/Msg';
                 return $results;
 
         }else{
             $self->add_msg('danger','Your key is not valid, please try again.');
             $results->{success} = 0;
-            $results->{redirect} = '/User/Msg';
+            $results->{redirect} = '/Admin/Msg';
             return $results;
         }
     }
