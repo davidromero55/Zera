@@ -1,4 +1,4 @@
-package Zera::HelloWorld::View;
+package Zera::PublicHelloWorld::View;
 
 use Zera::Conf;
 use base 'Zera::Base::View';

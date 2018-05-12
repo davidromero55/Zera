@@ -1,4 +1,4 @@
-package Zera::HelloWorld::Actions;
+package Zera::PublicHelloWorld::Actions;
 
 use strict;
 use JSON;
