@@ -9,23 +9,41 @@ TODO
     Active/inactive flag by category
     Check for childs on delete
     Sort order
+    Live buttons
+    Search box (we need to pass transit_params)
+    Public search
+
+# Blog
+    Live buttons
+    Tags or categories.
+    Next and previous article navigation.
+    Search.
+    Display category.
+
+
+# Pages
+    Live buttons
+
+# API-Rest
+
+# Clear template after install
+
+# Charts Module
+
+# FastCGI
+
+# Cache
+
+# Module wizards
+    Module creator wizard !!!.
+    Form creator wizard !!!.
+    List creator wizard !!!.
+    Template creator wizard !!!.
+    Report creator wizard !!!
+    Chart creator wizard !!!
+
+# OpenGraph
 
 ####################################
   BETA
 ---------
-
-Docs Module
-  - Guides.
-  - Reference.
-
-Module creator wizard !!!.
-Form creator wizard !!!.
-List creator wizard !!!.
-Template creator wizard !!!.
-Report creator wizard !!!
-
-Blog
-  - Tags or categories.
-  - Next and previous article navigation.
-  - Search.
-  - Display category.
