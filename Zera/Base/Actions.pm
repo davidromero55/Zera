@@ -24,6 +24,19 @@ sub _init {
     my $self = shift;
 }
 
+# Session functions
+sub sess {
+    my $self = shift;
+    my $name = shift;
+    my $value = shift;
+
+    if(defined $value){
+        $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
+    }else{
+        return $self->{Zera}->{_SESS}->{_sess}{$name};
+    }
+}
+
 # Request functions
 sub param {
     my $self = shift;

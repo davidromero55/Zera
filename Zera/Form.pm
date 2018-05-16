@@ -267,14 +267,16 @@ sub _get_field {
                 next if($key eq 'override');
                 next if($key eq 'selectname');
                 next if($key eq 'label');
+                next if($key eq 'value');
                 if($key eq 'options'){
                     foreach my $option(@{$self->{fields}->{$field_name}->{$key}}){
-                        $field_options .= '<option>'.$option.'</option>';
+                        $field_options .= '<option';
+                        $field_options .= (($option eq $self->{fields}->{$field_name}->{value}) ? ' selected="1"':'');
+                        $field_options .= '>'.$option.'</option>';
                     }
                 }else{
                     $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
                 }
-
             }
 
             $field_html  = '<select name='.$field_name.'  '.$field_html.'>';

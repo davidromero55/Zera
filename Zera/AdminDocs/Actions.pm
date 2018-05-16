@@ -87,7 +87,7 @@ sub do_edit_category {
         $self->param('category_id',$category_id);
         my $parent_id = $self->param('parent_id') || '0';
         $parent_id =~ s/\D//g;
-        $self->param('$parent_id',$parent_id);
+        $self->param('parent_id',($parent_id || 0));
 
         # Prevent URL duplicates
         my $exist = $self->selectrow_array(
