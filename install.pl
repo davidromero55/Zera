@@ -60,7 +60,7 @@ sub welcome_template {
         $welcome =~ s/<% content %>/$errors_html/;
     }else{
         my $next_html = q|
-        <div class="alert alert-success" role="alert">Looks like you have all the stuff we need.!!!</div>
+        <div class="alert alert-success" role="alert">Looks like you have all the stuff we need!!!</div>
         <div style="margin-top:40px" class="form-group">
             <div class="col-sm-12 controls">
                 <a href="install.pl?View=User" class="btn btn-primary col">Continue</a>
