@@ -242,7 +242,7 @@ sub do_clean {
         require File::Path;
 
         # Delete Files
-        my @files = ('install.pl','ZeraInstall.pm','INSTALL.json','LICENSE','README.md','TODO.txt');
+        my @files = ('install.pl','ZeraInstall.pm','Zera/INSTALL.json','LICENSE','README.md','TODO.txt');
         my @dirs = ('install','testing','Zera/Install','templates/ZeraInstall');
 
         foreach my $file (@files){
