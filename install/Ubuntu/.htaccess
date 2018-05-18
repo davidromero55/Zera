@@ -1,5 +1,5 @@
 #/var/www/html/.htaccess
-RewriteEngine on
+RewriteEngine On
 RewriteRule ^$ /index.pl?Controller=Blog [L,QSA]
 RewriteRule ^/$ /index.pl?Controller=Blog [L,QSA]
 RewriteRule ^/([A-Z][A-Za-z]+)$ /index.pl?&Controller=$1 [L,QSA]

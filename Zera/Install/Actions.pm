@@ -243,7 +243,7 @@ sub do_clean {
 
         # Delete Files
         my @files = ('install.pl','ZeraInstall.pm','Zera/INSTALL.json','LICENSE','README.md','TODO.txt');
-        my @dirs = ('install','testing','Zera/Install','templates/ZeraInstall');
+        my @dirs = ('Zera/Install','templates/ZeraInstall');
 
         foreach my $file (@files){
             unlink $file;

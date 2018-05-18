@@ -23,6 +23,7 @@ yes | cp /install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
 cp -r * /var/www/html
 cd /var/www/html
 yes | rm -r install
+yes | rm -r testing
 chown -R apache:apache *
 chmod 755 index.pl
 firewall-cmd --permanent --add-port=80/tcp
