@@ -26,6 +26,7 @@ service apache2 restart
 cp -r * /var/www/html
 cd /var/www/html
 yes | rm -r install
+yes | rm -r testing
 yes | rm .gitignore
 chown -R www-data:www-data *
 chmod 755 index.pl
