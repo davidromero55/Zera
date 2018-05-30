@@ -25,6 +25,7 @@ a2enmod dbd.load
 service apache2 restart
 cp -r * /var/www/html
 cd /var/www/html
+mkdir -p data/img
 yes | rm -r install
 yes | rm -r testing
 yes | rm .gitignore

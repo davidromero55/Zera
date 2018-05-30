@@ -22,6 +22,7 @@ sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
 yes | cp /install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
 cp -r * /var/www/html
 cd /var/www/html
+mkdir -p data/img
 yes | rm -r install
 yes | rm -r testing
 chown -R apache:apache *
