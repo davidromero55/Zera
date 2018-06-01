@@ -1,4 +1,4 @@
-package Zera::AdminBanner::Actions;
+package Zera::AdminBanners::Actions;
 
 use strict;
 use JSON;
@@ -25,7 +25,7 @@ sub do_edit {
         }
 
         my $display_options = {};
-        my $image = $self->upload_file('image', 'img');
+        my $image = $self->upload_file('media', 'img');
         if($image){
             $display_options->{image} = '/data/img/'.$image;
         }
@@ -33,14 +33,22 @@ sub do_edit {
         eval {
             if(int($self->param('banner_id'))){
                 # Update
-                $self->dbh_do("UPDATE banners SET name=?, media=?, code=?, active=?, publish_from=?, publish_to=? " .
-                                 "WHERE banner_id=? AND module='Banner'",{},
-                                 $self->param('name'), $self->param('media'), $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'));
+                $self->dbh_do("UPDATE banners SET name=?, code=?, active=?, publish_from=?, publish_to=? " .
+                                 "WHERE banner_id=?",{},
+                                 $self->param('name'), $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'), $self->param('banner_id'));
+               if($image){
+                 my $oldimage = $self->selectrow_hashref("SELECT media FROM banners WHERE banner_id = ?", {}, $self->param('banner_id'));
+                 $self->add_msg("info", $oldimage->{media});
+                 unlink "data/img/$oldimage->{media}" if($oldimage->{media});
+                 $self->dbh_do("UPDATE banners SET media=? " .
+                                  "WHERE banner_id=?",{},
+                                  $image, $self->param('banner_id'));
+               }
             }else{
                 # Insert
                 $self->dbh_do("INSERT INTO banners (group_id, name, media, code, active, publish_from, publish_to) " .
                                  "VALUES (?,?,?,?,?,?,?)",{},
-                                 $self->param('group_id'), $self->param('name'), $self->param('media'), $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'));
+                                 $self->param('group_id'), $self->param('name'), $image, $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'));
             }
         };
         if($@){
@@ -48,13 +56,16 @@ sub do_edit {
             $results->{error} = 1;
             return $results;
         }else{
-            $results->{redirect} = '/AdminBanner';
+            $results->{redirect} = '/AdminBanners';
             $results->{success} = 1;
             return $results;
         }
     }elsif($self->param('_submit') eq 'Delete'){
         eval {
-            $self->dbh_do("DELETE FROM banners WHERE banner_id=? AND module='Banner'",{},
+            my $oldimage = $self->selectrow_hashref("SELECT media FROM banners WHERE banner_id = ?", {}, $self->param('banner_id'));
+            $self->add_msg("info", $oldimage->{media});
+            unlink "data/img/$oldimage->{media}" if($oldimage->{media});
+            $self->dbh_do("DELETE FROM banners WHERE banner_id=?",{},
                              $self->param('banner_id'));
         };
         if($@){
@@ -62,7 +73,7 @@ sub do_edit {
             $results->{error} = 1;
             return $results;
         }else{
-            $results->{redirect} = '/AdminBanner';
+            $results->{redirect} = '/AdminBanners';
             $results->{success} = 1;
             return $results;
         }
@@ -96,14 +107,14 @@ sub do_group_edit {
         eval {
             if(int($self->param('group_id'))){
                 # Update
-                $self->dbh_do("UPDATE banners_groups SET name=?, type=? " .
-                                 "WHERE group_id=? AND module='Banner'",{},
-                                 $self->param('name'), $self->param('type'));
+                $self->dbh_do("UPDATE banners_groups SET name=?, group_type=? " .
+                                 "WHERE group_id=?",{},
+                                 $self->param('name'), $self->param('group_type'));
             }else{
                 # Insert
                 $self->dbh_do("INSERT INTO banners_groups (name, group_type) " .
                                  "VALUES (?,?)",{},
-                                 $self->param('name'), $self->param('type'));
+                                 $self->param('name'), $self->param('group_type'));
             }
         };
         if($@){
@@ -111,13 +122,13 @@ sub do_group_edit {
             $results->{error} = 1;
             return $results;
         }else{
-            $results->{redirect} = '/AdminBanner';
+            $results->{redirect} = '/AdminBanners';
             $results->{success} = 1;
             return $results;
         }
     }elsif($self->param('_submit') eq 'Delete'){
         eval {
-            $self->dbh_do("DELETE FROM banners_groups WHERE group_id=? AND module='Banner'",{},
+            $self->dbh_do("DELETE FROM banners_groups WHERE group_id=?",{},
                              $self->param('group_id'));
         };
         if($@){
@@ -125,7 +136,7 @@ sub do_group_edit {
             $results->{error} = 1;
             return $results;
         }else{
-            $results->{redirect} = '/AdminBanner';
+            $results->{redirect} = '/AdminBanners';
             $results->{success} = 1;
             return $results;
         }

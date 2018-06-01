@@ -1,4 +1,4 @@
-package Zera::AdminBanner::Controller;
+package Zera::AdminBanners::Controller;
 
 use base 'Zera::BaseAdmin::Controller';
 

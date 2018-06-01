@@ -1,4 +1,4 @@
-package Zera::AdminBanner::View;
+package Zera::AdminBanners::View;
 
 use JSON;
 use base 'Zera::BaseAdmin::View';
@@ -7,15 +7,15 @@ use base 'Zera::BaseAdmin::View';
 sub display_home {
     my $self = shift;
 
-    $self->set_title('Banner');
+    $self->set_title('Banners');
     $self->add_search_box();
-    $self->set_add_btn('/AdminBanner/Edit/New', 'Banner');
-    $self->set_add_btn('/AdminBanner/GroupEdit/New', 'Group');
+    $self->set_add_btn('/AdminBanners/Edit/New', 'Add');
+    $self->add_btn('/AdminBanners/Groups', 'Groups');
 
-    my $where = "e.module='Banner'";
+    my $where;
     my @params;
     if($self->param('zl_q')){
-        $where .= " AND name LIKE ? ";
+        $where .= " name LIKE ? ";
         push(@params,'%' . $self->param('zl_q') .'%');
     }
     my $list = Zera::List->new($self->{Zera},{
@@ -30,7 +30,7 @@ sub display_home {
         link => {
             key => "banner_id",
             hidde_key_col => 1,
-            location => '/AdminBanner/Edit',
+            location => '/AdminBanners/Edit',
             transit_params => {},
         },
         debug => 1,
@@ -58,15 +58,15 @@ sub display_edit {
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Banner') : $self->set_title('Edit Banner');
 
     # Helper buttons
-    $self->add_btn('/AdminBanner','Back');
+    $self->add_btn('/AdminBanners','Back');
 
     # JS
     $self->add_jsfile('admin-blog');
 
     # Values
     if($self->param('banner_id') ne 'New'){
-        $values = $self->selectrow_hashref("SELECT * FROM banners WHERE banner_id=? AND module='Banner'",{},$self->param('banner_id'));
-        $values->{display_options} = decode_json($values->{display_options});
+        $values = $self->selectrow_hashref("SELECT * FROM banners WHERE banner_id=?",{},$self->param('banner_id'));
+        #$values->{display_options} = decode_json($values->{display_options});
         push(@submit, 'Delete');
     }else{
         $values = {
@@ -78,13 +78,15 @@ sub display_edit {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/group_id name media code active publish_from publish_to /],
+        fields   => [qw/banner_id group_id name media code active publish_from publish_to /],
         submits  => \@submit,
         values   => $values,
     });
 
-    #$form->field('group_id',{type=>'hidden'});
-    $form->field('group_id',{span=>'col-md-3', required=>1});
+    my %groups = $self->selectbox_data("SELECT group_id, name FROM banners_groups");
+    $form->field('banner_id',{type=>'hidden'});
+    #$form->field('group_id',{span=>'col-md-3', required=>1});
+    $form->field('group_id',{placeholder=> 'Group', span=>'col-md-3', label=> 'Group', type=>'select', selectname => 'Select a group', options => $groups{values}, labels => $groups{labels}});
     $form->field('name',{span=>'col-md-9', required=>1});
     #$form->field('url',{span=>'col-md-6', required=>1, readonly=>1});
     #$form->field('keywords',{span=>'col-md-6', required=>1});
@@ -108,17 +110,18 @@ sub display_groups {
 
     $self->set_title('Banner Groups');
     $self->add_search_box();
-    $self->set_add_btn('/AdminBanner/GroupEdit/New');
+    $self->set_add_btn('/AdminBanners/GroupEdit/New');
+    $self->add_btn('/AdminBanners','Back to banners');
 
-    my $where = "e.module='Banner'";
+    my $where;
     my @params;
     if($self->param('zl_q')){
-        $where .= " AND name LIKE ? ";
+        $where .= " name LIKE ? ";
         push(@params,'%' . $self->param('zl_q') .'%');
     }
     my $list = Zera::List->new($self->{Zera},{
         sql => {
-            select => "group_id, name, type",
+            select => "group_id, name, group_type ",
             from =>"banners_groups e",
             order_by => "",
             where => $where,
@@ -128,7 +131,7 @@ sub display_groups {
         link => {
             key => "group_id",
             hidde_key_col => 1,
-            location => '/AdminBanner/GroupEdit',
+            location => '/AdminBanners/GroupEdit',
             transit_params => {},
         },
         debug => 1,
@@ -156,15 +159,15 @@ sub display_group_edit {
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Banner Group') : $self->set_title('Edit Banner Group');
 
     # Helper buttons
-    $self->add_btn('/AdminBanner','Back');
+    $self->add_btn('/AdminBanners/Groups','Back');
 
     # JS
     $self->add_jsfile('admin-blog');
 
     # Values
     if($self->param('group_id') ne 'New'){
-        $values = $self->selectrow_hashref("SELECT * FROM banners_groups WHERE group_id=? AND module='Banner'",{},$self->param('group_id'));
-        $values->{display_options} = decode_json($values->{display_options});
+        $values = $self->selectrow_hashref("SELECT * FROM banners_groups WHERE group_id=?",{},$self->param('group_id'));
+        #$values->{display_options} = decode_json($values->{display_options});
         push(@submit, 'Delete');
     }else{
         $values = {
@@ -176,14 +179,14 @@ sub display_group_edit {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/name type /],
+        fields   => [qw/name group_type /],
         submits  => \@submit,
         values   => $values,
     });
 
     #$form->field('group_id',{span=>'col-md-3', required=>1});
     $form->field('name',{span=>'col-md-8', required=>1});
-    $form->field('type',{span=>'col-md-4', required=>1});
+    $form->field('group_type',{span=>'col-md-4', required=>1});
 
     $form->submit('Delete',{class=>'btn btn-danger'});
 

@@ -241,4 +241,26 @@ sub get_image_options {
     return $image_html;
 }
 
+sub selectbox_data {
+    my $self = shift;
+    my $select = shift || "";
+    my $params = shift;
+    my %data = (values => [], labels => {});
+    my $sth = $self->{Zera}->{_DBH}->{_dbh}->prepare($select);
+    if($params){
+        if(ref($params) eq 'ARRAY'){
+            $sth->execute(@$params);
+        }else{
+            $sth->execute($params);
+        }
+    }else{
+        $sth->execute();
+    }
+    while ( my $rec = $sth->fetchrow_arrayref() ) {
+        push(@{$data{values}},$rec->[0]);
+        $data{labels}{$rec->[0]} = $rec->[1];
+    }
+    return %data;
+}
+
 1;
