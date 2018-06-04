@@ -19,7 +19,7 @@ systemctl enable httpd.service
 systemctl start mariadb
 systemctl enable mariadb
 sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
-yes | cp /install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
+yes | cp install/CentOS7/httpd.conf /etc/httpd/conf/httpd.conf
 cp -r * /var/www/html
 cd /var/www/html
 yes | rm -r install
@@ -28,8 +28,9 @@ chown -R apache:apache *
 chmod 755 index.pl
 firewall-cmd --permanent --add-port=80/tcp
 firewall-cmd --reload
-yum install perl-CPAN -y
-(echo y;echo sudo;echo y; echo exit)|cpan
-yes | cpan install CGI::Minimal Email::Sender:Simple MIME::Entity Apache::Session Number::Format JSON::XS Math::Round
+#yum install perl-CPAN -y
+#(echo y;echo sudo;echo y; echo exit)|cpan
+curl -L http://cpanmin.us | perl - --self-upgrade
+yes | cpanm install CGI::Minimal Email::Sender::Simple MIME::Entity Apache::Session Number::Format JSON::XS Math::Round
 systemctl restart httpd.service
 reboot
