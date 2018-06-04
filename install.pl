@@ -101,4 +101,9 @@ sub create_conf_pm {
         print CONF $conf;
         close CONF;
     }
+    # if not exist, create a new data/img directory
+    if(!(-e ('data/img'))){
+      mkdir 'data', 0755;
+      mkdir 'data/img', 0755;
+    }
 }
