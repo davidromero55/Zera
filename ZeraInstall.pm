@@ -170,11 +170,13 @@ sub get_installation_settings {
 }
 
 sub set_installation_settings {
+  if(defined $self->{_CONF}->{User}){
     my $self = shift;
     open(FILE,'>Zera/INSTALL.json');
     my $json = encode_json($self->{_CONF});
     print FILE $json;
     close FILE;
+  }
 }
 
 
