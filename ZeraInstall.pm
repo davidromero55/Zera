@@ -155,8 +155,8 @@ sub get_installation_settings {
         }
     };
 
-    if(-e ('INSTALL.json')){
-        open(FILE,'INSTALL.json');
+    if(-e ('Zera/INSTALL.json')){
+        open(FILE,'Zera/INSTALL.json');
         while (<FILE>) {
             $file .= $_;
         }
@@ -170,11 +170,13 @@ sub get_installation_settings {
 }
 
 sub set_installation_settings {
+  if(defined $self->{_CONF}->{User}){
     my $self = shift;
-    open(FILE,'>INSTALL.json');
+    open(FILE,'>Zera/INSTALL.json');
     my $json = encode_json($self->{_CONF});
     print FILE $json;
     close FILE;
+  }
 }
 
 

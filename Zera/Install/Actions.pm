@@ -59,7 +59,7 @@ sub do_database {
         }
 
 
-        if(length($database) < 3){
+        if(length($database) < 2){
             $self->add_msg('warning','Please enter your mysql database name.');
             $results->{errors} ++;
         }
@@ -67,7 +67,7 @@ sub do_database {
             $self->add_msg('warning','Please enter a valid database name.');
             $results->{errors} ++;
         }
-        if(length($username) < 3){
+        if(length($username) < 2){
             $self->add_msg('warning','Please enter your username.');
             $results->{errors} ++;
         }
@@ -242,8 +242,8 @@ sub do_clean {
         require File::Path;
 
         # Delete Files
-        my @files = ('install.pl','ZeraInstall.pm','INSTALL.json','LICENSE','README.md','TODO.txt');
-        my @dirs = ('install','testing','Zera/Install','templates/ZeraInstall');
+        my @files = ('install.pl','ZeraInstall.pm','Zera/INSTALL.json','LICENSE','README.md','TODO.txt');
+        my @dirs = ('Zera/Install','templates/ZeraInstall');
 
         foreach my $file (@files){
             unlink $file;

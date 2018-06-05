@@ -10,7 +10,7 @@ $(document).ready(function(){
         form.classList.add('was-validated');
       }, false);
     });
-    
+
     if ( $( ".wysiwyg" ).length ) {
         tinymce.init({
             selector:'.wysiwyg',
@@ -48,7 +48,7 @@ $(document).ready(function(){
                 {title: 'h4', block: 'h4'},
                 {title: 'h5', block: 'h5'},
                 {title: 'h6', block: 'h6'}
-              ]},  
+              ]},
               {title : 'Bold Header', block:'h1', styles : {'font-weight': '700'}},
               {title : 'Secondary Text', block:'h5', styles : {color: '#6c757d'}},
             ]
@@ -58,6 +58,8 @@ $(document).ready(function(){
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+    } else {
+      console.log("Error in user datepicker")
     }
 
 });
