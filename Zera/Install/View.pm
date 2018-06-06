@@ -50,7 +50,7 @@ sub display_database {
 
     # Form
     my $form = $self->form({
-        action   => 'install.pl?View=Database',
+        action   => 'Zera/Install/install.pl?View=Database',
         method   => 'POST',
         fields   => [qw/Host Port Database Username Password Timezone/],
         submits  => \@submit,
@@ -86,7 +86,7 @@ sub display_website {
 
     # Form
     my $form = $self->form({
-        action   => 'install.pl?View=Website',
+        action   => 'Zera/Install/install.pl?View=Website',
         method   => 'POST',
         fields   => [qw/Name URL/],
         submits  => \@submit,
@@ -111,7 +111,7 @@ sub display_confirm {
 
     # Form
     my $form = $self->form({
-        action   => 'install.pl?View=Confirm',
+        action   => 'Zera/Install/install.pl?View=Confirm',
         method   => 'POST',
         fields   => [qw//],
         submits  => \@submit,
@@ -132,7 +132,7 @@ sub display_clean {
 
     # Form
     my $form = $self->form({
-        action   => 'install.pl?View=Clean',
+        action   => 'Zera/Install/install.pl?View=Clean',
         method   => 'POST',
         fields   => [qw//],
         submits  => \@submit,

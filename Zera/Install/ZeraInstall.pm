@@ -1,4 +1,4 @@
-package ZeraInstall;
+package Zera::Install::ZeraInstall;
 
 use CGI::Minimal;
 use JSON::XS;
@@ -155,8 +155,8 @@ sub get_installation_settings {
         }
     };
 
-    if(-e ('Zera/INSTALL.json')){
-        open(FILE,'Zera/INSTALL.json');
+    if(-e ('Zera/Install/INSTALL.json')){
+        open(FILE,'Zera/Install/INSTALL.json');
         while (<FILE>) {
             $file .= $_;
         }
@@ -170,9 +170,9 @@ sub get_installation_settings {
 }
 
 sub set_installation_settings {
+  my $self = shift;
   if(defined $self->{_CONF}->{User}){
-    my $self = shift;
-    open(FILE,'>Zera/INSTALL.json');
+    open(FILE,'>Zera/Install/INSTALL.json');
     my $json = encode_json($self->{_CONF});
     print FILE $json;
     close FILE;
