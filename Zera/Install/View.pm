@@ -21,7 +21,7 @@ sub display_user {
 
     # Title
     $self->set_title('User settings');
-    $self->add_btn('/install.pl','Back');
+    $self->add_btn('/Zera/Install/install.pl','Back');
 
     # Form
     my $form = $self->form({
@@ -46,11 +46,11 @@ sub display_database {
 
     # Title
     $self->set_title('Mysql database settings');
-    $self->add_btn('/install.pl?View=User','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=User','Back');
 
     # Form
     my $form = $self->form({
-        action   => 'Zera/Install/install.pl?View=Database',
+        action   => 'install.pl?View=Database',
         method   => 'POST',
         fields   => [qw/Host Port Database Username Password Timezone/],
         submits  => \@submit,
@@ -82,11 +82,11 @@ sub display_website {
 
     # Title
     $self->set_title('Website settings');
-    $self->add_btn('/install.pl?View=Database','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=Database','Back');
 
     # Form
     my $form = $self->form({
-        action   => 'Zera/Install/install.pl?View=Website',
+        action   => 'install.pl?View=Website',
         method   => 'POST',
         fields   => [qw/Name URL/],
         submits  => \@submit,
@@ -107,11 +107,11 @@ sub display_confirm {
 
     # Title
     $self->set_title('Confirm your settings');
-    $self->add_btn('/install.pl?View=Website','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=Website','Back');
 
     # Form
     my $form = $self->form({
-        action   => 'Zera/Install/install.pl?View=Confirm',
+        action   => 'install.pl?View=Confirm',
         method   => 'POST',
         fields   => [qw//],
         submits  => \@submit,
@@ -132,7 +132,7 @@ sub display_clean {
 
     # Form
     my $form = $self->form({
-        action   => 'Zera/Install/install.pl?View=Clean',
+        action   => 'install.pl?View=Clean',
         method   => 'POST',
         fields   => [qw//],
         submits  => \@submit,
