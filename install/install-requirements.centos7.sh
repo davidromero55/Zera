@@ -31,6 +31,6 @@ firewall-cmd --reload
 yum install perl-CPAN -y
 #(echo y;echo sudo;echo y; echo exit)|cpan
 curl -L http://cpanmin.us | perl - --self-upgrade
-yes | cpanm CGI::Minimal Email::Sender::Simple MIME::Entity Apache::Session Number::Format JSON::XS Math::Round
+yes | cpanm CGI::Minimal Email::Sender::Simple MIME::Entity Apache::Session Number::Format JSON::XS Math::Round IO::Socket::SSL MIME::Base64 Authen::SASL
 systemctl restart httpd.service
 reboot

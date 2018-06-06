@@ -31,4 +31,4 @@ yes | rm .gitignore
 chown -R www-data:www-data *
 chmod 755 index.pl
 (echo y; echo exit)|cpan
-yes | cpan install CGI::Minimal Template JSON Switch Email::Sender::Simple MIME::Entity Math::Round Apache::Session::MySQL DBI DBD::mysql Number::Format
+yes | cpan install CGI::Minimal Template JSON Switch Email::Sender::Simple MIME::Entity Math::Round Apache::Session::MySQL DBI DBD::mysql Number::Format IO::Socket::SSL MIME::Base64 Authen::SASL
