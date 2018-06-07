@@ -14,6 +14,7 @@ sub new {
 
     # Init app ENV
     $self->_init();
+    $self->after_init();
 
     return $self;
 }
