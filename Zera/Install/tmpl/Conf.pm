@@ -21,10 +21,14 @@ $conf->{DBI} = {
 };
 
 $conf->{App} = {
-    Name      => '<% Website.Name %>',
-    Version   => '0.1',
-    URL       => '<% Website.URL %>',
-    Language  => 'en_US',
+   Name      => 'Pointscard',
+   Version   => '0.1',
+   URL       => 'local.app.pointscard.win',
+   URLLink   => 'http://local.app.marketero.io',
+   Copyright => 'Xaandia Tecnologias Digitales SA de CV',
+   Language  => 'en_US',
+   TimeZone  => 'US/Central',
+   Resources => '/var/www/vhosts/zera.tech/httpdocs/',
 };
 
 $conf->{Cookie} = {
