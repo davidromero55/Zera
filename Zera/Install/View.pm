@@ -21,7 +21,7 @@ sub display_user {
 
     # Title
     $self->set_title('User settings');
-    $self->add_btn('/install.pl','Back');
+    $self->add_btn('/Zera/Install/install.pl','Back');
 
     # Form
     my $form = $self->form({
@@ -46,7 +46,7 @@ sub display_database {
 
     # Title
     $self->set_title('Mysql database settings');
-    $self->add_btn('/install.pl?View=User','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=User','Back');
 
     # Form
     my $form = $self->form({
@@ -82,7 +82,7 @@ sub display_website {
 
     # Title
     $self->set_title('Website settings');
-    $self->add_btn('/install.pl?View=Database','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=Database','Back');
 
     # Form
     my $form = $self->form({
@@ -107,7 +107,7 @@ sub display_confirm {
 
     # Title
     $self->set_title('Confirm your settings');
-    $self->add_btn('/install.pl?View=Website','Back');
+    $self->add_btn('/Zera/Install/install.pl?View=Website','Back');
 
     # Form
     my $form = $self->form({

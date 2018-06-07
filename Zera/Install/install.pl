@@ -1,6 +1,7 @@
 #!/usr/bin/perl
-
 use strict;
+chdir ('../..');
+use lib ('Zera/Install');
 
 # Main vars
 my $required_modules = [
@@ -31,7 +32,7 @@ if(!$ENV{QUERY_STRING}){
     #foreach my $key (keys %ENV){
     #    print "$key = $ENV{$key}  <br>\n";
     #}
-    my $Zera = ZeraInstall->new();
+    my $Zera = Zera::Install::ZeraInstall->new();
     $Zera->run();
     exit 0;
 }
