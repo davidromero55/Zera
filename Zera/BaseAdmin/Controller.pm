@@ -90,4 +90,49 @@ sub param {
     return $self->{Zera}->{_VARS}->{$var};
 }
 
+# User messages
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+# Session functions
+sub sess {
+    my $self = shift;
+    my $name = shift;
+    my $value = shift;
+
+    if(defined $value){
+        $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
+    }else{
+        return $self->{Zera}->{_SESS}->{_sess}{$name};
+    }
+}
+
+# Database functions
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub last_insert_id {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->last_insert_id('','',shift,shift);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+}
+
 1;
