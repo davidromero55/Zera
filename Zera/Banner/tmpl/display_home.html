@@ -1,0 +1,23 @@
+<% FOREACH entry = entries %>
+        <div class="row">
+            <div class="col-12">
+                <div class="blog-item">
+                    <a href="/Docs/Faq/<% entry.url %>"><img src="<% entry.display_options.image %>" class="rounded img-fluid"/></a>
+                    <div class="row justify-content-md-center">
+                        <div class="col-10">
+                            <a href="/Docs/Faq/<% entry.url %>"><h2><% entry.title %></h2></a>
+                            <p><% entry.description %></p>
+                            <div class="blog-links row">
+                                <div class="col-6">
+                                    <a href="/Docs/Faq/<% entry.url %>" class="btn btn-outline-secondary">Read more</a>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p><% entry.date %> <i class="fas fa-hashtag"></i> CFDI</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<% END %>

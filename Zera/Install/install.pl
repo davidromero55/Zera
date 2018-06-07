@@ -1,6 +1,7 @@
 #!/usr/bin/perl
-
 use strict;
+chdir ('../..');
+use lib ('Zera/Install');
 
 # Main vars
 my $required_modules = [
@@ -31,7 +32,7 @@ if(!$ENV{QUERY_STRING}){
     #foreach my $key (keys %ENV){
     #    print "$key = $ENV{$key}  <br>\n";
     #}
-    my $Zera = ZeraInstall->new();
+    my $Zera = Zera::Install::ZeraInstall->new();
     $Zera->run();
     exit 0;
 }
@@ -100,5 +101,10 @@ sub create_conf_pm {
         open (CONF, '>Zera/Conf.pm');
         print CONF $conf;
         close CONF;
+    }
+    # if not exist, create a new data/img directory
+    if(!(-e ('data/img'))){
+      mkdir 'data', 0755;
+      mkdir 'data/img', 0755;
     }
 }

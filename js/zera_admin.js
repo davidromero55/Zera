@@ -52,7 +52,7 @@ $(document).ready(function(){
               ]},
               {title : 'Bold Header', block:'h1', styles : {'font-weight': '700'}},
               {title : 'Secondary Text', block:'h5', styles : {color: '#6c757d'}},
-              
+
             ]
         });
     }
@@ -60,6 +60,8 @@ $(document).ready(function(){
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+    } else {
+      console.log("Error in admin datepicker")
     }
 
 });

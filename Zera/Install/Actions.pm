@@ -33,7 +33,7 @@ sub do_user {
                 Email => $email,
             };
 
-            $results->{redirect} = '/install.pl?View=Database';
+            $results->{redirect} = '/Zera/Install/install.pl?View=Database';
             $results->{success} = 1;
             return $results;
         }
@@ -59,7 +59,7 @@ sub do_database {
         }
 
 
-        if(length($database) < 3){
+        if(length($database) < 2){
             $self->add_msg('warning','Please enter your mysql database name.');
             $results->{errors} ++;
         }
@@ -67,7 +67,7 @@ sub do_database {
             $self->add_msg('warning','Please enter a valid database name.');
             $results->{errors} ++;
         }
-        if(length($username) < 3){
+        if(length($username) < 2){
             $self->add_msg('warning','Please enter your username.');
             $results->{errors} ++;
         }
@@ -104,7 +104,7 @@ sub do_database {
                 Timezone => $self->param('Timezone'),
             };
 
-            $results->{redirect} = '/install.pl?View=Website';
+            $results->{redirect} = '/Zera/Install/install.pl?View=Website';
             $results->{success} = 1;
             return $results;
         }
@@ -138,7 +138,7 @@ sub do_website {
                 URL => $url,
             };
 
-            $results->{redirect} = '/install.pl?View=Confirm';
+            $results->{redirect} = '/Zera/Install/install.pl?View=Confirm';
             $results->{success} = 1;
             return $results;
         }
@@ -226,7 +226,7 @@ sub do_confirm {
             return $results;
         }else{
 
-            $results->{redirect} = '/install.pl?View=Clean';
+            $results->{redirect} = '/Zera/Install/install.pl?View=Clean';
             $results->{success} = 1;
 
             return $results;
@@ -242,15 +242,21 @@ sub do_clean {
         require File::Path;
 
         # Delete Files
-        my @files = ('install.pl','ZeraInstall.pm','INSTALL.json','LICENSE','README.md','TODO.txt');
-        my @dirs = ('install','testing','Zera/Install','templates/ZeraInstall');
+        #my @files = ('Zera/Install/install.pl','Zera/Install/ZeraInstall.pm','Zera/Install/INSTALL.json','Zera/Install/LICENSE','Zera/Install/README.md','Zera/Install/TODO.txt');
+        my @dirs = ('Zera/Install','templates/ZeraInstall');
 
-        foreach my $file (@files){
-            unlink $file;
-        }
+        undef $self->{Zera}->{_CONF}->{User}->{Password};
+        undef $self->{Zera}->{_CONF}->{Database};
+        undef $self->{Zera}->{_CONF}->{User};
+        undef $self->{Zera}->{_CONF}->{Website};
+
+
+        #foreach my $file (@files){
+            #unlink $file or die "$! $file";
+        #}
 
         foreach my $dir (@dirs){
-            File::Path::remove_tree($dir);
+            File::Path::remove_tree($dir) or die "$! $dir";
         }
 
         $results->{redirect} = '/Admin';

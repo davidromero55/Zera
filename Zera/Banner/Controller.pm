@@ -1,4 +1,5 @@
-package Zera::Install::Controller;
+package Zera::Banner::Controller;
 
 use base 'Zera::Base::Controller';
+
 1;
