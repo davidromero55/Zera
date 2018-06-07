@@ -95,8 +95,7 @@ sub do_forgot_password {
                  to => "$user->{name} <$user->{email}>",
                  subject => 'password-reset',
                  vars => {
-                     name => $user->{name},
-                     password_reset_link => $conf->{App}->{URLLink} . '/Admin/ForgotPassword/'.$key.$user->{user_id}
+                     name => $user->{name},                     password_reset_link => $conf->{App}->{URLLink} . '/Admin/ForgotPassword/'.$key.$user->{user_id}
                  }
              });
 
