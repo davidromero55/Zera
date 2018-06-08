@@ -224,4 +224,25 @@ sub zera_include_block{
     return $HTML;
 }
 
+sub get_component {
+    my $self = shift;
+    my $Controller = shift;
+    my $Component = shift;
+    my @params = @_;
+
+    $Controller =~s/\W//g;
+    $Component  =~s/\W//g;
+
+    # Load module
+    eval {
+        require "Zera/".$Controller ."/Components.pm";
+    };
+    if($@){
+        return $@;
+    }
+    my $module_name ='Zera::'.$Controller.'::Components';
+    my $Module = $module_name->new($self);
+    return $Module->get_component($Component, @params);
+}
+
 1;

@@ -1,6 +1,4 @@
-package Zera::Base::View;
-
-use JSON;
+package Zera::Base::Components;
 
 use Zera::Conf;
 use Zera::Com;
@@ -25,6 +23,7 @@ sub new {
 
 sub _init {
     my $self = shift;
+    $self->{Zera}->{component_name} = '';
 }
 
 # Session functions
@@ -52,29 +51,19 @@ sub param {
     }
 }
 
-sub get_view {
+sub get_component {
     my $self = shift;
-    my $sub_name = $self->param('View');
-    $sub_name =~ s/([A-Z])/_$1/g;
-    $sub_name =~ s/\W//g;
-    $sub_name = "display" . lc($sub_name);
-    if ($self->can($sub_name) ) {
-        $self->{Zera}->{sub_name} = $sub_name;
-        return $self->$sub_name();
-    } else {
-        $self->add_msg('danger',"sub '$sub_name' not defined.\n");
-        return $self->{Zera}->get_msg();
-    }
-}
+    my $component = shift;
+    my @params    = @_;
+    $component =~ s/\W//g;
 
-sub get_default_view {
-    my $self = shift;
-    my $sub_name = 'display_home';
+    my $sub_name = $component;
+    $sub_name = "component_" . $sub_name;
     if ($self->can($sub_name) ) {
-        $self->{Zera}->{sub_name} = $sub_name;
-        return $self->$sub_name();
+        $self->{Zera}->{component_name} = $sub_name;
+        return $self->$sub_name(@params);
     } else {
-        $self->add_msg('danger',"sub '$sub_name' not defined.\n");
+        $self->add_msg('danger',"Component '$sub_name' not defined.\n");
         return $self->{Zera}->get_msg();
     }
 }
@@ -123,11 +112,15 @@ sub dbh_do {
 sub render_template {
     my $self = shift;
     my $vars = shift;
-    my $template = shift || $self->{Zera}->{sub_name};
+    my $template = shift || $self->{Zera}->{component_name};
     my $HTML = '';
 
-    if(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
-        $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
+    my $dir =caller();
+    $dir =~ s/::/\//g;
+    $dir =~s/\/Components$//;
+
+    if(-e ($dir . '/tmpl/' . $template . '.html')){
+        $template = $dir . '/tmpl/' . $template . '.html';
     }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
     }elsif(-e ($template)){
@@ -153,29 +146,11 @@ sub form {
     return Zera::Form->new($self->{Zera}, $params);
 }
 
-sub set_title {
-    my $self = shift;
-    my $title = shift;
-    $self->{Zera}->{_PAGE}->{title} = $title;
-}
-
-sub set_keywords {
-    my $self = shift;
-    my $keywords = shift;
-    $self->{Zera}->{_PAGE}->{keywords} = $keywords;
-}
-
 sub set_page_attr {
     my $self = shift;
     my $attr = shift;
     my $val  = shift;
     $self->{Zera}->{_PAGE}->{$attr} = $val;
-}
-
-sub set_description {
-    my $self = shift;
-    my $description = shift;
-    $self->{Zera}->{_PAGE}->{description} = $description;
 }
 
 sub add_jsfile {
