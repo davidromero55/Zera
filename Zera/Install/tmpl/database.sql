@@ -265,18 +265,18 @@ UNLOCK TABLES;
 --
 -- Table structure for table `banners_groups`
 --
-DROP TABLE IF EXISTS 'banners_groups';
+DROP TABLE IF EXISTS banners_groups;
 CREATE TABLE `banners_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `group_type` varchar(45) NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `banners_groups`
 --
-DROP TABLE IF EXISTS 'banners';
+DROP TABLE IF EXISTS banners;
 CREATE TABLE `banners` (
   `banner_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
@@ -287,7 +287,7 @@ CREATE TABLE `banners` (
   `publish_from` date DEFAULT NULL,
   `publish_to` date DEFAULT NULL,
   PRIMARY KEY (`banner_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
