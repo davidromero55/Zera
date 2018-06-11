@@ -1,0 +1,20 @@
+# Module structure
+
+All the Zera implementations contain this 5 files.
+- Actions.pm
+- API.pm
+- Components.pm
+- Controller.pm
+- View.pm
+
+
+###### /Zera/ModuleName/Actions.pm
+This is the module to store the functions that do the work, update a database, exploit an API, work whit files, etc.
+###### /Zera/ModuleName/API.pm
+This is the module to store the API rest functions.
+###### /Zera/ModuleName/Components.pm
+This is the module to store the functions to display small special sections of a webpage.
+###### /Zera/ModuleName/Controller.pm
+This is the controller file where the special functions will be stored.
+###### /Zera/ModuleName/View.pm
+This is the module to store the functions to display a webpage.
