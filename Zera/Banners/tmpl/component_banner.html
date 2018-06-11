@@ -7,7 +7,9 @@
     <div class="carousel-inner">
         <% FOREACH banner = banners %>
         <div class="carousel-item<% IF loop.index() == 0 %> active<% END %>">
-            <img class="d-block w-100" src="/data/img/<% banner.media %>" alt="<% banner.name %>">
+            <% IF banner.url %><a href="<% banner.url %>"><% END %>
+                <img class="d-block w-100" src="/data/img/<% banner.media %>" alt="<% banner.name %>">
+            <% IF banner.url %></a><% END %>
         </div>
         <% END %>
     </div>

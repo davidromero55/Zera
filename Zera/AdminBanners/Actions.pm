@@ -33,9 +33,9 @@ sub do_edit {
         eval {
             if(int($self->param('banner_id'))){
                 # Update
-                $self->dbh_do("UPDATE banners SET name=?, code=?, active=?, publish_from=?, publish_to=? " .
+                $self->dbh_do("UPDATE banners SET name=?, url=?, code=?, active=?, publish_from=?, publish_to=? " .
                                  "WHERE banner_id=?",{},
-                                 $self->param('name'), $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'), $self->param('banner_id'));
+                                 $self->param('name'), $self->param('url'), $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'), $self->param('banner_id'));
                if($image){
                  my $oldimage = $self->selectrow_hashref("SELECT media FROM banners WHERE banner_id = ?", {}, $self->param('banner_id'));
                  $self->add_msg("info", $oldimage->{media});
@@ -46,9 +46,9 @@ sub do_edit {
                }
             }else{
                 # Insert
-                $self->dbh_do("INSERT INTO banners (group_id, name, media, code, active, publish_from, publish_to) " .
-                                 "VALUES (?,?,?,?,?,?,?)",{},
-                                 $self->param('group_id'), $self->param('name'), $image, $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'));
+                $self->dbh_do("INSERT INTO banners (group_id, name, url, media, code, active, publish_from, publish_to) " .
+                                 "VALUES (?,?,?,?,?,?,?,?)",{},
+                                 $self->param('group_id'), $self->param('name'), $self->param('url'), $image, $self->param('code'), ($self->param('active') || 0), $self->param('publish_from'), $self->param('publish_to'));
             }
         };
         if($@){

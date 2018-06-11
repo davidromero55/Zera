@@ -60,13 +60,9 @@ sub display_edit {
     # Helper buttons
     $self->add_btn('/AdminBanners','Back');
 
-    # JS
-    $self->add_jsfile('admin-blog');
-
     # Values
     if($self->param('banner_id') ne 'New'){
         $values = $self->selectrow_hashref("SELECT * FROM banners WHERE banner_id=?",{},$self->param('banner_id'));
-        #$values->{display_options} = decode_json($values->{display_options});
         push(@submit, 'Delete');
     }else{
         $values = {
@@ -78,19 +74,17 @@ sub display_edit {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/banner_id group_id name media code active publish_from publish_to /],
+        fields   => [qw/banner_id group_id name url media code publish_from publish_to active/],
         submits  => \@submit,
         values   => $values,
     });
 
     my %groups = $self->selectbox_data("SELECT group_id, name FROM banners_groups");
     $form->field('banner_id',{type=>'hidden'});
-    #$form->field('group_id',{span=>'col-md-3', required=>1});
-    $form->field('group_id',{placeholder=> 'Group', span=>'col-md-3', label=> 'Group', type=>'select', selectname => 'Select a group', options => $groups{values}, labels => $groups{labels}});
+    $form->field('group_id',{placeholder=> 'Group', span=>'col-md-3', label=> 'Group', type=>'select', selectname => 'Select a group', options => $groups{values}, labels => $groups{labels}, required=>1});
     $form->field('name',{span=>'col-md-9', required=>1});
-    #$form->field('url',{span=>'col-md-6', required=>1, readonly=>1});
-    #$form->field('keywords',{span=>'col-md-6', required=>1});
-    $form->field('media', {type=>'file', accept=>"image/x-png,image/gif,image/jpeg"});
+    $form->field('url',{span=>'col-6'});
+    $form->field('media', {type=>'file', accept=>"image/x-png,image/gif,image/jpeg", span=>'col-6'});
     $form->field('code',{span=>'col-md-12', type=>'textarea', rows=>10, class=>"form-control form-control-sm"});
     $form->field('publish_from',{class=>'form-control form-control-sm datepicker'});
     $form->field('publish_to',{class=>'form-control form-control-sm datepicker'});
