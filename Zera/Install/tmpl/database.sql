@@ -281,11 +281,13 @@ CREATE TABLE `banners` (
   `banner_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
+  `url` varchar(250) NOT NULL,
   `media` varchar(150) DEFAULT NULL,
   `code` text,
   `active` int(1) NOT NULL,
   `publish_from` date DEFAULT NULL,
   `publish_to` date DEFAULT NULL,
+  `sort_order` int(4) NOT NULL,
   PRIMARY KEY (`banner_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
