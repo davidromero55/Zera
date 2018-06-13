@@ -87,7 +87,12 @@ sub after_api {
 sub param {
     my $self = shift;
     my $var = shift;
-    return $self->{Zera}->{_VARS}->{$var};
+    my $val = shift;
+    if(defined $val){
+        $self->{Zera}->{_REQUEST}->param($var,$val);
+    }else{
+        return $self->{Zera}->{_REQUEST}->param($var);
+    }
 }
 
 # User messages
@@ -127,7 +132,7 @@ sub selectrow_array {
 
 sub selectall_arrayref {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift, @_);
 }
 
 sub dbh_do {

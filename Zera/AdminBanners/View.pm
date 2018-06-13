@@ -74,7 +74,7 @@ sub display_edit {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/banner_id group_id name url media code publish_from publish_to active/],
+        fields   => [qw/banner_id group_id name url media code publish_from publish_to active sort_order/],
         submits  => \@submit,
         values   => $values,
     });
@@ -88,7 +88,8 @@ sub display_edit {
     $form->field('code',{span=>'col-md-12', type=>'textarea', rows=>10, class=>"form-control form-control-sm"});
     $form->field('publish_from',{class=>'form-control form-control-sm datepicker'});
     $form->field('publish_to',{class=>'form-control form-control-sm datepicker'});
-    $form->field('active',{label=>"Publish", check_label=>'Yes / No', class=>"filled-in", type=>"checkbox"});
+    $form->field('active',{label=>"Publish", span=>'col-md-1', check_label=>'Yes / No', class=>"filled-in", type=>"checkbox"});
+    $form->field('sort_order', {label=>'Orden', span=>'col-md-5'});
 
     if($values->{display_options}->{image}){
         $form->field('image', {help=>$self->get_image_options($values->{display_options}->{image})});
