@@ -177,7 +177,7 @@ sub selectall_arrayref {
 
 sub dbh_do {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift, @_);
 }
 
 # Email Functions
