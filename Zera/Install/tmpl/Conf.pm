@@ -18,6 +18,7 @@ $conf->{DBI} = {
     Charset   => 'utf8',
     Timezone  => '<% Database.Timezone %>',
     Database  => '<% Database.Database %>'
+    Language  => 'en_US'
 };
 
 $conf->{App} = {
