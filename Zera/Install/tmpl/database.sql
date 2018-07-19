@@ -54,6 +54,7 @@ CREATE TABLE `categories` (
   `module` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT NULL,
   `description` text,
+  `sort_order` int(11),
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
