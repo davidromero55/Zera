@@ -12,6 +12,7 @@ sub new {
     $self->{_dbh} = DBI->connect( $conf->{DBI}->{Conection}, $conf->{DBI}->{Username}, $conf->{DBI}->{Password},{RaiseError => 1,AutoCommit=>1}) or die "Can't Connect to database.";
     $self->{_dbh}->do("SET CHARACTER SET 'utf8'");
     $self->{_dbh}->do("SET time_zone=?",{},$conf->{DBI}->{Timezone});
+    $self->{_dbh}->do("SET lc_time_names=?",{}, $conf->{DBI}->{Language});
 
     return $self;
 }
