@@ -89,8 +89,8 @@ sub display_edit {
 
 sub _get_entries {
     my $self = shift;
-    my $where = "e.module='Docs'";
-    my @params;
+    my $where = "e.module='Docs' AND ec.category_id=?";
+    my @params = $self->param('category_id');
     if($self->param('zl_q')){
         $where .= " AND title LIKE ? ";
         push(@params,'%' . $self->param('zl_q') .'%');
@@ -98,7 +98,7 @@ sub _get_entries {
     $list = Zera::List->new($self->{Zera},{
         sql => {
             select => "entry_id, title, Date(date) as date, active, '' AS edit",
-            from =>"entries e",
+            from =>"entries e NATURAL JOIN entries_categories ec",
             order_by => "",
             where => $where,
             params => \@params,
