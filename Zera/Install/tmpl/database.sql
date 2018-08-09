@@ -222,7 +222,7 @@ CREATE TABLE `users` (
   `name` varchar(145) DEFAULT NULL,
   `last_login_on` timestamp NULL DEFAULT NULL,
   `password_recovery_expires` datetime DEFAULT NULL,
-  `password_recovery_key` varchar(45) DEFAULT NULL,
+  `password_recovery_key` varchar(64) DEFAULT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `account_validated` int(1) DEFAULT '0',
   `is_admin` int(1) NOT NULL DEFAULT '0',
