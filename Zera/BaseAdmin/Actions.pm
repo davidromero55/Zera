@@ -82,12 +82,14 @@ sub upload_file {
         mkdir ("data") or die $!;
     }
 
-    if(!(-e "data/img")){
-        mkdir ("data/img") or die $!
-    }
-
-    if(!(-e "data/$dir")){
-        mkdir ("data/$dir") or die $!
+    my @subdirs = split(/\//,$dir);
+    my $subdirsSrt = '';
+    foreach my $subdir (@subdirs){
+        $subdirsSrt .= '/' if($subdirsSrt);
+        $subdirsSrt .= $subdir;
+        if(!(-e "data/$subdirsSrt")){
+            mkdir ("data/$subdirsSrt") or die $!
+        }
     }
 
     if($filename){

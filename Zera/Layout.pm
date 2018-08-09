@@ -34,7 +34,6 @@ sub print {
     my $content = shift || "";
     my $vars    = shift || {};
     my $template_file = shift || '';
-    my $menus;
 
     my $Controller = $self->{Zera}->{_REQUEST}->param('Controller');
     if($self->{Zera}->{_Layout} eq 'Public'){
@@ -49,28 +48,12 @@ sub print {
                 $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/layout_out.html'
             }
         }
-        if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(
-                "SELECT SQL_CACHE url, name, icon FROM $conf->{DBI}->{Database}.menus m WHERE m.group='User' ORDER BY m.sort_order, m.name",{Slice=>{}});
-        }
     }elsif($self->{Zera}->{_Layout} eq 'Admin'){
         if (!$template_file) {
             if($self->{Zera}->{_SESS}->{_sess}{user_id} and $self->{Zera}->{_SESS}->{_sess}{is_admin}){
                 $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout.html'
             }else{
                 $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout_out.html'
-            }
-        }
-        if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-            $menus = $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(
-                "SELECT SQL_CACHE url, name, icon FROM $conf->{DBI}->{Database}.menus m WHERE m.group='Admin' ORDER BY m.sort_order, m.name",{Slice=>{}});
-
-            my $index = 0;
-            for my $value (@{$menus}) {
-                 if ( $value->{name} eq 'Developer' && $conf->{App}->{DeveloperMode} == 0 ) {
-                    splice @{$menus}, $index, 1;
-                 }
-                 $index++;
             }
         }
     }else{
@@ -84,7 +67,6 @@ sub print {
         conf    => $conf,
         content => $content,
         vars    => $vars,
-        menus   => $menus,
         page    => $self->{Zera}->{_PAGE},
         msg     => $self->{Zera}->get_msg(),
         Zera    => $self->{Zera},
