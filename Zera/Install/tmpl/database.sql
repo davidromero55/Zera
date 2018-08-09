@@ -300,4 +300,20 @@ CREATE TABLE `banners` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+DROP TABLE IF EXISTS conf;
+CREATE TABLE `conf` (
+  `name` VARCHAR(50) NOT NULL,
+  `value` VARCHAR(250) NOT NULL,
+  `description` VARCHAR(250) NULL,
+  `module` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE = MyISAM CHARSET=utf8;
+
+INSERT INTO `conf` (`name`, `value`, `description`, `module`)
+VALUES (
+  'ItemsPerPage',
+  '8',
+  'Determines the number of items that will be displayed per page.',
+  'Blog'
+);
 -- Dump completed on 2018-04-27 16:28:10

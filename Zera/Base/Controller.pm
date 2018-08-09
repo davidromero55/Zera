@@ -66,4 +66,19 @@ sub param {
     return $self->{Zera}->{_VARS}->{$var};
 }
 
+#Call conf values
+sub conf {
+    my $self = shift;
+    my $name = shift;
+    my $module = shift;
+    my $value = shift;
+    if (defined $value){
+        $self->dbh_do("UPDATE value = ? WHERE name = ? AND module = ?", {}, $value, $name, $module);
+    }else{
+        $value = $self -> selectrow_array(
+            "SELECT value FROM conf WHERE name = ?", {}, $name);
+        return $value;
+    }
+}
+
 1;

@@ -16,26 +16,29 @@ my $required_modules = [
     'Switch',
     'Number::Format'];
 
-if(!$ENV{QUERY_STRING}){
-    print "Content-Type: text/html\n\n";
-    # If no query string is present check if the required modules are installed
-    # and send a welcome page.
-    print welcome_template();
+    if(!$ENV{QUERY_STRING}){
+        print "Content-Type: text/html\n\n";
+        # If no query string is present check if the required modules are installed
+        # and send a welcome page.
+        print welcome_template();
 
-    create_conf_pm();
+        create_conf_pm();
 
-    exit 0;
-}else{
-    # Load required modules
-    require ZeraInstall;
-    #print "Content-Type: text/html\n\n";
-    #foreach my $key (keys %ENV){
-    #    print "$key = $ENV{$key}  <br>\n";
-    #}
-    my $Zera = Zera::Install::ZeraInstall->new();
-    $Zera->run();
-    exit 0;
-}
+        exit 0;
+    }else{
+        # Load required modules
+        eval {
+            require ZeraInstall;
+        };
+        if($@){
+            print "Content-Type: text/html\n\n";
+            print $@;
+        }
+
+        my $Zera = Zera::Install::ZeraInstall->new();
+        $Zera->run();
+        exit 0;
+    }
 
 sub welcome_template {
     my $HTML = '';

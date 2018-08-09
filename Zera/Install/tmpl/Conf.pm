@@ -17,7 +17,7 @@ $conf->{DBI} = {
     Password  => '<% Database.Password %>',
     Charset   => 'utf8',
     Timezone  => '<% Database.Timezone %>',
-    Database  => '<% Database.Database %>'
+    Database  => '<% Database.Database %>',
     Language  => 'en_US'
 };
 
