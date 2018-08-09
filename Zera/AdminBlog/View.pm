@@ -82,7 +82,7 @@ sub display_edit {
         submits  => \@submit,
         values   => $values,
     });
-    my %categories = $self->selectbox_data("SELECT category_id, category FROM categories");
+    my %categories = $self->selectbox_data("SELECT category_id, category FROM categories WHERE module = 'Blog'");
 
     $form->field('entry_id',{type=>'hidden'});
     $form->field('title',{span=>'col-md-12', required=>1});
