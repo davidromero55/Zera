@@ -1,110 +1,101 @@
 <div class="row">
-    <div class="col-sm-3 bg-light border-right text-left p-3">
-        <!--Comienza acordeón-->
-        <div id="accordion">
-            <% FOREACH category = categories %>
-            <div class="card">
-                <div class="card-header">
-                    <% IF category.active %>
-                    <h6 class="mb-0">
-                        <% category.category %> <i class="fas fa-angle-down"></i>
-                    </h6>
-                    <% ELSE %>
-                    <h6 class="mb-0">
-                        <a href="/Docs/<% category.url %>"><% category.category %> <i class="fas fa-angle-right"></i></a>
-                    </h6>
-                    <% END %>
-                </div>
-                <% IF category.childs.0 %>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <% FOREACH cat = category.childs %>
-                            <% IF cat.active %>
-                            <li><b><% cat.category %></b>
-                                <ul>
-                                    <% FOREACH title = cat.childs %>
-                                        <% IF title.active %>
-                                        <li><% title.title %></li>
-                                        <% ELSE %>
-                                        <li><a href="/Docs/<% parent_url %>/<% category_url %>/<% title.url %>"><% title.title %></a></li>
-                                        <% END %>
-                                    <% END %>
-                                </ul>
-                            </li>
-                            <% ELSE %>
-                            <li><a href="/Docs/<% category.url %>/<% cat.url %>" class="c-nav-link active"><% cat.category %></a></li>
-                            <% END %>
-                            <% END %>
-                        </ul>
-                    </div>
-                </div>
-                <% END %>
+  <div class="col-sm-3 bg-light border-right text-left p-3">
+    <!--Comienza acordeón-->
+    <div id="accordion">
+      <% FOREACH category = categories %>
+      <div class="card">
+        <div class="card-header">
+          <% IF category.active %>
+          <h6 class="mb-0">
+            <% category.category %> <i class="fas fa-angle-down"></i>
+          </h6>
+          <% ELSE %>
+          <h6 class="mb-0">
+            <a href="/Docs/<% category.url %>"><% category.category %> <i class="fas fa-angle-right"></i></a>
+          </h6>
+          <% END %>
+        </div>
+        <% IF category.childs.0 %>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <% FOREACH cat = category.childs %>
+              <% IF cat.active %>
+              <li><b><% cat.category %></b>
+                <ul>
+                  <% FOREACH title = cat.childs %>
+                  <% IF title.active %>
+                  <li><% title.title %></li>
+                  <% ELSE %>
+                  <li><a href="/Docs/<% parent_url %>/<% category_url %>/<% title.url %>"><% title.title %></a></li>
+                  <% END %>
+                  <% END %>
+                </ul>
+              </li>
+              <% ELSE %>
+              <li><a href="/Docs/<% category.url %>/<% cat.url %>" class="c-nav-link active"><% cat.category %></a></li>
+              <% END %>
+              <% END %>
+            </ul>
+          </div>
+        </div>
+        <% END %>
+      </div>
+      <% END %>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <div class="container p-3">
+      <div class="row">
+        <%msg %>
+        <% IF entry.entry_id %>
+        <div class="col-sm-12">
+          <h1 class="font-weight-bold"><% entry.title %></h1>
+          <br />
+          <h5 class="text-secondary"><% entry.description %></h5>
+          <br />
+          <% entry.content %>
+        </div>
+        <% ELSE %>
+        <% IF category_url %>
+        <div class="col-md-12">
+          <h1><% current_category.category %></h1>
+          <p><% current_category.description %><p>
+          </div>
+          <% FOREACH child = childs %>
+          <div class="col-md-6">
+            <h5 class="font-weight-bold"><a href="/Docs/<% parent_url %>/<% category_url %>/<% child.url %>"><% child.title %></a></h5>
+            <p><% child.description %></p>
+          </div>
+          <% END %>
+          <% ELSE %>
+          <% IF parent_url %>
+          <div class="col-md-12">
+            <h1><% current_category.category %></h1>
+            <p><% current_category.description %><p>
+            </div>
+            <% FOREACH child = childs %>
+            <div class="col-md-6">
+              <h5 class="font-weight-bold"><a href="/Docs/<% parent_url %>/<% child.url %>"><% child.category %></a></h5>
+              <p><% child.description %></p>
             </div>
             <% END %>
-        </div>
-    </div>
-    <div class="col-sm-9">
-        <div class="container p-3">
-            <div class="row">
-                <%msg %>
-                <% IF entry.entry_id %>
-                <div class="col-sm-12">
-                    <h1 class="font-weight-bold"><% entry.title %></h1>
-                    <br />
-                    <h5 class="text-secondary"><% entry.description %></h5>
-                    <br />
-                    <% entry.content %>
-                </div>
-                <% ELSE %>
-                <% IF category_url %>
-                <div class="col-md-12">
-                    <h1><% current_category.category %></h1>
-                    <p><% current_category.description %><p>
-                </div>
-                <% FOREACH child = childs %>
-                <div class="col-md-6">
-                    <h5 class="font-weight-bold"><a href="/Docs/<% parent_url %>/<% category_url %>/<% child.url %>"><% child.title %></a></h5>
-                    <p><% child.description %></p>
-                </div>
-                <% END %>
-                <% ELSE %>
-                <% IF parent_url %>
-                <div class="col-md-12">
-                    <h1><% current_category.category %></h1>
-                    <p><% current_category.description %><p>
-                </div>
-                <% FOREACH child = childs %>
-                <div class="col-md-6">
-                    <h5 class="font-weight-bold"><a href="/Docs/<% parent_url %>/<% child.url %>"><% child.category %></a></h5>
-                    <p><% child.description %></p>
-                </div>
-                <% END %>
-                <% ELSE %>
-                <div class="col-md-12">
-                    <h1>Documentation</h1>
-                </div>
-                <% FOREACH child = childs %>
-                <div class="col-md-6">
-                    <h5 class="font-weight-bold"><a href="/Docs/<% child.url %>"><% child.category %></a></h5>
-                    <p><% child.description %></p>
-                </div>
-                <% END %>
-                <% END %>
-                <% END %>
-                <% END %>
-
-
-                <!--<pre class="prettyprint">print "Hello, World!\n";</pre>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <a href="#" class="c-link">Link text</a> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <a href="#" class="c-link">Link text</a>
-                <hr>
-                <h3 class="font-weight-bold">Something else</h1>
-                <p>Some more filling text with <a href="#" class="c-link">links</a>! So many <a href="#" class="c-link">links</a>.
-                Oh, and <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="c-link">this one</a> is a music video.</p>
-                </div>
-                </div>-->
+            <% ELSE %>
+            <div class="col-md-12">
+              <h1>Documentation</h1>
             </div>
+            <% FOREACH child = childs %>
+            <div class="col-md-6">
+              <h5 class="font-weight-bold"><a href="/Docs/<% child.url %>"><% child.category %></a></h5>
+              <p><% child.description %></p>
+            </div>
+            <% END %>
+            <% END %>
+            <% END %>
+            <% END %>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
