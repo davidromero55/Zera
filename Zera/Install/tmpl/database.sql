@@ -66,7 +66,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,0,'Docs','Instalation',NULL),(2,0,'Docs','Quick Start',NULL),(3,0,'Docs','Advanced Guides',NULL),(4,0,'Docs','Reference',NULL),(5,0,'Docs','Contribute',NULL),(6,0,'Docs','FAQ',NULL);
+INSERT INTO `categories` VALUES (1,0,'Docs','Instalation',NULL, 1, 'Instalation'),(2,0,'Docs','Quick Start',NULL, 2, 'QuickStart'),(3,0,'Docs','Advanced Guides',NULL, 3, 'AdvancedGuides'),(4,0,'Docs','Reference',NULL, 4, 'Reference'),(5,0,'Docs','Contribute',NULL, 5, 'Contribute'),(6,0,'Docs','FAQ',NULL, 6, 'FAQ');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
