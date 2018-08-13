@@ -66,6 +66,7 @@ sub display_database {
     $form->field('Timezone',{span=>'col-md-6', required=>1, type=>'select',
         options=>['-11:00','-10:00','-09:00','-08:00','-07:00','-06:00','-05:00','-04:00','-03:00','-02:00','-01:00','00:00',
             '01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00']});
+    $form->field('Language', {span=>'col-md-6', required=>1, type=>'select',  options=>['en_US', 'es_MX'], labels=>{'en_US'=>'English', 'es_MX'=>'Español'}});
     $form->submit('Next',{class=>'btn btn-primary'});
 
     return $form->render();
