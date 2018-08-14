@@ -208,6 +208,16 @@ sub add_btn {
     $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('a',{class=>$class, href=>$url},$label);
 }
 
+sub add_breadcrumb {
+    my $self = shift;
+    my @items = @_;
+    my $breadcrumb = '';
+    foreach my $item (@items){
+        $breadcrumb .= '<li class="breadcrumb-item"><a href="' . $item->[1] . '">' . $item->[0] . '</a></li>';
+    }
+    $self->{Zera}->{_PAGE}->{breadcrumb} = '<nav aria-label="breadcrumb"><ol class="breadcrumb">' . $breadcrumb . '</ol></nav>';
+}
+
 sub add_jsfile {
     my $self = shift;
     my $js_file = shift;
