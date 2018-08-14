@@ -47,12 +47,15 @@ sub process_api {
         $arg = $self->param('_Action');
         $arg =~ s/\W//g;
     }
+    if(!($arg)){
+        $arg = 'default';
+    }
     my $sub_name = "do_" . lc($arg);
     if ($self->can($sub_name) ) {
         return encode_json( $self->$sub_name() );
     } else {
         $self->add_msg('danger','Action ' . $sub_name . ' not implemented.');
-        return encode_json( {error => 1, error_msg => $self->{Zera}->get_api_msg()} );
+        return ( {error => 1, error_msg => $self->{Zera}->get_msg()} );
     }
 }
 
