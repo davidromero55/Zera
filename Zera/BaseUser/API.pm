@@ -1,4 +1,4 @@
-package Zera::BaseAdmin::Actions;
+package Zera::BaseUser::API;
 
 use strict;
 use JSON;
@@ -15,6 +15,9 @@ sub new {
     # Main Zera object
     $self->{Zera} = shift;
 
+    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
+    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
+
     # Init app ENV
     $self->_init();
 
@@ -23,21 +26,10 @@ sub new {
 
 sub _init {
     my $self = shift;
+    $self->{Zera}->{_Layout} = 'User';
+    $self->{response} = {status=>'void',msg=>'',data=>{}};
 }
 
-# Session functions
-sub sess {
-    my $self = shift;
-    my $var = shift;
-    my $val = shift;
-    if(defined $val){
-        $self->{Zera}->{_SESS}->{_sess}{$var} = "$val";
-    }else{
-        return $self->{Zera}->{_SESS}->{_sess}{$var};
-    }
-}
-
-# Request Functions
 sub param {
     my $self = shift;
     my $var = shift;
@@ -49,25 +41,35 @@ sub param {
     }
 }
 
-sub process_action {
+sub process_api {
     my $self = shift;
-    my $arg = $self->param('View') || "";
-    $arg =~ s/([A-Z])/_$1/g;
+    my $arg = $self->param('View');
     $arg =~ s/\W//g;
     if(!($arg)){
         $arg = $self->param('_Action');
-        $arg =~ s/([A-Z])/_$1/g;
         $arg =~ s/\W//g;
-        $arg = '_' . $arg;
     }
-    my $sub_name = "do" . lc($arg);
+    if(!($arg)){
+        $arg = 'default';
+    }
+    my $sub_name = "do_" . lc($arg);
     $self->{Zera}->{sub_name} = $sub_name;
     if ($self->can($sub_name) ) {
         return $self->$sub_name();
     } else {
         $self->add_msg('danger','Action ' . $sub_name . ' not implemented.');
-        return {error => 1};
+        return ( {status => 'error', msg => $self->{Zera}->get_msg()} );
     }
+}
+
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+sub get_msg {
+    my $self = shift;
+    return $self->{Zera}->get_msg();
 }
 
 sub upload_file {
@@ -82,14 +84,12 @@ sub upload_file {
         mkdir ("data") or die $!;
     }
 
-    my @subdirs = split(/\//,$dir);
-    my $subdirsSrt = '';
-    foreach my $subdir (@subdirs){
-        $subdirsSrt .= '/' if($subdirsSrt);
-        $subdirsSrt .= $subdir;
-        if(!(-e "data/$subdirsSrt")){
-            mkdir ("data/$subdirsSrt") or die $!
-        }
+    if(!(-e "data/img")){
+        mkdir ("data/img") or die $!
+    }
+
+    if(!(-e "data/$dir")){
+        mkdir ("data/$dir") or die $!
     }
 
     if($filename){
@@ -150,12 +150,6 @@ sub upload_file {
     return "";
 }
 
-# User messages
-sub add_msg {
-    my $self = shift;
-    $self->{Zera}->add_msg(shift, shift);
-}
-
 # Database functions
 sub selectrow_hashref {
     my $self = shift;
@@ -179,7 +173,7 @@ sub selectall_arrayref {
 
 sub dbh_do {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift, @_);
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 # Email Functions

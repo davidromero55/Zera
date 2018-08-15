@@ -7,6 +7,7 @@ use Zera::Conf;
 use Zera::Com;
 use Zera::DBI;
 use Zera::Email;
+$CGI::Minimal::_allow_hybrid_post_get = 1;
 
 sub new {
     my $class    = shift;
@@ -35,9 +36,9 @@ sub _init {
 sub run {
     my $self = shift;
 
-        # Header
+    # Header
     print Zera::Com::header($self, 'application/json');
-
+    
     if($self->{_REQUEST}->param('Controller')){
         my $module = $self->{_REQUEST}->param('Controller');
         my $view = $self->{_REQUEST}->param('View') || "";
@@ -53,8 +54,8 @@ sub run {
         if($@){
             $self->add_msg('danger', $@);
             my $response = {
-                                response => 'error',
-                                                error_msg => $self->get_msg(),
+                response => 'error',
+                error_msg => $self->get_msg(),
             };
             print encode_json($response);
             $self->clear();
@@ -63,14 +64,14 @@ sub run {
 
         my $module_name ='Zera::'.$module.'::API';
         $Module = $module_name->new($self);
-        print encode_json($Module->process_api());
+        print JSON::XS->new->encode($Module->process_api());
 
     }else{
         my $response = {
-                        result => 'success',
-                                    msg => 'Zera API-REST ready',
+            result => 'success',
+            msg => 'Zera API-REST ready',
         };
-        print encode_json($response);
+        print JSON::XS->new->encode($response);
         $self->clear();
         return '';
     }
@@ -96,7 +97,6 @@ sub get_msg {
     foreach my $msg (@{$self->{_MSG}}){
         $str .= $msg . ' ';
     }
-    $self->{_DBH}->{_dbh}->do("DELETE FROM sessions_msg WHERE session_id=?",{},$self->{_SESS}->{_sess}{_session_id}) if($msgs->[0]);
     return $str;
 }
 
