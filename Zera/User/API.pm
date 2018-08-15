@@ -19,19 +19,6 @@ sub do_signup {
         return $response;
     }
 
-    my $sent = $self->send_html_email(
-        {
-            to       => $self->param('email'),
-            #bcc      => 'isabel@xaandia.com',
-            subject  => $conf->{App}->{Name} . ': '. 'Tu cuenta esta lista',
-            vars => {
-                name     => $self->param('name'),
-                email    => $self->param('email'),
-                password => $self->param('password'),
-            },
-        });
-    #'Chapix/Apps/tmpl/user-creation-letter.html',
-    
     my $exist = $self->selectrow_hashref("SELECT u.user_id, u.email, u.name, password FROM users u WHERE u.email=?",{},$email);   
     if($exist->{user_id}){
         if($exist->{password} ne ""){
@@ -86,7 +73,6 @@ sub do_signup {
     my $sent = $self->send_html_email(
         {
             to       => $self->param('email'),
-            #bcc      => 'isabel@xaandia.com',
             subject  => $conf->{App}->{Name} . ': '. 'Tu cuenta esta lista',
             vars => {
                 name     => $self->param('name'),
