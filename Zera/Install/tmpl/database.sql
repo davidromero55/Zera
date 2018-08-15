@@ -67,6 +67,7 @@ CREATE TABLE `categories` (
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` VALUES (1,0,'Docs','Instalation',NULL, 1, 'Instalation'),(2,0,'Docs','Quick Start',NULL, 2, 'QuickStart'),(3,0,'Docs','Advanced Guides',NULL, 3, 'AdvancedGuides'),(4,0,'Docs','Reference',NULL, 4, 'Reference'),(5,0,'Docs','Contribute',NULL, 5, 'Contribute'),(6,0,'Docs','FAQ',NULL, 6, 'FAQ');
+INSERT INTO `categories` VALUES (0,'Blog', 'News', 'Blog news', NULL, NULL);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +223,7 @@ CREATE TABLE `users` (
   `name` varchar(145) DEFAULT NULL,
   `last_login_on` timestamp NULL DEFAULT NULL,
   `password_recovery_expires` datetime DEFAULT NULL,
-  `password_recovery_key` varchar(45) DEFAULT NULL,
+  `password_recovery_key` varchar(64) DEFAULT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `account_validated` int(1) DEFAULT '0',
   `is_admin` int(1) NOT NULL DEFAULT '0',
@@ -273,7 +274,7 @@ CREATE TABLE `banners_groups` (
   `name` varchar(45) NOT NULL,
   `group_type` varchar(45) NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `banners_groups`
@@ -291,7 +292,7 @@ CREATE TABLE `banners` (
   `publish_to` date DEFAULT NULL,
   `sort_order` int(4) NOT NULL,
   PRIMARY KEY (`banner_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
