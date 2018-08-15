@@ -5,12 +5,12 @@ use base 'Zera::BaseAdmin::View';
 # Module Functions
 sub display_home {
     my $self = shift;
-    
+
     $self->set_title('Pages');
     $self->add_search_box();
     $self->set_add_btn('/AdminPages/Edit/New');
-    
-    
+
+
     my $where = "e.module='Pages'";
     my @params;
     if($self->param('zl_q')){
@@ -38,11 +38,11 @@ sub display_home {
     $list->get_data();
     $list->on_off('active');
     $list->columns_align(['left','left','center']);
-    
+
     my $vars = {
         list => $list->print(),
     };
-    
+
     return $self->render_template($vars);
 }
 
@@ -50,9 +50,9 @@ sub display_edit {
     my $self = shift;
     my $values = {};
     my @submit = ("Save");
-    
+
     $self->param('entry_id',$self->param('SubView')) if(!(defined $self->param('entry_id')));
-    
+
     # Title
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Page') : $self->set_title('Edit Page');
 
@@ -71,7 +71,7 @@ sub display_edit {
             date => $self->selectrow_array('SELECT DATE(NOW())'),
         };
     }
-    
+
     # Form
     my $form = $self->form({
         method   => 'POST',
@@ -79,18 +79,18 @@ sub display_edit {
         submits  => \@submit,
         values   => $values,
     });
-    
+
     $form->field('entry_id',{type=>'hidden'});
     $form->field('title',{span=>'col-md-12', required=>1});
     $form->field('url',{span=>'col-md-6', required=>1, readonly=>1});
-    $form->field('keywords',{span=>'col-md-6', required=>1});
-    $form->field('date',{class=>'form-control form-control-sm datepicker', required=>1});
-    $form->field('description',{span=>'col-md-12', required=>1});
+    $form->field('keywords',{span=>'col-md-6'});
+    $form->field('date',{class=>'form-control form-control-sm datepicker'});
+    $form->field('description',{span=>'col-md-12'});
     $form->field('content',{span=>'col-md-12', required=>1, type=>'textarea', rows=>10, class=>"wysiwyg form-control form-control-sm"});
     $form->field('active',{label=>"Publish", check_label=>'Yes / No', class=>"filled-in", type=>"checkbox"});
 
     $form->submit('Delete',{class=>'btn btn-danger'});
-    
+
     return $form->render();
 }
 
