@@ -181,12 +181,12 @@ sub display_edit_category {
     if($self->param('category_id')){
         $values = $self->selectrow_hashref("SELECT * FROM categories WHERE category_id=? AND module='Docs'",{},$self->param('category_id'));
         push(@submit, 'Delete');
-        $self->add_btn('/AdminDocs?parent_id='.$values->{parent_id},'Back');
     }else{
         $values = {
             parent_id => $self->param('parent_id') ,
         };
     }
+    $self->add_btn('/AdminDocs?parent_id='.($values->{parent_id} || 0),'Back');
 
     # Form
     my $form = $self->form({
