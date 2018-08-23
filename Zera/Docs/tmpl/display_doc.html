@@ -44,7 +44,7 @@
       <% END %>
     </div>
   </div>
-  <div class="col-sm-9">
+  <div class="col" id="content">
     <div class="container p-3">
       <div class="row">
         <%msg %>
@@ -99,3 +99,9 @@
     </div>
   </div>
 </div>
+<script>
+$(function() {
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 350;
+    $('#content').css('min-height', h);
+});
+</script>
