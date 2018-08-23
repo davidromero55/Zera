@@ -66,8 +66,9 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,0,'Docs','Instalation',NULL, 1, 'Instalation'),(2,0,'Docs','Quick Start',NULL, 2, 'QuickStart'),(3,0,'Docs','Advanced Guides',NULL, 3, 'AdvancedGuides'),(4,0,'Docs','Reference',NULL, 4, 'Reference'),(5,0,'Docs','Contribute',NULL, 5, 'Contribute'),(6,0,'Docs','FAQ',NULL, 6, 'FAQ');
-INSERT INTO `categories` VALUES (0,'Blog', 'News', 'Blog news', NULL, NULL);
+-- INSERT INTO `categories` VALUES (1,0,'Docs','Instalation',NULL, 1, 'Instalation'),(2,0,'Docs','Quick Start',NULL, 2, 'QuickStart'),(3,0,'Docs','Advanced Guides',NULL, 3, 'AdvancedGuides'),(4,0,'Docs','Reference',NULL, 4, 'Reference'),(5,0,'Docs','Contribute',NULL, 5, 'Contribute'),(6,0,'Docs','FAQ',NULL, 6, 'FAQ');
+INSERT INTO `categories` (`parent_id`, `module`, `category`, `description`, `sort_order`, `url`) VALUES (0,'Blog', 'News', 'Blog news', NULL, NULL);
+INSERT INTO `categories` (`parent_id`, `module`, `category`, `description`, `sort_order`, `url`) VALUES (0, 'Docs', 'Docs 1', 'Documents category', NULL, 'Docs1');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,17 +219,24 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(145) DEFAULT NULL,
-  `password` varchar(145) DEFAULT NULL,
   `name` varchar(145) DEFAULT NULL,
+  `email` varchar(145) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `language` varchar(5) DEFAULT NULL,
+  `time_zone` varchar(45) DEFAULT NULL,
+  `password` varchar(145) DEFAULT NULL,
   `last_login_on` timestamp NULL DEFAULT NULL,
   `password_recovery_expires` datetime DEFAULT NULL,
-  `password_recovery_key` varchar(64) DEFAULT NULL,
+  `password_recovery_key` varchar(65) DEFAULT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `account_validated` int(1) DEFAULT '0',
   `is_admin` int(1) NOT NULL DEFAULT '0',
+  `active` int(1) NOT NULL DEFAULT '1',
+  `push_notifications` int(1) NOT NULL DEFAULT '1',
+  `last_activity_on` datetime DEFAULT NULL,
+  `signup_date` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email_U` (`email`)
+  UNIQUE KEY `UK_email_U` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
