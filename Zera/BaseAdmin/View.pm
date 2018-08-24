@@ -306,14 +306,13 @@ sub selectbox_data {
 #Call conf values
 sub conf {
     my $self = shift;
-    my $name = shift;
     my $module = shift;
+    my $name = shift;
     my $value = shift;
-    my $permission = shift || 0;
     if (defined $value){
       $self->dbh_do("UPDATE value = ? WHERE name = ? AND module = ?", {}, $value, $name, $module);
     }else{
-      $value = $self -> selectrow_array("SELECT value FROM conf WHERE name = ?", {}, $name);
+      $value = $self -> selectrow_array("SELECT value FROM conf WHERE name = ? AND module = ?", {}, $name, $module);
       return $value;
     }
 }
