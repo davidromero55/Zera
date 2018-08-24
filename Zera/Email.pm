@@ -64,19 +64,27 @@ sub send_html_email {
     my $template_file = $data->{template}->{file};
     
     if (!$template_file) {
-        my $dir = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/';
-        if(-e ($dir . $self->{Zera}->{sub_name} .'_email.html')){
-            $template_file = $dir . $self->{Zera}->{sub_name} .'_email.html';
+        my $module_dir = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/';
+        my $workspace_dir = '';
+        if($self->{Zera}->{_Layout} eq 'Public'){
+            $workspace_dir = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $self->{Zera}->{ControllerName} . '/';
+        }elsif($self->{Zera}->{_Layout} eq 'User'){
+            $workspace_dir = 'templates/' . $conf->{Template}->{UserTemplateID} . '/' . $self->{Zera}->{ControllerName} . '/';
+        }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+            $workspace_dir = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $self->{Zera}->{ControllerName} . '/';
+        }
+        
+        if(-e ($workspace_dir . $self->{Zera}->{sub_name} .'_email.html')){
+            $template_file = $workspace_dir . $self->{Zera}->{sub_name} .'_email.html';
+        }elsif(-e ($module_dir . $self->{Zera}->{sub_name} .'_email.html')){
+            $template_file = $module_dir . $self->{Zera}->{sub_name} .'_email.html';
         }else{
-            $self->{Zera}->add_msg('danger', 'Email template ' . $dir . $self->{Zera}->{sub_name} .'_email.html' .' not found.');
+            $self->{Zera}->add_msg('danger', 'Email template ' . $module_dir . $self->{Zera}->{sub_name} .'_email.html' .' not found.');
             return '0';
         }
     }
 
-
     $data->{msg} = $self->_render_template($template_file,$data->{vars});
-   
-   
     return $self->_send_full_html_message($data);
 }
 
@@ -96,9 +104,7 @@ sub _send_full_html_message {
     my $self = shift;
     my $data = shift;
 
-
     $self->{from} = $data->{from} if($data->{from});
-
     $self->_transport();
 
     my $template_file = '';
@@ -109,7 +115,6 @@ sub _send_full_html_message {
     }elsif($self->{Zera}->{_Layout} eq 'Admin'){
         $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout_email.html';
     }
-
 
 
     if(-e ($template_file)){
