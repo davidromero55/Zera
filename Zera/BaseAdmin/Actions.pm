@@ -214,7 +214,6 @@ sub send_html_email {
     $self->{Zera}->{_EMAIL}->send_html_email($vars);
 }
 
-<<<<<<< HEAD
 #Call conf values
 sub conf {
     my $self = shift;
@@ -230,6 +229,4 @@ sub conf {
     }
 }
 
-=======
->>>>>>> original/master
 1;
