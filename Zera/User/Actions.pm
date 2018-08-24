@@ -68,10 +68,9 @@ sub do_forgot_password {
         if($user->{user_id}){
             # Wrike recovery data and send by email
             my $key = $self->selectrow_array("SELECT SUBSTRING(SHA2(CONCAT(RAND(1000),NOW(),?),384),1,64)",{}, $conf->{Security}->{Key});
-         
             $self->dbh_do("UPDATE users SET password_recovery_expires=DATE_ADD(NOW(),INTERVAL 1 HOUR), " .
-                "password_recovery_key=? WHERE user_id=?",{},
-                $key, $user->{user_id});
+                          "password_recovery_key=? WHERE user_id=?",{},
+                          $key, $user->{user_id});
 
             my $sent = $self->send_html_email({
                 to => "$user->{name} <$user->{email}>",

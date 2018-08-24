@@ -1,4 +1,4 @@
-package Zera::BaseAdmin::Actions;
+package Zera::BaseUser::API;
 
 use strict;
 use JSON;
@@ -15,6 +15,9 @@ sub new {
     # Main Zera object
     $self->{Zera} = shift;
 
+    $self->{dbh} = $self->{Zera}->{_DBH}->{_dbh};
+    $self->{sess} = $self->{Zera}->{_SESS}->{_sess};
+
     # Init app ENV
     $self->_init();
 
@@ -23,21 +26,10 @@ sub new {
 
 sub _init {
     my $self = shift;
+    $self->{Zera}->{_Layout} = 'User';
+    $self->{response} = {status=>'void',msg=>'',data=>{}};
 }
 
-# Session functions
-sub sess {
-    my $self = shift;
-    my $var = shift;
-    my $val = shift;
-    if(defined $val){
-        $self->{Zera}->{_SESS}->{_sess}{$var} = "$val";
-    }else{
-        return $self->{Zera}->{_SESS}->{_sess}{$var};
-    }
-}
-
-# Request Functions
 sub param {
     my $self = shift;
     my $var = shift;
@@ -54,16 +46,19 @@ sub param {
     }
 }
 
-sub process_action {
+sub header {
     my $self = shift;
-    my $arg = $self->param('View') || "";
+    my $name = shift;
+    return $ENV{'HTTP_' . $name};
+}
+
+sub process_api {
+    my $self = shift;
+    my $arg = $self->param('View');
     $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
-    if($self->param('_Action')){
-        $arg = $self->param('_Action');
-        $arg =~ s/([A-Z])/_$1/g;
-        $arg =~ s/\W//g;
-        #$arg = '_' . $arg;
+    if(!($arg)){
+        $arg = '_default';
     }
     my $sub_name = "do" . lc($arg);
     $self->{Zera}->{sub_name} = $sub_name;
@@ -71,8 +66,18 @@ sub process_action {
         return $self->$sub_name();
     } else {
         $self->add_msg('danger','Action ' . $sub_name . ' not implemented.');
-        return {error => 1};
+        return ( {status => 'error', msg => $self->{Zera}->get_msg()} );
     }
+}
+
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+sub get_msg {
+    my $self = shift;
+    return $self->{Zera}->get_msg();
 }
 
 sub upload_file {
@@ -87,14 +92,12 @@ sub upload_file {
         mkdir ("data") or die $!;
     }
 
-    my @subdirs = split(/\//,$dir);
-    my $subdirsSrt = '';
-    foreach my $subdir (@subdirs){
-        $subdirsSrt .= '/' if($subdirsSrt);
-        $subdirsSrt .= $subdir;
-        if(!(-e "data/$subdirsSrt")){
-            mkdir ("data/$subdirsSrt") or die $!
-        }
+    if(!(-e "data/img")){
+        mkdir ("data/img") or die $!
+    }
+
+    if(!(-e "data/$dir")){
+        mkdir ("data/$dir") or die $!
     }
 
     if($filename){
@@ -155,26 +158,6 @@ sub upload_file {
     return "";
 }
 
-#Delete files from /Data
-sub remove_data{
-  my $self = shift;
-  my $file = shift;
-  if ($file =~ /[ \\\*;]/){
-    $self->add_msg('danger', "$file Is not a valid file path.");
-  }else{
-    unlink "data/$file" or $self->add_msg('danger', 'File $file not found');
-  }
-}
-
-# User messages
-sub add_msg {
-    my $self = shift;
-    $self->{Zera}->add_msg(shift, shift);
-}
-sub get_msg {
-  my $self = shift;
-  $self->{Zera}->get_msg();
-}
 # Database functions
 sub selectrow_hashref {
     my $self = shift;
@@ -196,14 +179,9 @@ sub selectall_arrayref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
 }
 
-sub selectall {
-  my $self = shift;
-  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {slice=>{}}, @_);
-}
-
 sub dbh_do {
     my $self = shift;
-    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift, @_);
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
 }
 
 # Email Functions
@@ -211,25 +189,7 @@ sub send_html_email {
     my $self = shift;
     my $vars = shift;
 
-    $self->{Zera}->{_EMAIL}->send_html_email($vars);
+    return $self->{Zera}->{_EMAIL}->send_html_email($vars);
 }
 
-<<<<<<< HEAD
-#Call conf values
-sub conf {
-    my $self = shift;
-    my $name = shift;
-    my $module = shift;
-    my $value = shift;
-    my $permission = shift || 0;
-    if (defined $value){
-      $self->dbh_do("UPDATE value = ? WHERE name = ? AND module = ?", {}, $value, $name, $module);
-    }else{
-      $value = $self -> selectrow_array("SELECT value FROM conf WHERE name = ?", {}, $name);
-      return $value;
-    }
-}
-
-=======
->>>>>>> original/master
 1;
