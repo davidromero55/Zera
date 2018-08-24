@@ -37,22 +37,30 @@ sub param {
     if(defined $val){
         $self->{Zera}->{_REQUEST}->param($var,$val);
     }else{
-        return $self->{Zera}->{_REQUEST}->param($var);
+        my $val = $self->{Zera}->{_REQUEST}->param($var);
+        if(defined $val){
+            return $self->{Zera}->{_REQUEST}->param($var);
+        }else{
+            return '';
+        }
     }
+}
+
+sub header {
+    my $self = shift;
+    my $name = shift;
+    return $ENV{'HTTP_' . $name};
 }
 
 sub process_api {
     my $self = shift;
     my $arg = $self->param('View');
+    $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
     if(!($arg)){
-        $arg = $self->param('_Action');
-        $arg =~ s/\W//g;
+        $arg = '_default';
     }
-    if(!($arg)){
-        $arg = 'default';
-    }
-    my $sub_name = "do_" . lc($arg);
+    my $sub_name = "do" . lc($arg);
     $self->{Zera}->{sub_name} = $sub_name;
     if ($self->can($sub_name) ) {
         return $self->$sub_name();
@@ -181,7 +189,7 @@ sub send_html_email {
     my $self = shift;
     my $vars = shift;
 
-    $self->{Zera}->{_EMAIL}->send_html_email($vars);
+    return $self->{Zera}->{_EMAIL}->send_html_email($vars);
 }
 
 1;

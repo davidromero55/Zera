@@ -46,13 +46,13 @@ sub run {
 
         $self->{ControllerName} = $module;
 
-                # Load module
+        # Load module
         my $Module;
         eval {
             require "Zera/".$module ."/API.pm";
         };
         if($@){
-            $self->add_msg('danger', $@);
+            $self->add_msg('dangersss', $@);
             my $response = {
                 response => 'error',
                 error_msg => $self->get_msg(),

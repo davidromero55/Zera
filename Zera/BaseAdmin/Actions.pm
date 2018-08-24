@@ -54,11 +54,11 @@ sub process_action {
     my $arg = $self->param('View') || "";
     $arg =~ s/([A-Z])/_$1/g;
     $arg =~ s/\W//g;
-    if(!($arg)){
+    if($self->param('_Action')){
         $arg = $self->param('_Action');
         $arg =~ s/([A-Z])/_$1/g;
         $arg =~ s/\W//g;
-        $arg = '_' . $arg;
+        #$arg = '_' . $arg;
     }
     my $sub_name = "do" . lc($arg);
     $self->{Zera}->{sub_name} = $sub_name;
