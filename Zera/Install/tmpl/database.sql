@@ -320,9 +320,10 @@ CREATE TABLE `conf` (
 
 INSERT INTO `conf` (`name`, `value`, `description`, `module`)
 VALUES (
-  'ItemsPerPage',
-  '8',
-  'Determines the number of items that will be displayed per page.',
-  'Blog'
+  'ItemsPerPage', '8', 'Determines the number of items that will be displayed per page.', 'Blog'
+);
+INSERT INTO `conf` (`name`, `value`, `description`, `module`)
+VALUES (
+  'SignupAllowed', '1', 'Allows or denies users\' signup', 'User'
 );
 -- Dump completed on 2018-04-27 16:28:10
