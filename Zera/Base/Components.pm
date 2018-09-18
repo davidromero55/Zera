@@ -47,7 +47,12 @@ sub param {
     if(defined $val){
         $self->{Zera}->{_REQUEST}->param($var,$val);
     }else{
-        return $self->{Zera}->{_REQUEST}->param($var);
+        my $val = $self->{Zera}->{_REQUEST}->param($var);
+        if(defined $val){
+            return $self->{Zera}->{_REQUEST}->param($var);
+        }else{
+            return '';
+        }
     }
 }
 
@@ -66,6 +71,17 @@ sub get_component {
         $self->add_msg('danger',"Component '$sub_name' not defined.\n");
         return $self->{Zera}->get_msg();
     }
+}
+
+#Delete files from /Data
+sub remove_data{
+  my $self = shift;
+  my $file = shift;
+  if ($file =~ /[ \\\*;]/){
+    $self->add_msg('danger', "$file Is not a valid file path.");
+  }else{
+    unlink "data/$file" or $self->add_msg('danger', 'File $file not found');
+  }
 }
 
 # User messages
@@ -101,6 +117,11 @@ sub selectrow_array {
 sub selectall_arrayref {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub selectall {
+  my $self = shift;
+  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {Slice=>{}}, @_);
 }
 
 sub dbh_do {
