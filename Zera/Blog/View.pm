@@ -7,7 +7,7 @@ use base 'Zera::Base::View';
 # Module Functions
 sub display_home {
   my $self = shift;
-  my $limit = $self->conf('ItemsPerPage', 'Blog');
+  my $limit = $self->conf('Blog', 'ItemsPerPage');
   $self->set_title($conf->{App}->{Name});
 
   # Entries

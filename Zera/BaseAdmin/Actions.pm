@@ -198,7 +198,7 @@ sub selectall_arrayref {
 
 sub selectall {
   my $self = shift;
-  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {slice=>{}}, @_);
+  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {Slice=>{}}, @_);
 }
 
 sub dbh_do {
