@@ -84,7 +84,7 @@ sub upload_file {
     my $mime = '';
 
     if(!(-e "data")){
-        mkdir ("data") or die $!;
+        mkdir ("data") or die "$!. Can't create data directory.";
     }
 
     my @subdirs = split(/\//,$dir);
@@ -93,7 +93,7 @@ sub upload_file {
         $subdirsSrt .= '/' if($subdirsSrt);
         $subdirsSrt .= $subdir;
         if(!(-e "data/$subdirsSrt")){
-            mkdir ("data/$subdirsSrt") or die $!
+            mkdir ("data/$subdirsSrt") or die "$!. Can't create data/$subdirsSrt directory.";
         }
     }
 
