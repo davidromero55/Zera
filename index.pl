@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use lib '.';
 use lib 'lib/';
 use strict;
 use Zera;
