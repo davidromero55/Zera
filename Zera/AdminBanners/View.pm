@@ -125,7 +125,7 @@ sub display_groups {
         },
         link => {
             key => "group_id",
-            hidde_key_col => 1,
+            hidde_key_col => 0,
             location => '/AdminBanners/GroupEdit',
             transit_params => {},
         },
@@ -179,7 +179,7 @@ sub display_group_edit {
         values   => $values,
     });
 
-    #$form->field('group_id',{span=>'col-md-3', required=>1});
+    $form->field('group_id',{type=>'hidden'});
     $form->field('name',{span=>'col-md-8', required=>1});
     $form->field('group_type',{span=>'col-md-4', required=>1});
 

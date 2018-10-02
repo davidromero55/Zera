@@ -11,74 +11,81 @@ sub do_edit {
   $self->param('entry_id',0) if($self->param('entry_id') eq 'New');
 
   if($self->param('_submit') eq 'Save'){
-      # Prevent URL duplicates
-      my $exist = $self->selectrow_array(
-          "SELECT COUNT(*) FROM entries WHERE url=? AND entry_id<>?",{},$self->param('url'), int($self->param('entry_id'))) || 0;
-      if($exist){
-          my $base_url = $self->param('url');
-          for (my $i = 1; $i < 1000; $i++){
-              $self->param('url',$base_url . '-'.$i);
-              $exist = $self->selectrow_array(
-                  "SELECT COUNT(*) FROM entries WHERE url=? AND entry_id<>?",{},$self->param('url'), int($self->param('entry_id'))) || 0;
-              last if ($exist == 0);
-          }
+    # Prevent URL duplicates
+    my $exist = $self->selectrow_array(
+    "SELECT COUNT(*) FROM entries WHERE url=? AND entry_id<>?",{},$self->param('url'), int($self->param('entry_id'))) || 0;
+    if($exist){
+      my $base_url = $self->param('url');
+      for (my $i = 1; $i < 1000; $i++){
+        $self->param('url',$base_url . '-'.$i);
+        $exist = $self->selectrow_array(
+        "SELECT COUNT(*) FROM entries WHERE url=? AND entry_id<>?",{},$self->param('url'), int($self->param('entry_id'))) || 0;
+        last if ($exist == 0);
       }
-
-      my $display_options = {};
-      my $image = $self->upload_file('image', 'img');
-
-      eval {
-          if(int($self->param('entry_id'))){
-              # Update
-              $self->dbh_do("UPDATE entries SET title=?, keywords=?, date=?, updated_by=?, updated_on=NOW(), active=?, description=?, content=?" .
-                               "WHERE entry_id=? AND module='Blog'",{},
-                               $self->param('title'), $self->param('keywords'), $self->param('date'), $self->{sess}{user_id},
-                               ($self->param('active') || 0), $self->param('description'), $self->param('content'),
-                               $self->param('entry_id'));
-              if($image){
-                  $display_options->{image} = '/data/img/'.$image;
-                  $self->dbh_do("UPDATE entries SET display_options=?", {}, $self->param('display_options'));
-              }
-              $self->dbh_do("DELETE FROM entries_categories WHERE entry_id=?", {}, $self->param('entry_id'));
-              $self->dbh_do("INSERT INTO entries_categories (category_id, entry_id, sort_order) VALUES (?, ?, 1)", {}, $self->param('category_id'), $self->param('entry_id'));
-          }else{
-              if($image){
-                  $display_options->{image} = '/data/img/'.$image;
-              }
-              # Insert
-              $self->dbh_do("INSERT INTO entries (module, title, keywords, date, added_by, added_on, views, user_id, active, url, description, content, display_options) " .
-                               "VALUES ('Blog', ?,?,?,?,NOW(),?,?,?,?,?,?,?)",{},
-                               $self->param('title'), $self->param('keywords'), $self->param('date'), $self->{sess}{user_id}, 0, $self->{sess}{user_id},
-                               ($self->param('active') || 0), $self->param('url'), $self->param('description'), $self->param('content'), encode_json($display_options));
-              $self->dbh_do("INSERT INTO entries_categories (category_id, entry_id, sort_order) VALUES (?, ?, 1)", {}, $self->param('category_id'), $self->last_insert_id("entries","entry_id"));
-          }
-      };
-        if($@){
-            $self->add_msg('warning','Error '.$@);
-            $results->{error} = 1;
-            return $results;
-        }else{
-            $results->{redirect} = '/AdminBlog';
-            $results->{success} = 1;
-            return $results;
-        }
-    }elsif($self->param('_submit') eq 'Delete'){
-        eval {
-            $self->dbh_do("DELETE FROM entries WHERE entry_id=? AND module='Blog'",{},
-                             $self->param('entry_id'));
-        };
-        if($@){
-            $self->add_msg('warning','Error '.$@);
-            $results->{error} = 1;
-            return $results;
-        }else{
-            $results->{redirect} = '/AdminBlog';
-            $results->{success} = 1;
-            return $results;
-        }
-
     }
 
+    my $display_options = {};
+    my $image = $self->upload_file('image', 'img');
+    if($image){
+            $display_options->{image} = '/data/img/'.$image;
+        }
+
+        eval {
+          if(int($self->param('entry_id'))){
+            # Update
+            $self->dbh_do("UPDATE entries SET title=?, keywords=?, date=?, updated_by=?, updated_on=NOW(), active=?, description=?, content=?" .
+            "WHERE entry_id=? AND module='Blog'",{},
+            $self->param('title'), $self->param('keywords'), $self->param('date'), $self->{sess}{user_id},
+            ($self->param('active') || 0), $self->param('description'), $self->param('content'),
+            $self->param('entry_id'));
+            if($image){
+              my $oldmedia = $self->selectrow_array("SELECT display_options FROM entries WHERE entry_id = ?", {}, $self->param('entry_id'));
+              $oldmedia = decode_json $oldmedia;
+              $oldmedia->{image} = substr $oldmedia->{image}, 1;
+              unlink $oldmedia->{image};
+              $display_options->{image} = '/data/img/'.$image;
+              $self->dbh_do("UPDATE entries SET display_options=? WHERE entry_id = ?", {}, $self->param('display_options'), $self->param('entry_id'));
+            }
+            $self->dbh_do("DELETE FROM entries_categories WHERE entry_id=?", {}, $self->param('entry_id'));
+            $self->dbh_do("INSERT INTO entries_categories (category_id, entry_id, sort_order) VALUES (?, ?, 1)", {}, $self->param('category_id'), $self->param('entry_id'));
+          }else{
+            # INSERT
+            if($image){
+              $display_options->{image} = '/data/img/'.$image;
+            }
+            $self->dbh_do("INSERT INTO entries (module, title, keywords, date, added_by, added_on, views, user_id, active, url, description, content, display_options) " .
+            "VALUES ('Blog', ?,?,?,?,NOW(),?,?,?,?,?,?,?)",{},
+            $self->param('title'), $self->param('keywords'), $self->param('date'), $self->{sess}{user_id}, 0, $self->{sess}{user_id},
+            ($self->param('active') || 0), $self->param('url'), $self->param('description'), $self->param('content'), encode_json($display_options));
+            $self->dbh_do("INSERT INTO entries_categories (category_id, entry_id, sort_order) VALUES (?, ?, 1)", {}, $self->param('category_id'), $self->last_insert_id("entries","entry_id"));
+          }
+        };
+    if($@){
+      $self->add_msg('warning','Error '.$@);
+      $results->{error} = 1;
+      return $results;
+    }else{
+      $results->{redirect} = '/AdminBlog';
+      $results->{success} = 1;
+      return $results;
+    }
+  }elsif($self->param('_submit') eq 'Delete'){
+    eval {
+      my $oldmedia = $self -> selectrow_array("SELECT display_options FROM entries WHERE entry_id = ?");
+      unlink $oldmedia;
+      $self->dbh_do("DELETE FROM entries WHERE entry_id=? AND module='Blog'",{}, $self->dbh_do("DELETE FROM entries_categories WHERE entry_id=?", {}, $self->param('entry_id'));
+      $self->dbh_do("DELETE FROM entries_categories WHERE entry_id=?", {}, $self->param('entry_id'));
+    };
+    if($@){
+      $self->add_msg('warning','Error '.$@);
+      $results->{error} = 1;
+      return $results;
+    }else{
+      $results->{redirect} = '/AdminBlog';
+      $results->{success} = 1;
+      return $results;
+    }
+  }
 }
 
 1;

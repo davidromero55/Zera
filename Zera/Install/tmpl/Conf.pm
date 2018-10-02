@@ -18,14 +18,14 @@ $conf->{DBI} = {
     Charset   => 'utf8',
     Timezone  => '<% Database.Timezone %>',
     Database  => '<% Database.Database %>',
-    Language  => 'en_US'
+    Language  => '<% Database.Language %>'
 };
 
 $conf->{App} = {
    Name      => '<% Website.Name %>',
    Version   => '0.1',
    URL       => '<% Website.URL %>',
-   Language  => 'en_US',
+   Language  => '<% Database.Language %>',
    URLLink   => 'http://<% Website.URL %>',
    Copyright => '<% Website.Name %>',
    Language  => 'en_US',
@@ -52,12 +52,12 @@ $conf->{Security} = {
 
 $conf->{Email} = {
     Server   => 'localhost',
-    Port     => '',
-    Auth     => '',
+    Port     => '587',
+    Auth     => 'LOGIN',
     User     => '',
     Password => '',
     From     => '<% User.Email %>',
-    SSL      => '',
+    SSL      => 'starttls',
     Debug    => '0',
 };
 

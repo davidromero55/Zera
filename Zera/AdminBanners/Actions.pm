@@ -109,7 +109,7 @@ sub do_group_edit {
                 # Update
                 $self->dbh_do("UPDATE banners_groups SET name=?, group_type=? " .
                                  "WHERE group_id=?",{},
-                                 $self->param('name'), $self->param('group_type'));
+                                 $self->param('name'), $self->param('group_type'), $self->param('group_id'));
             }else{
                 # Insert
                 $self->dbh_do("INSERT INTO banners_groups (name, group_type) " .

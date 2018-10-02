@@ -102,6 +102,7 @@ sub do_database {
                 Username => $self->param('Username'),
                 Password => $self->param('Password'),
                 Timezone => $self->param('Timezone'),
+                Language => $self->param('Language'),
             };
 
             $results->{redirect} = '/Zera/Install/install.pl?View=Website';

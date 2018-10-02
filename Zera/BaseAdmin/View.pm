@@ -48,7 +48,12 @@ sub param {
     if(defined $val){
         $self->{Zera}->{_REQUEST}->param($var,$val);
     }else{
-        return $self->{Zera}->{_REQUEST}->param($var);
+        my $val = $self->{Zera}->{_REQUEST}->param($var);
+        if(defined $val){
+            return $self->{Zera}->{_REQUEST}->param($var);
+        }else{
+            return '';
+        }
     }
 }
 
@@ -63,7 +68,7 @@ sub get_view {
         return $self->$sub_name();
     } else {
         $self->add_msg('danger',"'sub $sub_name' not defined.\n");
-        return $self->{Zera}->get_msg();
+        return $self->get_msg();
     }
 }
 
@@ -75,14 +80,29 @@ sub get_default_view {
         return $self->$sub_name();
     } else {
         $self->add_msg('danger',"'sub $sub_name' not defined.\n");
-        return $self->{Zera}->get_msg();
+        return $self->get_msg();
     }
+}
+
+#Delete files from /Data
+sub remove_data{
+  my $self = shift;
+  my $file = shift;
+  if ($file =~ /[ \\\*;]/){
+    $self->add_msg('danger', "$file Is not a valid file path.");
+  }else{
+    unlink "data/$file" or $self->add_msg('danger', 'File $file not found');
+  }
 }
 
 # User messages
 sub add_msg {
     my $self = shift;
     $self->{Zera}->add_msg(shift, shift);
+}
+sub get_msg {
+  my $self = shift;
+  $self->{Zera}->get_msg();
 }
 
 sub display_msg {
@@ -114,6 +134,11 @@ sub selectall_arrayref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
 }
 
+sub selectall {
+  my $self = shift;
+  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {Slice=>{}}, @_);
+}
+
 sub dbh_do {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
@@ -132,17 +157,19 @@ sub render_template {
     my $template = shift || $self->{Zera}->{sub_name};
     my $HTML = '';
 
-    if(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
+    if(-e ($template)){
+
+    }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/' . $template . '.html')){
+        $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/' . $template . '.html';
+    }elsif(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
         $template = 'Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html';
-    }elsif(-e ('templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html')){
-        $template = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html';
     }else{
-        $self->add_msg('danger','Template not found Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html');
-        return $self->{Zera}->get_msg();
+        $self->add_msg('danger','Template ' . $template . ' not found.');
+        return $self->get_msg();
     }
 
     $vars->{conf} = $conf;
-    $vars->{msg}  = $self->{Zera}->get_msg();
+    $vars->{msg}  = $self->get_msg();
     $vars->{page} = $self->{Zera}->{_PAGE};
 
     my $tt = Zera::Com::template();
@@ -274,6 +301,20 @@ sub selectbox_data {
         $data{labels}{$rec->[0]} = $rec->[1];
     }
     return %data;
+}
+
+#Call conf values
+sub conf {
+    my $self = shift;
+    my $module = shift;
+    my $name = shift;
+    my $value = shift;
+    if (defined $value){
+      $self->dbh_do("UPDATE value = ? WHERE name = ? AND module = ?", {}, $value, $name, $module);
+    }else{
+      $value = $self -> selectrow_array("SELECT value FROM conf WHERE name = ? AND module = ?", {}, $name, $module);
+      return $value;
+    }
 }
 
 1;

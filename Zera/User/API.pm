@@ -11,6 +11,11 @@ sub do_signup {
     my $self = shift;
     my $response = $self->{response};
 
+    if(!$self->conf('User','SignupAllowed')){
+      $results->{msg} = 'Signup not allowed.';
+      return $results;
+    }
+
     # email validation
     my $email = lc($self->param('email'));
     if($email !~ /^[\w\-\+\._]+\@[a-zA-Z0-9][-a-zA-Z0-9\.]*\.[a-zA-Z]+$/){
@@ -80,7 +85,7 @@ sub do_signup {
                 password => $self->param('password'),
             },
         });
-    
+
     # Welcome msg
     $response->{msg} = 'Tu cuenta fue creada con éxito. ' .
         'Recibirás un correo electrónico de confirmación.';
@@ -123,7 +128,7 @@ sub do_login {
         $response->{msg}    = 'Nombre de usuario o contraseña incorrectos.';
         return $response;
     }
-    
+
     eval {
         $self->dbh_do("UPDATE users SET last_login_on=DATE(NOW()) WHERE user_id=?",{}, $user->{user_id});
         my $request_token = sha384_hex($conf->{Security}->{Key} . time() . rand(999999) . $self->param('device_id'));
@@ -134,7 +139,7 @@ sub do_login {
                           $self->param('device_id'), $user->{user_id}, $self->param('platform'), $request_token, $self->param('token'));
         }
         $response->{data} = $user;
-        $response->{data}->{token} = $request_token;   
+        $response->{data}->{token} = $request_token;
     };
     if ($@) {
         $response->{status} = 'error';
@@ -155,12 +160,12 @@ sub do_password_reset {
     my $email = lc($self->param('email'));
     eval {
         my $user = $self->selectrow_hashref("SELECT user_id, name, email FROM users WHERE email=?",{},$email);
-        
+
         if($user and $email){
             # Actualizar DB.
             my $key = $self->selectrow_array("SELECT SUBSTRING(SHA2(CONCAT(RAND(1000),NOW(),?),384),1,64)",{}, $conf->{Security}->{Key});
             $self->dbh_do("UPDATE users SET password_recovery_expires=DATE_ADD(NOW(), INTERVAL 1 HOUR), password_recovery_key=? WHERE user_id=?",{},$key, $user->{user_id});
-            
+
             # Enviar correo.
             my $sent = $self->send_html_email({
                 to       => $self->param('email'),

@@ -45,7 +45,12 @@ sub param {
     if(defined $val){
         $self->{Zera}->{_REQUEST}->param($var,$val);
     }else{
-        return $self->{Zera}->{_REQUEST}->param($var);
+        my $val = $self->{Zera}->{_REQUEST}->param($var);
+        if(defined $val){
+            return $self->{Zera}->{_REQUEST}->param($var);
+        }else{
+            return '';
+        }
     }
 }
 
@@ -150,12 +155,26 @@ sub upload_file {
     return "";
 }
 
+#Delete files from /Data
+sub remove_data{
+  my $self = shift;
+  my $file = shift;
+  if ($file =~ /[ \\\*;]/){
+    $self->add_msg('danger', "$file Is not a valid file path.");
+  }else{
+    unlink "data/$file" or $self->add_msg('danger', 'File $file not found');
+  }
+}
+
 # User messages
 sub add_msg {
     my $self = shift;
     $self->{Zera}->add_msg(shift, shift);
 }
-
+sub get_msg {
+  my $self = shift;
+  $self->{Zera}->get_msg();
+}
 # Database functions
 sub selectrow_hashref {
     my $self = shift;
@@ -177,6 +196,11 @@ sub selectall_arrayref {
     return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
 }
 
+sub selectall {
+  my $self = shift;
+  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {Slice=>{}}, @_);
+}
+
 sub dbh_do {
     my $self = shift;
     return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift, @_);
@@ -188,6 +212,20 @@ sub send_html_email {
     my $vars = shift;
 
     $self->{Zera}->{_EMAIL}->send_html_email($vars);
+}
+
+#Call conf values
+sub conf {
+    my $self = shift;
+    my $module = shift;
+    my $name = shift;
+    my $value = shift;
+    if (defined $value){
+      $self->dbh_do("UPDATE value = ? WHERE name = ? AND module = ?", {}, $value, $name, $module);
+    }else{
+      $value = $self -> selectrow_array("SELECT value FROM conf WHERE name = ? AND module = ?", {}, $name, $module);
+      return $value;
+    }
 }
 
 1;

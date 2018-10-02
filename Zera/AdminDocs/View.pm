@@ -76,7 +76,7 @@ sub display_edit {
     $form->field('category_id',{type=>'hidden'});
     $form->field('title',{span=>'col-md-12', required=>1});
     $form->field('url',{span=>'col-md-6', required=>1, readonly=>1});
-    $form->field('keywords',{span=>'col-md-6', required=>1});
+    $form->field('keywords',{span=>'col-md-6'});
     $form->field('date',{class=>'form-control form-control-sm datepicker', required=>1});
     $form->field('description',{span=>'col-md-12', required=>1});
     $form->field('content',{span=>'col-md-12', required=>1, type=>'textarea', rows=>10, class=>"wysiwyg form-control form-control-sm"});
@@ -181,12 +181,12 @@ sub display_edit_category {
     if($self->param('category_id')){
         $values = $self->selectrow_hashref("SELECT * FROM categories WHERE category_id=? AND module='Docs'",{},$self->param('category_id'));
         push(@submit, 'Delete');
-        $self->add_btn('/AdminDocs?parent_id='.$values->{parent_id},'Back');
     }else{
         $values = {
             parent_id => $self->param('parent_id') ,
         };
     }
+    $self->add_btn('/AdminDocs?parent_id='.($values->{parent_id} || 0),'Back');
 
     # Form
     my $form = $self->form({
