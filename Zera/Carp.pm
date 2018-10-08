@@ -11,6 +11,8 @@ BEGIN {
 
 sub die {
     my $mess = shift;
+    my @call_details = caller(1);
+    $mess = "$call_details[1] Line $call_details[2]. Function ".$call_details[3] . "<br>\n" . $mess;
 
     my $bytes_written = eval{tell STDOUT};
     if (defined $bytes_written && $bytes_written > 0) {
