@@ -1,6 +1,6 @@
 package Zera::Admin::Components;
 
-use base 'Zera::Base::Components';
+use base 'Zera::BaseAdmin::Components';
 
 sub component_admin_menus {
     my $self = shift;
@@ -14,7 +14,7 @@ sub component_admin_menus {
             "(SELECT COUNT(*) FROM users_access_control uac WHERE uac.user_id=? AND uac.access_control_id=ac.access_control_id))".
             "ORDER BY ac.sort_order, ac.name",{Slice=>{}}, $user_id);
     }
-    
+
     my $vars = {
         menus => $menus,
     };

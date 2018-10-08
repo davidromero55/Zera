@@ -21,10 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                <% FOREACH menu = menus %>
-                <li class="nav-item active">
-                    <a class="nav-link" href="<% menu.url %>"><% menu.name %><span class="sr-only">(current)</span></a>
-                </li><% END %>
+                <% Zera.get_component('Admin','admin_menus') %>
             </ul>
             <ul class="nav justify-content-end">
                 <li class="nav-item"><a class="nav-link" href="/Admin" title="Account"><i class="fas fa-user-circle"></i></a></li>
