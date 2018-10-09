@@ -155,6 +155,36 @@ sub upload_file {
     return "";
 }
 
+sub create_thumbnail {
+    my $self = shift;
+    my $source = shift;
+    my $target = shift;
+    my $size = shift;
+
+    if(!(-e "data")){
+        mkdir ("data") or die "$!. Can't create data directory.";
+    }
+
+    my @subdirs = split(/\//,$target);
+    my $subdirsSrt = '';
+    foreach my $subdir (@subdirs){
+        last if($subdir =~ /\./);
+        $subdirsSrt .= '/' if($subdirsSrt);
+        $subdirsSrt .= $subdir;
+        if(!(-e "data/$subdirsSrt")){
+            mkdir ("data/$subdirsSrt") or die "$!. Can't create data/$subdirsSrt directory.";
+        }
+    }
+
+    require Image::Thumbnail;
+    my $t = new Image::Thumbnail(
+        size       => $size,
+        create     => 1,
+        input      => 'data/'.$source,
+        outputpath => 'data/'.$target,
+        );
+}
+
 #Delete files from /Data
 sub remove_data{
   my $self = shift;
