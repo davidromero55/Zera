@@ -60,8 +60,6 @@ $(document).ready(function(){
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
-    } else {
-      console.log("Error in admin datepicker")
     }
 
 });
