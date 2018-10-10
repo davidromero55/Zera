@@ -45,7 +45,7 @@ sub _init {
     $self->{submits} = {};
     my @btn_class = ('btn-primary','btn-secondary','btn-danger','btn-secondary','btn-secondary','btn-secondary');
     foreach my $submit_name (@{$self->{params}->{submits}}){
-        $self->{submits}->{$submit_name} = {type => 'submit', name=>$submit_name, class=>'btn ' . shift(@btn_class)};
+        $self->{submits}->{$submit_name} = {type => 'submit', name=>$submit_name, class=>'btn mr-1 ' . shift(@btn_class)};
     }
 
     # Default Action
