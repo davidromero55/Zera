@@ -178,6 +178,7 @@ sub create_thumbnail {
 
     require Image::Thumbnail;
     my $t = new Image::Thumbnail(
+        module     => 'Imager',
         size       => $size,
         create     => 1,
         input      => 'data/'.$source,
