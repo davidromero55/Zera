@@ -104,10 +104,11 @@ sub render {
     }
 
     my $tt = Zera::Com::template();
-    $vars->{vars} = $self->{vars};
-    $vars->{conf} = $conf;
-    $vars->{msg}  = $self->{Zera}->get_msg();
-    $vars->{page} = $self->{Zera}->{_PAGE};
+    $vars->{vars}     = $self->{vars};
+    $vars->{conf}     = $conf;
+    $vars->{msg}      = $self->{Zera}->get_msg();
+    $vars->{page}     = $self->{Zera}->{_PAGE};
+    $vars->{sub_name} = $self->{Zera}->{sub_name};
 
     my $HTML = '';
     $tt->process($template_file, $vars, \$HTML) || die $tt->error(), "\n";
@@ -271,6 +272,7 @@ sub _get_field {
                 next if($key eq 'label');
                 next if($key eq 'labels');
                 next if($key eq 'value');
+                next if($key eq 'span');
                 if($key eq 'options'){
                     foreach my $option(@{$self->{fields}->{$field_name}->{$key}}){
                         $field_options .= '<option';
@@ -296,7 +298,7 @@ sub _get_field {
             $field_html .= $field_options.'</select>';
         }
         case 'checkbox' {
-            $self->{fields}->{$field_name}->{class} = 'form-check-input' if(!($self->{fields}->{$field_name}->{class}));
+            $self->{fields}->{$field_name}->{class} = 'form-check-input' if($self->{fields}->{$field_name}->{class} eq 'form-control form-control-sm');
             foreach my $key (keys %{$self->{fields}->{$field_name}}) {
                 next if($key eq 'id');
                 next if($key eq 'name');
@@ -305,6 +307,7 @@ sub _get_field {
                 next if($key eq 'help');
                 next if($key eq 'override');
                 next if($key eq 'label');
+                next if($key eq 'span');
                 if($key eq 'value'){
                     if($self->{fields}->{$field_name}->{$key}){
                         $field_html .= ' checked="1" ';
@@ -330,6 +333,7 @@ sub _get_field {
                 next if($key eq 'override');
                 next if($key eq 'label');
                 next if($key eq 'value');
+                next if($key eq 'span');
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
             $field_html = '<input name="' . $field_name . '" id="' . $field_name . '" type="' . $self->{fields}->{$field_name}->{type} . '" ' . $field_html .'/>'
@@ -344,6 +348,7 @@ sub _get_field {
                 next if($key eq 'override');
                 next if($key eq 'label');
                 next if($key eq 'value');
+                next if($key eq 'span');
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
             $self->{fields}->{$field_name}->{value} = '' if(!$self->{fields}->{$field_name}->{value});
@@ -360,6 +365,7 @@ sub _get_field {
                 next if($key eq 'override');
                 next if($key eq 'label');
                 next if($key eq 'value');
+                next if($key eq 'span');
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
             $field_html = '<input name="' . $field_name . '" id="' . $field_name . '" type="' . $self->{fields}->{$field_name}->{type} . '" ' . $field_html .'/>' .
@@ -376,6 +382,7 @@ sub _get_field {
                 next if($key eq 'help');
                 next if($key eq 'override');
                 next if($key eq 'label');
+                next if($key eq 'span');
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
             $field_html = '<input name="' . $field_name . '" id="' . $field_name . '" type="' . $self->{fields}->{$field_name}->{type} . '" ' . $field_html .'/>'
