@@ -76,29 +76,31 @@ sub render {
 
     $self->_prepare_fields();
 
-
-    my $template_file = $self->{params}->{template};
-    if ($template_file) {
-        if(!(-e ($template_file))){
-            if($template_file =~ /^\w+$/ ){
-                my $dir = $self->{Zera}->{ControllerName};
-                $template_file = "Zera/$dir/tmpl/$template_file.html";
-            }
-        }
+    my $template_file = $self->{params}->{template} || 'zera_form';
+    # Look for an available template
+    # 1. Current module template file
+    # 2. Current module lib file
+    # 3. template default file
+    # 4. Zera default file
+    my $current_template_dir = '';
+    if($self->{Zera}->{_Layout} eq 'Public'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{TemplateID} . '/';
+    }elsif($self->{Zera}->{_Layout} eq 'User'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{UserTemplateID} . '/';
+    }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/';
+    }
+    if(-e($current_template_dir . $self->{Zera}->{ControllerName} . '/' . $template_file . '.html')){
+        $template_file = $current_template_dir . $self->{Zera}->{ControllerName} . '/' . $template_file . '.html';
+    }elsif(-e('Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template_file . '.html')){
+        $template_file = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template_file . '.html';
+    }elsif(-e($current_template_dir . $template_file . '.html')){
+        $template_file = $current_template_dir . $template_file . '.html';
+    }elsif(-e('Zera/tmpl/' . $template_file . '.html')){
+        $template_file = 'Zera/tmpl/' . $template_file . '.html';
     }else{
-        my $dir = __PACKAGE__;
-        $dir =~s/::/\//g;
-        if(-e ("$dir/$self->{Zera}->{sub_name}.html")){
-            $template_file = "$dir/$self->{Zera}->{sub_name}.html";
-        }else{
-            if($self->{Zera}->{_Layout} eq 'Public'){
-                $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/zera_form.html';
-            }elsif($self->{Zera}->{_Layout} eq 'User'){
-                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/zera_form.html';
-            }elsif($self->{Zera}->{_Layout} eq 'Admin'){
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_form.html';
-            }
-        }
+        $self->add_msg('danger','Template ' . $template_file . '.html not found.');
+        return $self->get_msg();
     }
 
     my $tt = Zera::Com::template();

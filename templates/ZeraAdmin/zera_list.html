@@ -1,3 +1,5 @@
+<h3><% page.title %></h3>
+<% msg %>
 <table<% FOREACH attr IN table_attrs %> <% attr.key %>="<% attr.value %>"<% END %>>
     <% IF caption  %><caption><% caption %></caption><% END %>
     <thead>
@@ -9,6 +11,5 @@
     <tfoot>
         <% totals %>
     </tfoot>
-
 </table>
 <% pagination %>

@@ -39,11 +39,7 @@ sub display_home {
     $list->on_off('active');
     $list->columns_align(['left','left','center']);
 
-    my $vars = {
-        list => $list->print(),
-    };
-
-    return $self->render_template($vars);
+    return $list->render();
 }
 
 sub display_edit {

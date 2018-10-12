@@ -43,6 +43,7 @@ sub new {
     $self->{nav_pages}  = 5;
     $self->{custom_labels} = {};
     $self->{hidde_column} = '';
+    $self->{template} = 'zera_list';
     ($self->{script},$self->{p}) = split(/\?/,$ENV{REQUEST_URI});
 
     $self->{table} = {
@@ -133,23 +134,52 @@ sub param {
 sub render_template {
     my $self = shift;
     my $vars = shift;
-    my $template = shift || $self->{Zera}->{sub_name};
+    my $template_file = $self->{template};
     my $HTML = '';
 
-    if(-e ('Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html')){
-        $template = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template . '.html';
-    }elsif(-e ('templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html')){
-        $template = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $template . '.html';
+    # Look for an available template
+    # 1. Current module template file
+    # 2. Current module lib file
+    # 3. template default file
+    # 4. Zera default file
+    my $current_template_dir = '';
+    if($self->{Zera}->{_Layout} eq 'Public'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{TemplateID} . '/';
+    }elsif($self->{Zera}->{_Layout} eq 'User'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{UserTemplateID} . '/';
+    }elsif($self->{Zera}->{_Layout} eq 'Admin'){
+        $current_template_dir = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/';
+    }
+    if(-e($current_template_dir . $self->{Zera}->{ControllerName} . '/' . $template_file . '.html')){
+        $template_file = $current_template_dir . $self->{Zera}->{ControllerName} . '/' . $template_file . '.html';
+    }elsif(-e('Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template_file . '.html')){
+        $template_file = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/' . $template_file . '.html';
+    }elsif(-e($current_template_dir . $template_file . '.html')){
+        $template_file = $current_template_dir . $template_file . '.html';
+    }elsif(-e('Zera/tmpl/' . $template_file . '.html')){
+        $template_file = 'Zera/tmpl/' . $template_file . '.html';
+    }else{
+        $self->add_msg('danger','Template ' . $template_file . '.html not found.');
+        return $self->get_msg();
     }
 
     $vars->{conf} = $conf;
 
     my $tt = Zera::Com::template();
-    $tt->process($template, $vars, \$HTML) || die "$Template::ERROR\n";
+    $vars->{conf} = $conf;
+    $vars->{msg}  = $self->{Zera}->get_msg();
+    $vars->{page} = $self->{Zera}->{_PAGE};
+    $tt->process($template_file, $vars, \$HTML) || die "$Template::ERROR\n";
     return $HTML;
 }
 
+# Deprecated
 sub print {
+    my $self = shift;
+    return $self->render();
+}
+
+sub render {
     my $self = shift;
     my $vars = {};
 
@@ -199,7 +229,7 @@ sub print {
 
     $self->{total_records} = $self->{rows} if(!$self->{total_records} and $self->{rows});
 
-    return $self->render_template($vars, 'zera_list_render');
+    return $self->render_template($vars);
 }
 
 sub get_data {
