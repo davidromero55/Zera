@@ -159,8 +159,8 @@ sub render_template {
     }elsif(-e('Zera/tmpl/' . $template_file . '.html')){
         $template_file = 'Zera/tmpl/' . $template_file . '.html';
     }else{
-        $self->add_msg('danger','Template ' . $template_file . '.html not found.');
-        return $self->get_msg();
+        $self->{Zera}->add_msg('danger','Template ' . $template_file . '.html not found.');
+        return $self->{Zera}->get_msg();
     }
 
     $vars->{conf} = $conf;
@@ -181,7 +181,7 @@ sub print {
 
 sub render {
     my $self = shift;
-    my $vars = {};
+    my $vars = shift || {};
 
     $self->transit_params();
     if(!defined $self->{rs}){
