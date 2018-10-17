@@ -1,8 +1,7 @@
 TODO
 
+Version 1.0
 ####################################
-  PRE Alpha
-------------------------
 
 # Docs
     Active/inactive flag by entry
@@ -20,19 +19,31 @@ TODO
     Search.
     Display category.
 
-
 # Pages
     Live buttons
 
-# API-Rest
-
 # Clear template after install
 
-# Charts Module
+# Localization
 
-# FastCGI
+# OpenGraph
+
+# Installations tests
+Fedora
+Ubuntu
+Plesk
+Cpanel
+
+Version 1.2
+####################################
+
+# Menus
+
+# Plask
 
 # Cache
+
+# Charts Module
 
 # Module wizards
     Module creator wizard !!!.
@@ -41,9 +52,3 @@ TODO
     Template creator wizard !!!.
     Report creator wizard !!!
     Chart creator wizard !!!
-
-# OpenGraph
-
-####################################
-  BETA
----------
