@@ -24,7 +24,7 @@ sub display_login {
         method   => 'POST',
         fields   => [qw/email password keep_me_in/],
         submit   => \@submit,
-        template => 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_login_form.html',
+        template => 'zera_login_form',
     });
 
     $form->field('email',{placeholder=> 'Correo Electrónico', type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Introduce un correo válido', validate=>'EMAIL'});
@@ -87,7 +87,7 @@ sub display_forgot_password {
         method   => 'POST',
         fields   => [qw/email/],
         submits  => \@submit,
-        template => 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_form_out.html',
+        template => '/zera_form_out',
     });
 
     $form->field('email',{placeholder=> 'Email', type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Enter a valid email address.', validate=>'EMAIL'});
@@ -107,7 +107,7 @@ sub _display_password_recovery {
         method   => 'POST',
         fields   => [qw/email new_password new_password_confirm/],
         submits  => \@submit,
-        template => 'templates/' . $conf->{Template}->{AdminTemplateID} . '/zera_form_out.html',
+        template => 'zera_form_out',
     });
 
     $form->field('email',{placeholder=> 'Email', readonly=>1, value=>$user->{email}, type=>'email', maxlength=>"100", required=>"1", invalid_msg => 'Enter a valid email address.', validate=>'EMAIL'});
