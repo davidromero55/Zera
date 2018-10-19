@@ -59,11 +59,53 @@ sub after_api {
 
 }
 
+# Session functions
+sub sess {
+    my $self = shift;
+    my $name = shift;
+    my $value = shift;
+
+    if(defined $value){
+        $self->{Zera}->{_SESS}->{_sess}{$name} = "$value";
+    }else{
+        return $self->{Zera}->{_SESS}->{_sess}{$name};
+    }
+}
+
 # Request functions
 sub param {
     my $self = shift;
     my $var = shift;
-    return $self->{Zera}->{_VARS}->{$var};
+    my $val = shift;
+    if(defined $val){
+        $self->{Zera}->{_REQUEST}->param($var,$val);
+    }else{
+        my $val = $self->{Zera}->{_REQUEST}->param($var);
+        if(defined $val){
+            return $self->{Zera}->{_REQUEST}->param($var);
+        }else{
+            return '';
+        }
+    }
+}
+
+# User messages
+sub add_msg {
+    my $self = shift;
+    $self->{Zera}->add_msg(shift, shift);
+}
+
+sub get_msg {
+  my $self = shift;
+  $self->{Zera}->get_msg();
+}
+
+sub display_msg {
+    my $self = shift;
+
+    my $vars = {
+    };
+    return $self->render_template($vars,'msg-admin');
 }
 
 #Call conf values

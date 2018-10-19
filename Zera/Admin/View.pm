@@ -130,7 +130,7 @@ sub display_password_update {
     # Helper buttons
     $self->add_btn('/Admin','Back');
 
-    # Form
+    # Form.html
     my $form = $self->form({
         method   => 'POST',
         fields   => [qw/current_password new_password new_password_confirm/],
