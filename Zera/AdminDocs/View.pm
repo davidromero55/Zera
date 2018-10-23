@@ -39,7 +39,7 @@ sub display_edit {
     my $self = shift;
     my $values = {};
     my @submit = ("Save");
-    $self->param('entry_id',$self->param('SubView')) if(!(defined $self->param('entry_id')));
+    $self->param('entry_id',$self->param('SubView')) if(!($self->param('entry_id')));
     my $entry_id = $self->param('entry_id') || 0;
     $entry_id =~ s/\D//g;
     $self->param('entry_id',$entry_id);
@@ -166,7 +166,7 @@ sub display_edit_category {
     my $self = shift;
     my $values = {};
     my @submit = ("Save");
-    $self->param('category_id',$self->param('SubView')) if(!(defined $self->param('category_id')));
+    $self->param('category_id',$self->param('SubView')) if(!($self->param('category_id')));
     my $entry_id = $self->param('category_id') || 0;
     $entry_id =~ s/\D//g;
     $self->param('category_id',$entry_id);

@@ -48,7 +48,7 @@ sub display_edit {
     my $values = {};
     my @submit = ("Save");
 
-    $self->param('banner_id',$self->param('SubView')) if(!(defined $self->param('banner_id')));
+    $self->param('banner_id',$self->param('SubView')) if(!($self->param('banner_id')));
 
     # Title
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Banner') : $self->set_title('Edit Banner');
@@ -140,7 +140,7 @@ sub display_group_edit {
     my $values = {};
     my @submit = ("Save");
 
-    $self->param('group_id',$self->param('SubView')) if(!(defined $self->param('group_id')));
+    $self->param('group_id',$self->param('SubView')) if(!($self->param('group_id')));
 
     # Title
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Banner Group') : $self->set_title('Edit Banner Group');

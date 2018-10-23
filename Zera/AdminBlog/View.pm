@@ -47,7 +47,7 @@ sub display_edit {
     my $values = {};
     my @submit = ("Save");
 
-    $self->param('entry_id',$self->param('SubView')) if(!(defined $self->param('entry_id')));
+    $self->param('entry_id',$self->param('SubView')) if(!($self->param('entry_id')));
 
     # Title
     ($self->param('SubView') eq 'New') ? $self->set_title('Add Blog') : $self->set_title('Edit Blog');
