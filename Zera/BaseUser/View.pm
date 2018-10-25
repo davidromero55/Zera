@@ -25,6 +25,16 @@ sub new {
 
 sub _init {
     my $self = shift;
+    $self->set_page_attr('name',$self->conf('Site', 'Name'));
+    $self->set_page_attr('phone',$self->conf('Site', 'Phone'));
+    $self->set_page_attr('phones',$self->conf('Site', 'Phones'));
+    $self->set_page_attr('country',$self->conf('Site', 'Country'));
+    $self->set_page_attr('city',$self->conf('Site', 'City'));
+    $self->set_page_attr('colony',$self->conf('Site', 'Colony'));
+    $self->set_page_attr('street',$self->conf('Site', 'Street'));
+    $self->set_page_attr('copyright',$self->conf('Site', 'Copyright'));
+    $self->set_page_attr('email',$self->conf('Site', 'Email'));
+    $self->set_page_attr('logo',$self->conf('Site', 'Logo'));
 }
 
 # Session functions
