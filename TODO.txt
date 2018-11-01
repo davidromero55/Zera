@@ -5,7 +5,6 @@ Version 1.0
 
 # Docs
     Active/inactive flag by entry
-    Active/inactive flag by category
     Check for childs on delete
     Sort order
     Live buttons
