@@ -2,6 +2,7 @@ package Zera::Static::View;
 
 use JSON;
 use base 'Zera::Base::View';
+use Zera::Conf;
 
 sub display_item {
     my $self = shift;
@@ -16,9 +17,11 @@ sub display_item {
 sub _get_file_name {
     my $self = shift;
     my $file_name = $self->param('SubView');
-    $file_name =~ s/\W//g;
+    $file_name =~ s/\W!-//g;
     $file_name = lc($file_name);
-    if (-e ('static/'.$file_name . '.html')) {
+    if (-e ('templates/'.$conf->{Template}->{TemplateID}.'/static/'.$file_name . '.html')) {
+        return 'templates/'.$conf->{Template}->{TemplateID}.'/static/'.$file_name . '.html'
+    }elsif (-e ('static/'.$file_name . '.html')) {
         return 'static/'.$file_name . '.html';
     }
 }

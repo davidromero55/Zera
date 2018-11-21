@@ -1,6 +1,7 @@
 package Zera::Url::Controller;
 
 use base 'Zera::Base::Controller';
+use Zera::Conf;
 
 sub rewrite_request {
     my $self = shift;
@@ -10,14 +11,17 @@ sub rewrite_request {
         return ($entry->{module},'Item', $entry->{url})
     }else{
         my $file_name = $self->{Zera}->{_REQUEST}->param('View');
-        $file_name =~ s/\W//g;
+        $file_name =~ s/\W!-//g;
         $file_name = lc($file_name);
         if($file_name){
-            if (-e ('static/'.$file_name . '.html')) {
+            if (-e ('templates/'.$conf->{Template}->{TemplateID}.'/static/'.$file_name . '.html')) {
+                return ('Static','Item',$file_name);
+            }elsif (-e ('static/'.$file_name . '.html')) {
                 return ('Static','Item',$file_name);
             }
         }
     }
     return ('','','');
 }
+
 1;
