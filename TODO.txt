@@ -4,7 +4,6 @@ Version 1.0
 ####################################
 
 # Docs
-    Active/inactive flag by entry
     Check for childs on delete
     Sort order
     Live buttons
