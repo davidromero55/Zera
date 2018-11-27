@@ -107,16 +107,16 @@ sub do_edit_category {
         eval {
             if(int($self->param('category_id'))){
                 # Update
-                $self->dbh_do("UPDATE categories SET parent_id=?, category=?, url=?, description=? " .
+                $self->dbh_do("UPDATE categories SET parent_id=?, category=?, url=?, description=?, active=? " .
                                  "WHERE category_id=? AND module='Docs'",{},
                                  $self->param('parent_id'), $self->param('category'),  $self->param('url'), $self->param('description'),
-                                 $self->param('category_id'));
+                                 ($self->param('active') || 0), $self->param('category_id'));
             }else{
                 # Insert
-                $self->dbh_do("INSERT INTO categories (module, parent_id, category, url, description, sort_order) " .
-                                 "VALUES ('Docs', ?,?,?,?,999999)",{},
+                $self->dbh_do("INSERT INTO categories (module, parent_id, category, url, description, active, sort_order) " .
+                                 "VALUES ('Docs', ?,?,?,?,?,999999)",{},
                                  $self->param('parent_id'), $self->param('category'), $self->param('url'),
-                                 $self->param('description'));
+                                 $self->param('description'),($self->param('active') || 0));
             }
         };
         if($@){

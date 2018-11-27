@@ -6,7 +6,7 @@ use base 'Zera::BaseAdmin::View';
 sub display_home {
     my $self = shift;
 
-    $self->set_title('Documentation');
+    $self->set_title('Documents');
     $self->add_search_box();
 
     my $parent_id   = $self->param('parent_id');
@@ -135,7 +135,7 @@ sub _get_parent_categories {
     }
     $list = Zera::List->new($self->{Zera},{
         sql => {
-            select => "c.category_id, c.category, '' AS edit, '' AS categories",
+            select => "c.category_id, c.category, c.active, '' AS edit, '' AS categories",
             from =>"categories c",
             order_by => "c.sort_order, c.category",
             where => $where,
@@ -152,6 +152,7 @@ sub _get_parent_categories {
 
     $list->get_data();
     $list->columns_align(['left','center','center','center']);
+    $list->on_off('active');
 
     foreach my $row (@{$list->{rs}}){
         $row->{edit}       = '<a href="/AdminDocs/EditCategory/' . $row->{category_id} . '"><i class="fas fa-edit"></i></a>';
@@ -191,15 +192,16 @@ sub display_edit_category {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/category_id parent_id category url description/],
+        fields   => [qw/category_id parent_id category url active description/],
         submits  => \@submit,
         values   => $values,
     });
 
     $form->field('category_id',{type=>'hidden'});
     $form->field('parent_id',{type=>'hidden'});
-    $form->field('category',{span=>'col-md-6', required=>1});
+    $form->field('category',{span=>'col-md-12', required=>1});
     $form->field('url',{span=>'col-md-6', required=>1, readonly=>1});
+    $form->field('active',{label=>"Active", check_label=>'Yes / No', class=>"filled-in", type=>"checkbox"});
     $form->field('description',{span=>'col-md-12', required=>1});
 
     $form->submit('Delete',{class=>'btn btn-danger'}) if($values->{category_id});
@@ -219,7 +221,7 @@ sub _get_categories {
     }
     $list = Zera::List->new($self->{Zera},{
         sql => {
-            select => "c.category_id, c.category, '' AS edit, '' AS categories",
+            select => "c.category_id, c.category, c.active, '' AS edit, '' AS documents",
             from =>"categories c",
             order_by => "c.sort_order, c.category",
             where => $where,
@@ -238,10 +240,11 @@ sub _get_categories {
 
     $list->get_data();
     $list->columns_align(['left','center','center','center']);
+    $list->on_off('active');
 
     foreach my $row (@{$list->{rs}}){
         $row->{edit}       = '<a href="/AdminDocs/EditCategory/' . $row->{category_id} . '"><i class="fas fa-edit"></i></a>';
-        $row->{categories} = '<a href="/AdminDocs?category_id=' . $row->{category_id} . '"><i class="fas fa-chevron-circle-right"></i>
+        $row->{documents} = '<a href="/AdminDocs?category_id=' . $row->{category_id} . '"><i class="fas fa-chevron-circle-right"></i>
 
         </i></a>';
     }

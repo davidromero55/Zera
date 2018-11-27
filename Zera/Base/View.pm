@@ -25,6 +25,12 @@ sub new {
 
 sub _init {
     my $self = shift;
+    $self->set_page_attr('name',$self->conf('Site', 'Name'));
+    $self->set_page_attr('phone',$self->conf('Site', 'Phone'));
+    $self->set_page_attr('address',$self->conf('Site', 'Address'));
+    $self->set_page_attr('copyright',$self->conf('Site', 'Copyright'));
+    $self->set_page_attr('email',$self->conf('Site', 'Email'));
+    $self->set_page_attr('logo',$self->conf('Site', 'Logo'));
 }
 
 # Session functions
