@@ -5,7 +5,6 @@ use strict;
 
 use Zera::Conf;
 use Zera::Com;
-use Zera::Carp;
 
 use Email::Sender::Simple qw(sendmail);
 use Email::Sender;
@@ -62,7 +61,7 @@ sub send_html_email {
     $self->{from} = $data->{from} if($data->{from});
 
     my $template_file = $data->{template}->{file};
-    
+
     if (!$template_file) {
         my $module_dir = 'Zera/' . $self->{Zera}->{ControllerName} . '/tmpl/';
         my $workspace_dir = '';
@@ -73,7 +72,7 @@ sub send_html_email {
         }elsif($self->{Zera}->{_Layout} eq 'Admin'){
             $workspace_dir = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $self->{Zera}->{ControllerName} . '/';
         }
-        
+
         if(-e ($workspace_dir . $self->{Zera}->{sub_name} .'_email.html')){
             $template_file = $workspace_dir . $self->{Zera}->{sub_name} .'_email.html';
         }elsif(-e ($module_dir . $self->{Zera}->{sub_name} .'_email.html')){
@@ -118,7 +117,7 @@ sub _send_full_html_message {
 
 
     if(-e ($template_file)){
-  
+
     }else{
         $self->{Zera}->add_msg('danger', 'Email template ' . $template_file .' not found.');
         die;
