@@ -136,16 +136,14 @@ sub render_template {
     my $template = shift || $self->{Zera}->{component_name};
     my $HTML = '';
 
-    my $dir =caller();
-    $dir =~ s/::/\//g;
-    $dir =~s/\/Components$//;
+    my ($void, $Controller) = split(/::/,caller());
 
-    if(-e ($dir . '/tmpl/' . $template . '.html')){
-        $template = $dir . '/tmpl/' . $template . '.html';
-    }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html')){
-        $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $template . '.html';
-    }elsif(-e ($template)){
+    if(-e ($template)){
 
+    }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $Controller . '/' . $template . '.html')){
+        $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $Controller . '/' . $template . '.html';
+    }elsif(-e ('Zera/' . $Controller . '/tmpl/' . $template . '.html')){
+        $template = 'Zera/' . $Controller . '/tmpl/' . $template . '.html';
     }else{
         $self->add_msg('danger','Template ' . $template . ' not found.');
         return $self->{Zera}->get_msg();
