@@ -2,6 +2,7 @@
 use strict;
 chdir ('../..');
 use lib ('Zera/Install');
+use lib ('.');
 
 # Main vars
 my $required_modules = [
