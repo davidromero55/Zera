@@ -19,6 +19,43 @@
 -- Table structure for table `access_paths`
 --
 
+DROP TABLE IF EXISTS `access_control`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `access_control` (
+  `access_control_id` int(11) NOT NULL AUTO_INCREMENT,
+  `workspace` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `icon` varchar(45) DEFAULT NULL,
+  `sort_order` int(4) DEFAULT NULL,
+  `url` varchar(145) DEFAULT NULL,
+  `controller` varchar(45) DEFAULT NULL,
+  `view` varchar(45) DEFAULT NULL,
+  `subview` varchar(45) DEFAULT NULL,
+  `on_menu` int(1) NOT NULL DEFAULT '0',
+  `is_restricted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`access_control_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `access_control`
+--
+
+LOCK TABLES `access_control` WRITE;
+/*!40000 ALTER TABLE `access_control` DISABLE KEYS */;
+INSERT INTO `access_control` VALUES
+    (32101,'Public','Home',NULL,1,'/','*','*','*',0,0),
+    (32102,'User','Home',NULL,1,'/User','*','*','*',1,0),
+    (32103,'Admin','Home','fas fa-home',1,'/Admin','*','*','*',1,0),
+    (32104,'Admin','Pages',NULL,10,'/AdminPages','AdminPages','*','*',1,0),
+    (32105,'Admin','Blog',NULL,20,'/AdminBlog','AdminBlog','*','*',1,0),
+    (32106,'Admin','Docs',NULL,30,'/AdminDocs','AdminDocs','*','*',1,0),
+    (32107,'Admin','Banners',NULL,40,'/AdminBanners','AdminBanners','*','*',1,0);
+/*!40000 ALTER TABLE `access_control` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 DROP TABLE IF EXISTS `access_paths`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -309,6 +346,8 @@ CREATE TABLE `banners` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2018-04-27 16:28:10
+
 DROP TABLE IF EXISTS conf;
 CREATE TABLE `conf` (
   `name` VARCHAR(50) NOT NULL,
@@ -326,4 +365,16 @@ INSERT INTO `conf` (`name`, `value`, `description`, `module`)
 VALUES (
   'SignupAllowed', '1', 'Allows or denies users\' signup', 'User'
 );
--- Dump completed on 2018-04-27 16:28:10
+
+
+DROP TABLE IF EXISTS `users_access_control`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_access_control` (
+  `user_id` int(11) NOT NULL,
+  `access_control_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`access_control_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `categories` ADD `active` INT(1) NOT NULL DEFAULT '1' AFTER `url`;
