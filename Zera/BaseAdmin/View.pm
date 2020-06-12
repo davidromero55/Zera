@@ -240,7 +240,7 @@ sub add_search_box {
     }
 
     my $value = $self->param('zl_q');
-    $value = '' if(!(defined $self->param('zl_q')));
+    $value = '' if(!($self->param('zl_q')));
     $self->{Zera}->{_PAGE}->{search_url} = $url;
     $self->{Zera}->{_PAGE}->{search_box} = $self->_tag('input', {type=>"text", class=>"form-control", value=>$value, name=>"zl_q", id=>"zl_q", placeholder=>$placeholder});
     $self->{Zera}->{_PAGE}->{buttons} .= $self->_tag('button',{type=>"submit", class=>"btn btn-secondary"},'<i class="fas fa-search"></i>');
