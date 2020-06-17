@@ -123,4 +123,35 @@ sub conf {
     }
 }
 
+# Database functions
+sub selectrow_hashref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_hashref(shift, shift,@_);
+}
+
+sub last_insert_id {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->last_insert_id('','',shift,shift);
+}
+
+sub selectrow_array {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectrow_array(shift, shift,@_);
+}
+
+sub selectall_arrayref {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, shift,@_);
+}
+
+sub selectall {
+  my $self = shift;
+  return $self->{Zera}->{_DBH}->{_dbh}->selectall_arrayref(shift, {Slice=>{}}, @_);
+}
+
+sub dbh_do {
+    my $self = shift;
+    return $self->{Zera}->{_DBH}->{_dbh}->do(shift, shift,@_);
+}
+
 1;

@@ -34,26 +34,28 @@ sub print {
     my $content = shift || "";
     my $vars    = shift || {};
     my $template_file = shift || '';
+    my $layout_file = $conf->{Template}->{Layout} || 'layout.html';
 
     my $Controller = $self->{Zera}->{_REQUEST}->param('Controller');
     if($self->{Zera}->{_Layout} eq 'Public'){
         if (!$template_file) {
-            $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/layout.html'
+            $template_file = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $layout_file;
         }
     }elsif($self->{Zera}->{_Layout} eq 'User'){
         if (!$template_file) {
-            if($self->{Zera}->{_SESS}->{_sess}{user_id}){
-                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/layout.html'
-            }else{
-                $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/layout_out.html'
+            if(!($self->{Zera}->{_SESS}->{_sess}{user_id})){
+                if($layout_file eq 'layout.html'){
+                    $layout_file = 'layout_out.html';
+                }
             }
+            $template_file = 'templates/' . $conf->{Template}->{UserTemplateID} . '/' . $layout_file;
         }
     }elsif($self->{Zera}->{_Layout} eq 'Admin'){
         if (!$template_file) {
             if($self->{Zera}->{_SESS}->{_sess}{user_id} and $self->{Zera}->{_SESS}->{_sess}{is_admin}){
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout.html'
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $layout_file;
             }else{
-                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/layout_out.html'
+                $template_file = 'templates/' . $conf->{Template}->{AdminTemplateID} . '/' . $layout_file;
             }
         }
     }else{

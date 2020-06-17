@@ -178,12 +178,14 @@ sub create_thumbnail {
 
     require Image::Thumbnail;
     my $t = new Image::Thumbnail(
-        module     => 'Imager',
+        module     => 'Image::Magick',
         size       => $size,
-        create     => 1,
         input      => 'data/'.$source,
         outputpath => 'data/'.$target,
-        );
+    ) or die $!;
+
+    $t->create() or die $t->{error};
+
 }
 
 #Delete files from /Data

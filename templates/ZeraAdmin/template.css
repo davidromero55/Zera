@@ -31,3 +31,13 @@ i.active {
 i.inactive {
     color: #e2e3e5;
 }
+
+.custom-file-label::after {
+    height: 1.8rem;
+    padding: .175rem .75rem;
+}
+
+.custom-file-label {
+    height: calc(1.8rem + 2px);
+    padding: .275rem .75rem;
+}
