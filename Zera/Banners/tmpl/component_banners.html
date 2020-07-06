@@ -1,9 +1,26 @@
-<div class="row mx-0 px-0">
-  <% FOREACH banner = banners %>
-  <div class="col-md-4 px-0 mx-0 my-2" style="max-height: 6rem; overflow: hidden;">
-    <% IF banner.url %><a href="<% banner.url %>"><% END %>
-        <img class="d-block w-100" src="/data/img/<% banner.media %>" alt="<% banner.name %>">
-    <% IF banner.url %></a><% END %>
-  </div>
-  <% END %>
+<div class="container-fluid pr-0 pl-0">
+    <div id="carouselZeraIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <% FOREACH banner = banners %>
+            <li data-target="#carouselZeraIndicators" data-slide-to="<% (loop.count - 1) %>" class="<% IF loop.first %>active<% END %>"></li>
+            <% END %>
+        </ol>
+        <div class="carousel-inner">
+            <% FOREACH banner = banners %>
+            <div class="carousel-item <% IF loop.first %>active<% END %>">
+                <% IF banner.url %><a href="<% banner.url %>"><% END %>
+                <img src="/data/img/<% banner.media %>" class="d-block w-100" alt="<% banner.name %>" />
+                <% IF banner.url %></a><% END %>
+            </div>
+            <% END %>
+        </div>
+        <a class="carousel-control-prev" href="#carouselZeraIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselZeraIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 </div>

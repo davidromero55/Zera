@@ -44,11 +44,26 @@ sub run {
         $module =~s/\W//g;
         $self->{ControllerName} = $module;
 
+        if( $self->{ControllerName} eq 'Url'){
+            my ($url_module, $view, $sub_view) = $self->rewrite_request();
+            if($url_module){
+                $module = $url_module;
+                $self->{Zera}->{ControllerName} = $module;
+                $self->{ControllerName} = $module;
+                $self->{_REQUEST}->param('Controller',$module);
+                $self->{_REQUEST}->param('View',$view);
+                $self->{_REQUEST}->param('SubView',$sub_view);
+            }else{
+                print "Status: 404 Not Found\n";
+                print "\n";
+                $self->clear();
+                exit 0;
+            }
+        }
 
         require "Zera/".$module ."/Controller.pm";
         my $controller_name ='Zera::'.$module.'::Controller';
         my $Controller = $controller_name->new($self);
-
         my $controller_results = $Controller->after_init();
         $self->process_results($controller_results);
 
@@ -78,21 +93,6 @@ sub run {
             }
 
             eval {
-                if( $self->{ControllerName} eq 'Url'){
-                    my ($url_module, $view, $sub_view) = $Controller->rewrite_request();
-                    if($url_module){
-                        $module = $url_module;
-                        $self->{Zera}->{ControllerName} = $module;
-                        $self->{_REQUEST}->param('Controller',$module);
-                        $self->{_REQUEST}->param('View',$view);
-                        $self->{_REQUEST}->param('SubView',$sub_view);
-                    }else{
-                        print "Status: 404 Not Found\n";
-                        print "\n";
-                        $self->clear();
-                        exit 0;
-                    }
-                }
 
                 require "Zera/".$module ."/View.pm";
                 my $module_name ='Zera::'.$module.'::View';
@@ -105,9 +105,6 @@ sub run {
                     my $Layout = Zera::Layout->new($self);
                     print $Layout->print( $View->get_default_view() );
                 }
-                #$self->msg_add('warning', 'Inicia sesión en tu cuenta.');
-                #Zera::Com::http_redirect('/MK/MK/Login');
-
             };
             if($@){
                 print Zera::Com::header($self);
@@ -243,6 +240,27 @@ sub get_component {
     my $module_name ='Zera::'.$Controller.'::Components';
     my $Module = $module_name->new($self);
     return $Module->get_component($Component, @params);
+}
+
+sub rewrite_request {
+    my $self = shift;
+
+    my $entry = $self->{_DBH}->{_dbh}->selectrow_hashref("SELECT module, url FROM entries e WHERE e.url=? AND e.active=1",{}, $self->{_REQUEST}->param('View'));
+    if($entry->{module}){
+        return ($entry->{module},'Item', $entry->{url})
+    }else{
+        my $file_name = $self->{_REQUEST}->param('View');
+        $file_name =~ s/\W!-//g;
+        $file_name = lc($file_name);
+        if($file_name){
+            if (-e ('templates/'.$conf->{Template}->{TemplateID}.'/static/'.$file_name . '.html')) {
+                return ('Static','Item',$file_name);
+            }elsif (-e ('static/'.$file_name . '.html')) {
+                return ('Static','Item',$file_name);
+            }
+        }
+    }
+    return ('','','');
 }
 
 1;

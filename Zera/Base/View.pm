@@ -214,9 +214,11 @@ sub add_jsfile {
     my $self = shift;
     my $js_file = shift;
     if(-e ('Zera/' . $self->{Zera}->{ControllerName} . '/js/' . $js_file . '.js')){
-        $self->{Zera}->{_PAGE}->{js_files} .= '<script src="' . '/Zera/' . $self->{Zera}->{ControllerName} . '/js/' . $js_file . '.js' . '"></script>';
+        $self->{Zera}->{_PAGE}->{js_files} .= '<script src="' . '/Zera/' . $self->{Zera}->{ControllerName} . '/js/' . $js_file . '.js"></script>';
+    }elsif(-e ('vendor/' . $js_file)){
+            $self->{Zera}->{_PAGE}->{js_files} .= '<script src="' . '/vendor/' . $js_file . '"></script>';
     }else{
-        $self->add_msg('danger',"JS file $js_file does not exist.");
+        $self->add_msg('danger','JS file Zera/' . $self->{Zera}->{ControllerName} . '/js/' . $js_file . '.js does not exist.');
     }
 }
 

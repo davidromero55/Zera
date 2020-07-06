@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <% FOREACH entry = entries %>
+    <div class="col-6">
+      <div class="blog-item">
+        <div class="row justify-content-left">
+          <div class="col-12">
+            <a href="/<% entry.url %>"><img src="<% entry.display_options.image %>" class="rounded img-fluid"/></a>
+            <a class="blog-title" href="/<% entry.url %>"><h2><% entry.title %></h2></a>
+          </div>
+        </div>
+        <div class="row justify-content-left">
+          <div class="col-12">
+            <p><% entry.date %></p>
+            <p><% entry.description %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% END %>
+  </div>

@@ -10,7 +10,7 @@ sub do_edit {
 
     $self->param('entry_id',0) if($self->param('entry_id') eq 'New');
 
-    if($self->param('_submit') eq 'Save'){
+    if($self->param('_submit') eq 'Save' or $self->param('_submit') eq 'Design'){
         # Prevent URL duplicates
         my $exist = $self->selectrow_array(
             "SELECT COUNT(*) FROM entries WHERE url=? AND entry_id<>?",{},$self->param('url'), int($self->param('entry_id'))) || 0;
@@ -38,6 +38,7 @@ sub do_edit {
                                  "VALUES ('Pages', ?,?,?,?,NOW(),?,?,?,?,?,?,?)",{},
                                  $self->param('title'), $self->param('keywords'), $self->param('date'), $self->{sess}{user_id}, 0, $self->{sess}{user_id},
                                  ($self->param('active') || 0), $self->param('url'), $self->param('description'), $self->param('content'), '{}');
+                $self->param('entry_id', $self->last_insert_id('entries','entry_id'))
             }
         };
         if($@){
@@ -45,8 +46,13 @@ sub do_edit {
             $results->{error} = 1;
             return $results;
         }else{
-            $results->{redirect} = '/AdminPages';
-            $results->{success} = 1;
+            if( $self->param('_submit') eq 'Design' ){
+                $results->{redirect} = '/'.$self->param('url') .'?design=KoiEditor';
+                $results->{success} = 1;
+            }else{
+                $results->{redirect} = '/AdminPages/Edit/' . $self->param('entry_id');
+                $results->{success} = 1;
+            }
             return $results;
         }
     }elsif($self->param('_submit') eq 'Delete'){

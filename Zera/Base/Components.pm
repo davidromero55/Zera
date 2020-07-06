@@ -154,6 +154,10 @@ sub render_template {
     $vars->{page} = $self->{Zera}->{_PAGE};
     $vars->{Zera} = $self->{Zera};
 
+    $vars->{page}->{Controller} = $self->param('Controller',$module);
+    $vars->{page}->{View} = $self->param('View',$module);
+    $vars->{page}->{SubView} = $self->param('SubView',$module);
+    
     my $tt = Zera::Com::template();
     $tt->process($template, $vars, \$HTML) || die "$Template::ERROR \n";
     return $HTML;

@@ -20,7 +20,7 @@ sub display_home {
     }
     my $list = Zera::List->new($self->{Zera},{
         sql => {
-            select => "banner_id, name, active",
+            select => "banner_id, name, publish_from, publish_to, sort_order, active",
             from =>"banners e",
             order_by => "",
             where => $where,

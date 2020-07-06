@@ -1,0 +1,14 @@
+<div class="container-fluid gray1">
+    <div class="container pt-5 pb-5 iniciativas-menu">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link<% IF page.View == '' %> active<% END %>" href="/Blog" role="tab">Todo</a>
+            </li>
+            <% FOREACH category = categories %>
+            <li class="nav-item">
+                <a class="nav-link<% IF page.SubView == category.url %> active<% END %>" href="/Blog/Category/<% category.url %>" role="tab" ><% category.category %></a>
+            </li>
+            <% END %>
+        </ul>
+    </div>
+</div>

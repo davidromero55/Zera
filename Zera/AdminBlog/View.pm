@@ -21,7 +21,7 @@ sub display_home {
         sql => {
             select => "entry_id, title, Date(date) as date, active",
             from =>"entries e",
-            order_by => "",
+            order_by => "entry_id DESC",
             where => $where,
             params => \@params,
             limit => "30",
