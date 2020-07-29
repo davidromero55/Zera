@@ -9,6 +9,7 @@ use Zera::DBI;
 use Zera::Session;
 use Zera::Email;
 $CGI::Minimal::_allow_hybrid_post_get = 1;
+CGI::Minimal::max_read_size(10000000);
 
 sub new {
     my $class    = shift;
