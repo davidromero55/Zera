@@ -62,13 +62,4 @@ $(document).ready(function(){
         });
     }
 
-    <script>
-        $('#bdesdehora').datetimepicker({
-        timepicker:true,
-        inline:true,
-    });
-
-    </scrip t>
-
-
 });
