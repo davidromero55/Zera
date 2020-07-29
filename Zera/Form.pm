@@ -352,7 +352,11 @@ sub _get_field {
                 $field_html .= $key . '="' . $self->{fields}->{$field_name}->{$key} . '" ';
             }
             $self->{fields}->{$field_name}->{value} = '' if(!$self->{fields}->{$field_name}->{value});
-            $field_html = '<textarea name="' . $field_name . '" id="' . $field_name . '" ' . $field_html .'>'.$self->{fields}->{$field_name}->{value}.'</textarea>';
+            my $value = $self->{fields}->{$field_name}->{value};
+            $value =~ s/&/&amp;/g;
+            $value =~ s/</&lt;/g;
+            $value =~ s/>/&gt;/g;
+            $field_html = '<textarea name="' . $field_name . '" id="' . $field_name . '" ' . $field_html .'>'.$value.'</textarea>';
         }
         case 'file' {
             $self->{fields}->{$field_name}->{class} = 'custom-file-input' if(($self->{fields}->{$field_name}->{class} eq 'form-control form-control-sm'));
