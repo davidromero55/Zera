@@ -378,3 +378,4 @@ CREATE TABLE `users_access_control` (
 
 
 ALTER TABLE `categories` ADD `active` INT(1) NOT NULL DEFAULT '1' AFTER `url`;
+ALTER TABLE `entries` ADD COLUMN `language` VARCHAR(2) NOT NULL DEFAULT 'en' AFTER `module`;
