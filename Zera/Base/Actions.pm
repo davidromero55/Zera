@@ -139,4 +139,84 @@ sub conf {
     }
 }
 
+sub upload_file {
+    my $self = shift;
+    my $cgi_param = shift || "";
+    my $dir = shift || "";
+    my $save_as = shift || "";
+    my $filename = $self->{Zera}->{_REQUEST}->param_filename($cgi_param);
+    my $mime = '';
+
+    if(!(-e "data")){
+        mkdir ("data") or die "$!. Can't create data directory.";
+    }
+
+    my @subdirs = split(/\//,$dir);
+    my $subdirsSrt = '';
+    foreach my $subdir (@subdirs){
+        $subdirsSrt .= '/' if($subdirsSrt);
+        $subdirsSrt .= $subdir;
+        if(!(-e "data/$subdirsSrt")){
+            mkdir ("data/$subdirsSrt") or die "$!. Can't create data/$subdirsSrt directory.";
+        }
+    }
+
+    if($filename){
+        my $type = $self->{Zera}->{_REQUEST}->param_mime($cgi_param);
+        my ($name, $extension) = split(/\./, $filename);
+        $name =~s/\W+/-/g;
+        my $file = $name . '.' . $extension;
+        if($type eq "image/jpeg" or $type eq "image/x-jpeg"  or $type eq "image/pjpeg"){
+            $extension = "jpg";
+        }elsif($type eq "image/png" or $type eq "image/x-png"){
+            $extension = "png";
+        }elsif($type eq "image/gif" or $type eq "image/x-gif"){
+            $extension = "gif";
+        }elsif($filename =~ /\.pdf$/i){
+            $extension = 'pdf';
+        }elsif($filename =~ /\.doc$/i){
+            $extension = 'doc';
+        }elsif($filename =~ /\.xls$/i){
+            $extension = 'xls';
+        }elsif($filename =~ /\.csv$/i){
+            $extension = 'csv';
+        }elsif($filename =~ /\.ppt$/i){
+            $extension = 'ppt';
+        }elsif($filename =~ /\.docx$/i){
+            $extension = 'docx';
+        }elsif($filename =~ /\.xlsx$/i){
+            $extension = 'xlsx';
+        }elsif($filename =~ /\.pptx$/i){
+            $extension = 'pptx';
+        }elsif($filename =~ /\.swf$/i){
+            $extension = 'swf';
+        }elsif($filename =~ /\.mp4$/i){
+            $extension = 'mp4';
+        }elsif($filename =~ /\.zip$/i){
+            $extension = 'zip';
+        }elsif($filename =~ /\.txt$/i){
+            $extension = 'txt';
+        }else{
+            msg_add("danger","File type not supported.");
+            return "";
+        }
+        $file = $name . '.' . $extension;
+        if (-e "data/$dir/$file") {
+             foreach my $it (1 .. 1000000) {
+                 $file = $name.'_'.$it . '.' . $extension;
+                 if(!(-e "data/$dir/$file")){
+                     last;
+                 }
+             }
+         }
+
+        open (OUTFILE,">data/$dir/" . $file) or die "$!";
+        binmode(OUTFILE);
+        print OUTFILE $self->param($cgi_param);
+        close(OUTFILE);
+        return $file;
+    }
+    return "";
+}
+
 1;
