@@ -11,6 +11,12 @@ $(document).ready(function(){
       }, false);
     });
 
+    $('.custom-file-input').on('change',function(){
+        var fileName = $(this).val();
+        fileName = fileName.replace('C:\\fakepath\\','');
+        $(this).next('.custom-file-label').html(fileName);
+    });
+
     if ( $( ".wysiwyg" ).length ) {
         tinymce.init({
             selector:'.wysiwyg',
