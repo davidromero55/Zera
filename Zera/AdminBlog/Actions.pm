@@ -29,6 +29,10 @@ sub do_edit {
         if($image){
             $display_options->{image} = '/data/img/'.$image;
         }
+        my $file = $self->upload_file('file', 'files');
+        if($file){
+            $self->param('content',$self->param('content') . '<p><a href="/data/files/' . $file . '" class="btn btn-primary" target="_blank">' . $file . '</a></p>');
+        }
 
         eval {
             if(int($self->param('entry_id'))){

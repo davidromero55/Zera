@@ -74,7 +74,7 @@ sub display_edit {
     # Form
     my $form = $self->form({
         method   => 'POST',
-        fields   => [qw/entry_id title url keywords date active description image content category_id/],
+        fields   => [qw/entry_id title url keywords date active description image file content category_id/],
         submits  => \@submit,
         values   => $values,
     });
@@ -86,7 +86,8 @@ sub display_edit {
     $form->field('keywords',{span=>'col-md-6', required=>1});
     $form->field('date',{class=>'form-control form-control-sm datepicker', required=>1});
     $form->field('description',{required=>1, type=>'textarea', rows=>9, class=>"form-control form-control-sm"});
-    $form->field('image', {type=>'file', accept=>"image/x-png,image/gif,image/jpeg"});
+    $form->field('image', {type=>'file', accept=>"image/x-png,image/gif,image/jpeg", span=>'col-md-3'});
+    $form->field('file', {type=>'file', span=>'col-md-3'});
     $form->field('content',{span=>'col-md-12', required=>1, type=>'textarea', rows=>10, class=>"wysiwyg form-control form-control-sm"});
     $form->field('active',{label=>"Publish", check_label=>'Yes / No', class=>"filled-in", type=>"checkbox"});
     $form->field('category_id',{placeholder=> 'Category', span=>'col-md-3', label=> 'Category', type=>'select', selectname => 'Select a category', options => $categories{values}, labels => $categories{labels}});

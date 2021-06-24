@@ -117,7 +117,7 @@ sub display_msg {
 
     my $vars = {
     };
-    return $self->render_template($vars,'msg-admin');
+    return $self->render_template($vars);
 }
 
 # Database functions
@@ -159,7 +159,7 @@ sub render_template {
     my $HTML = '';
 
     if(-e ($template)){
-
+        $self->{Zera}->{file_name} = $template;
     }elsif(-e ('templates/' . $conf->{Template}->{TemplateID} . '/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/' . $template . '.html')){
         $template = 'templates/' . $conf->{Template}->{TemplateID} . '/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/' . $template . '.html';
     }elsif(-e ('Zera/' . $self->{Zera}->{_REQUEST}->param('Controller') . '/tmpl/' . $template . '.html')){
